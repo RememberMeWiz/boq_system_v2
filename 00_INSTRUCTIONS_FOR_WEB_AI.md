@@ -15,6 +15,7 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 3. **Permanent GitHub Raw Link Rule**: Every task description created by the PM includes **stable GitHub raw HTTPS URLs** (e.g. `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`) so that Web AIs (Claude Web) can directly fetch, inspect, and index all workspace files over the web with ZERO 403/503 bot errors or landing page blocks.
 4. **No Hands-on Subagent Handoff without User Approval**: The PM **never** hands off tasks to subagents automatically without explicit user permission.
 5. **Web AI Collaboration Protocol**: External Web AIs (such as Claude Web) receive the PM's task specification, fetch the manifest and technical specs over GitHub raw URLs, execute the coding/takeoff work, and deliver the completed code module directly in their chat response text.
+6. **Long-Running Process Rule**: Any process that must run continuously (dev servers, watchers, tunnel managers, Flask backend, `npm run dev`, etc.) **must be instructed to run in a separate terminal window by the user** — NOT as a background task spawned inside the chat session — unless the user explicitly says otherwise. The PM must always provide the exact terminal command for the user to run themselves.
 
 ---
 

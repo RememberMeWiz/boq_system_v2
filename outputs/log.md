@@ -1,3 +1,12 @@
+## [2026-07-22 11:26 UTC] STATUS: RULE ADDED (Orchestrator)
+Task: PM Governance Rule Update — Long-Running Process Protocol
+Notes:
+- Added Rule 6 to `00_INSTRUCTIONS_FOR_WEB_AI.md` (Section 0, PM Governance Framework):
+  > "Any process that must run continuously (dev servers, watchers, tunnel managers, Flask backend, `npm run dev`, etc.) must be instructed to run in a separate terminal window by the user — NOT as a background task spawned inside the chat session — unless the user explicitly says otherwise."
+- Synced to `outputs/00_INSTRUCTIONS_FOR_WEB_AI.md`.
+- Committed and pushed to GitHub.
+---
+
 ## [2026-07-22 11:10 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash (High) - Antigravity Orchestrator)
 Task: Task 4 — Complete 13-Trade Direct Costing Calculation Engine Expansion (`backend/engine/fajardo.py`)
 Notes:
