@@ -1,0 +1,13 @@
+# Plan2Takeoff V2 Git Ignore
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+node_modules/
+dist/
+build/
+.env
+*.log
+.DS_Store
+*.tmp
