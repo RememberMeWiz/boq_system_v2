@@ -5,25 +5,40 @@ import TradeAccordion from './components/TradeAccordion';
 import RebarOptimizerView from './components/RebarOptimizerView';
 import RightPanel from './components/RightPanel';
 
-const MOCK_DRAWINGS = [
-  'sample_structural_plan.pdf',
-  'plan part 1.pdf (A-1)',
-  'plan part 2.pdf (A-2)',
-  'structural_framing.pdf (S-1)',
-  'foundation_plan.pdf (S-2)',
-];
-
 export default function App() {
   const [data, setData]               = useState(null);
   const [rebarData, setRebarData]     = useState(null);
   const [loading, setLoading]         = useState(false);
-  const [banner, setBanner]           = useState(null);  // { type: 'success'|'info'|'error', msg }
-  const [drawing, setDrawing]         = useState(MOCK_DRAWINGS[0]);
-  const [boqView, setBoqView]         = useState('checklist'); // 'checklist' | 'accordion' | 'blueprint' | 'rebar'
+  const [banner, setBanner]           = useState(null);
+  const [drawingsList, setDrawingsList] = useState(['sample_structural_plan.pdf']);
+  const [drawing, setDrawing]         = useState('sample_structural_plan.pdf');
+  const [boqView, setBoqView]         = useState('checklist');
   const [selectedElement, setSelectedElement] = useState(null);
   const [tradeTotals, setTradeTotals] = useState({});
 
   const fileInputRef = useRef(null);
+
+  // Load saved sessions to populate drawing dropdown
+  const loadSavedSessions = async () => {
+    try {
+      const res = await fetch('/api/v1/sessions');
+      const json = await res.json();
+      if (json.status === 'success' && Array.isArray(json.sessions) && json.sessions.length > 0) {
+        const names = json.sessions.map(s => s.drawing_name).filter(Boolean);
+        const unique = Array.from(new Set(names));
+        if (unique.length > 0) {
+          setDrawingsList(unique);
+          setDrawing(unique[0]);
+        }
+      }
+    } catch {
+      // Ignore network fallback
+    }
+  };
+
+  useEffect(() => {
+    loadSavedSessions();
+  }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
   const fetchTakeoff = async (uploadedFile = null) => {
@@ -47,6 +62,9 @@ export default function App() {
         const fileName = uploadedFile ? uploadedFile.name : json.drawing?.filename || drawing;
         setDrawing(fileName);
 
+        // Add file name to drawings list if not already present
+        setDrawingsList(prev => prev.includes(fileName) ? prev : [fileName, ...prev]);
+
         const sourceLabel = json.input_source === 'pdf_parsed' ? 'PDF Text Parsed' : 'Engine Standard Inputs';
         setBanner({
           type: 'success',
@@ -65,17 +83,12 @@ export default function App() {
     } catch (err) {
       setBanner({
         type: 'info',
-        msg: `⚠ Note: Backend connecting/offline. ${err.message || ''} Using local takeoff engine.`
+        msg: `⚠ Note: Backend connecting/offline. ${err.message || ''}`
       });
     } finally {
       setLoading(false);
     }
   };
-
-  // Initial load
-  useEffect(() => {
-    fetchTakeoff();
-  }, []);
 
   // ── Import Action (Triggers File Picker) ───────────────────────────────
   const handleImportClick = () => {
@@ -209,7 +222,7 @@ export default function App() {
                 fontFamily: 'Inter, sans-serif', outline: 'none', minWidth: '220px',
               }}
             >
-              {MOCK_DRAWINGS.map(d => <option key={d} value={d}>{d}</option>)}
+              {drawingsList.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
 
             <button

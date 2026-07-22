@@ -64,12 +64,7 @@ const STATUS_COLORS = {
 
 // ---------------------------------------------------------------------------
 export default function CostedBOQChecklist({ boqData, onRowSelect, onTotalsChange }) {
-  const [rows, setRows] = useState(() =>
-    INITIAL_ROWS.map(r => {
-      const rate = CMPD_RATES[r.prefix] || { mat: 0, lab: 0, eqp: 0 };
-      return { ...r, mat: rate.mat, lab: rate.lab, eqp: rate.eqp, usingCmpd: false };
-    })
-  );
+  const [rows, setRows] = useState([]);
 
   // Sync rows whenever backend returns new BOQ data
   React.useEffect(() => {
@@ -203,7 +198,16 @@ export default function CostedBOQChecklist({ boqData, onRowSelect, onTotalsChang
       </div>
 
       {/* Table */}
-      <div style={{ overflowX: 'auto' }}>
+      {displayRows.length === 0 ? (
+        <div style={{ padding: '60px 20px', textAlign: 'center', color: '#64748b' }}>
+          <div style={{ fontSize: '32px', marginBottom: '12px' }}>📐</div>
+          <div style={{ fontSize: '15px', fontWeight: 700, color: '#e2e8f0', marginBottom: '6px' }}>No Takeoff Data Loaded</div>
+          <div style={{ fontSize: '12px', color: '#94a3b8', maxWidth: '400px', margin: '0 auto' }}>
+            Click <strong>"📥 Import PDF/DXF"</strong> or select a drawing plan above to compute itemized 13-trade takeoff quantities.
+          </div>
+        </div>
+      ) : (
+        <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px', minWidth: '900px' }}>
           <thead>
             <tr style={{
@@ -341,6 +345,7 @@ export default function CostedBOQChecklist({ boqData, onRowSelect, onTotalsChang
           </tfoot>
         </table>
       </div>
+      )}
     </div>
   );
 }
