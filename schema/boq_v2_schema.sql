@@ -93,3 +93,32 @@ CREATE TABLE IF NOT EXISTS manifest_logs (
     file_path TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- V2 Session Persistence Tables
+CREATE TABLE IF NOT EXISTS boq_sessions_v2 (
+    session_id VARCHAR(100) PRIMARY KEY,
+    drawing_name VARCHAR(255) NOT NULL,
+    grand_total NUMERIC DEFAULT 0.0,
+    sections_subtotal NUMERIC DEFAULT 0.0,
+    item_count INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS boq_items_v2 (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id VARCHAR(100) REFERENCES boq_sessions_v2(session_id) ON DELETE CASCADE,
+    item_code VARCHAR(50) NOT NULL,
+    trade VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    quantity NUMERIC DEFAULT 0.0,
+    unit VARCHAR(20) NOT NULL,
+    material_unit_cost NUMERIC DEFAULT 0.0,
+    labor_unit_cost NUMERIC DEFAULT 0.0,
+    equipment_unit_cost NUMERIC DEFAULT 0.0,
+    total_unit_cost NUMERIC DEFAULT 0.0,
+    total_amount NUMERIC DEFAULT 0.0,
+    status VARCHAR(50) DEFAULT 'Confirmed',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
