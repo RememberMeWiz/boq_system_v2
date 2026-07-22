@@ -1,7 +1,7 @@
 # INSTRUCTIONS FOR WEB AIs (Claude Web, ChatGPT Web, Gemini Web) — READ THIS FIRST
 
 You are an external Web AI collaborating on **Plan2Takeoff Version 2** (`boq_system_v2`).
-Follow this protocol to read workspace state and deliver code updates directly in chat responses.
+All project specifications, handbooks, schemas, and source files are hosted in our public GitHub repository with 100% open raw HTTPS links.
 
 ---
 
@@ -12,9 +12,9 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 ### PM Roles, Directives & Rules:
 1. **Executive Oversight & Roadmap Management**: Antigravity AI manages task creation, roadmap tracking, technical specifications, progress reports, and overall system architecture.
 2. **Task Specification & Delegation**: When the user requests a task to be delegated, Antigravity AI formulates a comprehensive task description mapped to the 13 trade divisions (`UY_Louis.xlsx`).
-3. **Public HTTPS Link Rule**: Every task description created by the PM includes **live public HTTPS tunneled URLs** (e.g. `https://plan2takeoff-v2.loca.lt/tech_spec_v2.md`) so that Web AIs (Claude Web) can directly fetch, inspect, and index workspace files over the internet.
+3. **Permanent GitHub Raw Link Rule**: Every task description created by the PM includes **stable GitHub raw HTTPS URLs** (e.g. `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`) so that Web AIs (Claude Web) can directly fetch, inspect, and index all workspace files over the web with ZERO 403/503 bot errors or landing page blocks.
 4. **No Hands-on Subagent Handoff without User Approval**: The PM **never** hands off tasks to subagents automatically without explicit user permission.
-5. **Web AI Collaboration & Code Delivery Protocol**: External Web AIs (such as Claude Web) receive the PM's task specification, write complete code modules directly in their response text as downloadable code blocks, and the Antigravity Orchestrator (PM) ingests, tests, and commits the code locally.
+5. **Web AI Collaboration Protocol**: External Web AIs (such as Claude Web) receive the PM's task specification, fetch the manifest and technical specs over GitHub raw URLs, execute the coding/takeoff work, and deliver the completed code module directly in their chat response text.
 
 ---
 
@@ -26,17 +26,21 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 
 ---
 
-## 🌐 Public HTTPS Tunnel Link Accessibility Rule
-All file references and task deliverables provided by the Project Manager include **live public HTTPS tunneled URLs** (e.g. `https://plan2takeoff-v2.loca.lt/tech_spec_v2.md` or `https://plan2takeoff-v2.loca.lt/formula_exhaustive_handbook.md`).
-You can fetch and read any of these file URLs directly using your web browsing tool!
+## 🌐 Permanent GitHub Raw Links Index
 
-Before starting any task, fetch the project manifest endpoint to auto-index the entire active workspace:
+All project files are directly fetchable via your web browsing tool:
 
-- **Live Public Manifest Endpoint**: `https://plan2takeoff-v2.loca.lt/api/v1/manifest`
-- **Local Manifest Endpoint**: `http://localhost:5001/api/v1/manifest`
+- **GitHub Repository**       : `https://github.com/RememberMeWiz/boq_system_v2`
+- **Technical Specs v2.0**    : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`
+- **Exhaustive Handbook (100%)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/formula_exhaustive_handbook.md`
+- **Sample Solved Cases**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/sample_solved_cases.md`
+- **Web AI Instructions**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/00_INSTRUCTIONS_FOR_WEB_AI.md`
+- **Current Takeoff Engine**   : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/fajardo.py`
+- **Project Log**             : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/log.md`
+- **Database Schema**         : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/schema/boq_v2_schema.sql`
 
 ---
 
 ## 🔄 Step 2 — Code Delivery Protocol
 
-External Web AIs (Claude Web) deliver complete code modules and updates directly as downloadable code blocks in chat responses. The Antigravity PM ingests the code file directly into the local workspace, runs automated tests, and updates project logs.
+External Web AIs (Claude Web) deliver complete code modules directly as downloadable code blocks in chat responses. The Antigravity PM ingests the code file into the local workspace, executes tests, and commits updates to Git.
