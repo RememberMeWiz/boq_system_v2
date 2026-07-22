@@ -151,3 +151,105 @@ Notes:
 - Web AI Protocol Instructions: Created `00_INSTRUCTIONS_FOR_WEB_AI.md` for external web AIs (Claude Web, ChatGPT Web) specifying `GET /api/v1/manifest` auto-indexing and `POST /api/v1/agent-sync` zero-touch code updates.
 - Status Correction: Marked engine prototypes and visual layers as STARTED / Initial Prototype phase pending complete Fajardo book solved case extraction and visual diff test pipeline.
 ---
+
+## [2026-07-22 16:26:00 PST] — INTERACTIVE BLUEPRINT VIEWER & CAD TAKEOFF SUITE UPGRADE
+
+### 1. Interactive Blueprint Canvas & Navigation Engine (Phases 1-3)
+- **Mouse Wheel Zoom & Drag Pan**: Implemented cursor-centered smooth mouse wheel zooming (`0.3x` to `4.0x`) and click-and-drag viewport panning in `BlueprintViewer.jsx`. Added `🎯 Reset View` button.
+- **Clutter Elimination**: Converted vector overlays to clean outline-only dashed strokes and hidden raw text labels (`VectorPath`) by default.
+- **Dual-Mode Canvas Toggle**:
+  - `📄 Original Drawing`: Background PDF blueprint sheet with color-coded layer outlines and interactive hover tooltips.
+  - `📐 Generated Takeoff Plan`: Clean vector diagram rendered on a dark grid canvas representing parsed structural entities (footings, columns, beams, slabs, walls).
+- **Structural Rebar Visualization**:
+  - **Footings**: Horizontal/vertical grid mat lines.
+  - **Columns**: 4 corner main bar dots + horizontal tie lines.
+  - **Beams**: Stirrup tick marks along span length.
+  - **Slabs**: Diagonal hatch lines for temperature reinforcement.
+  - **Walls**: Vertical dowel tick lines.
+- **Data Provenance Badges**: Color-coded badges indicating `🟢 Parsed` (from drawing text) vs `🟡 Assumed` (Fajardo engine defaults).
+- **AI Quality Suggestions Panel**: Added collapsible warnings card displaying unparsed drawing notices, missing rebar schedule alerts, and default assumption logs with click-to-highlight canvas interaction.
+
+### 2. Trade Accordion Item & Section Mapping
+- **Section ID Prefix Normalization**: Updated `PREFIX_TO_SECTION` lookup dictionary in `TradeAccordion.jsx` to map numeric section IDs (`2`..`13`) and string trade prefixes (`EW`, `CON`, `MW`, `REB`, `RF`, `PNT`, `PLM`, `ELC`, `DR`, `TL`, `PLM`, `ELC`) to Roman numerals (`I`..`XIII`).
+- **Subtotal Verification**: Resolved empty accordion view; trade sections now display computed line items and subtotal costs accurately.
+
+### 3. Session & File Deletion Suite
+- **Backend Delete API**: Added `DELETE /api/v1/sessions/<drawing_name>` endpoint in `backend/app.py` and `local_db.py`. Deletes session rows from local SQLite DB (`boq_v2.db`) and removes files from `uploads/`.
+- **Custom Dropdown UI**: Replaced native HTML `<select>` in `App.jsx` with a custom `DrawingDropdownMenu` containing explicit red `✕ Delete` buttons next to saved drawings.
+
+### 4. UI Notification Toast Overhaul
+- **Floating Status Toast**: Redesigned header alert into a floating status toast overlay (`position: fixed`, `top: 85px`, `right: 24px`, `z-index: 1000`) featuring high-contrast gradient cards, glowing borders (`#10b981`, `#ef4444`, `#3b82f6`), and a close button.
+
+---
+
+## [2026-07-22 19:20:00 PST] — CONSTRUCTION REFERENCE DATA & DUPA QA ENGINE INTEGRATION
+
+### 1. Project Reference Data Ingestion (`backend/reference_data/`)
+Copied and organized key civil engineering reference materials into the project codebase:
+- **`backend/reference_data/fajardo_books/`**:
+  - `Simplified Estimate by Max Fajardo.pdf`
+  - `Plumbing_Max_Fajardo_pdf.pdf`
+  - `Electrical Layout and Estimate (2nd Ed) by Max B. Fajardo & Leo R. Fajardo.pdf`
+- **`backend/reference_data/dupa_files/`**:
+  - `6. Detailed Unit Price Analysis (DUPA) -Residential Projects.xlsx`
+  - `7. Detailed Unit Price Analysis (DUPA) - Roads Projects.xlsx`
+- **`backend/reference_data/estimator_templates/`**:
+  - `Construction Estimate Calculator.xlsx`
+  - `Project Estimate Template.xlsx`
+  - `Lot Plotter (Technical Description).xlsx`
+
+---
+
+## [2026-07-22 19:29:00 PST] — PROJECT STANDING UPDATE & PDF/DWG PARSER REDESIGN FLAG
+
+### 1. Calculation Engine & Solver Status — CONFIDENT (95%)
+- Core Fajardo BOQ calculation engine (`backend/engine/fajardo.py`) confirmed highly reliable across all 13 trade divisions.
+- Reserved for final user visual approval and minor UI polishing.
+
+### 2. PDF / DWG Blueprint Parser Pipeline — FLAGGED FOR REDESIGN
+- **Flagged**: User flagged current heuristic regex text & raw vector parser (`DrawingParserV2` in `pdf_dxf_parser.py`) for architectural redesign.
+- **Rationale**: Unassisted heuristic regex text parsing cannot reliably interpret complex multi-view CAD blueprints with high trust without multimodal AI vision or structured human-in-the-loop validation.
+- **Redesign Target**:
+  - Integrate Multimodal Vision LLM parsing for blueprint document understanding.
+  - Expand the interactive **Generated Takeoff Plan** and **Quality Suggestions Panel** to empower user visual validation before feeding data into the calculation solver.
+
+---
+
+## [2026-07-22 19:32:00 PST] — SAMPLE BLUEPRINT INPUTS & ESTIMATOR TEMPLATES INGESTION
+
+### 1. Ingested Sample Blueprint Inputs (`backend/reference_data/sample_inputs/`)
+- `plan part 1.pdf` (6.45 MB) — Structural Plan Part 1.
+- `toaz.info-dpwh-school-building-design-pr_...pdf` (4.75 MB) — Official DPWH 2-Storey School Building Standard Design Plan.
+- `Structural Drawings Details For Residential House Autocad Free Drawing.DWG` (1.16 MB) — AutoCAD Residential Structural Plan.
+- `BOQ_Schedule.xlsx` & `column steelworks estimates VCNGC1.xlsx` — Structural Rebar & Steelwork Schedules.
+
+---
+
+## [2026-07-22 20:08:00 PST] — FULL AUTOCAD DWG/DXF DRAWINGS & PDF PLAN SUITE INGESTION
+
+### 1. Ingested AutoCAD CAD Drawing Suite (`backend/reference_data/cad_drawings/`)
+Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project repository:
+- **Structural Detail Templates (`Bonus Templates/`)**:
+  - `Isolated Column Footing Details.dwg`
+  - `Strap Footing Details.dwg`
+  - `Cantilever Footing Details.dwg`
+  - `Wall Footing Details.dwg`
+  - `Beam Details.dwg`
+  - `1-Way Slab Details.dwg`
+  - `Standard Symbols & Details.dwg`
+- **Complete Project Drawing Sets**:
+  - `2-Storey Residence CAD Sets`
+  - `3-Storey House Complete Project CAD Drawings`
+  - `4-Storey Building Complete Plans`
+  - `5-Storey Building Design`
+  - `Bungalow House Detailed Drawings`
+  - `Commercial & Residential Building DWG Sets`
+- **Trade Divisions (02 Architectural, 04 Structural, 05 Plumbing, 06 Electrical, 07 HVAC, 08 Fire Protection)**.
+
+### 2. Ingested PDF Sample Drawing Plans (`backend/reference_data/pdf_plans/`)
+- Copied **96 PDF sample drawing plans** for multi-view vision LLM training and visual parser test suites.
+
+
+
+
+

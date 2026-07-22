@@ -43,11 +43,12 @@ from engine.fajardo import (
 )
 from engine.rebar_optimizer import RebarStockOptimizer, RebarCutDemand
 from engine.pdf_dxf_parser import DrawingParserV2
+from engine.dupa_loader import get_dupa_qa_summary
 from engine.vision_ocr import crop_schedule_region, parse_schedule_text, auto_scan_pdf_schedules
 from api.manifest import generate_project_manifest
 from api.agent_sync import process_agent_sync_payload, AUTH_SYNC_TOKEN
 from api.supabase_client import save_session as supabase_save_session, load_session as supabase_load_session, list_sessions as supabase_list_sessions, is_configured as supabase_is_configured
-from api.local_db import init_db as init_local_db, save_session as local_save_session, load_session as local_load_session, list_sessions as local_list_sessions
+from api.local_db import init_db as init_local_db, save_session as local_save_session, load_session as local_load_session, list_sessions as local_list_sessions, delete_session_by_drawing as local_delete_by_drawing
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIST_DIR = os.path.join(BASE_DIR, "frontend", "dist")
@@ -62,7 +63,7 @@ app = Flask(__name__, static_folder=FRONTEND_DIST_DIR, static_url_path="")
 def add_cors(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Agent-Sync-Token"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS"
     return response
 
 @app.route("/api/v1/<path:p>", methods=["OPTIONS"])
@@ -135,6 +136,12 @@ def get_cmpd_rates():
         for key, (m, l, e) in DPWH_RATES.items()
     }
     return jsonify({"status": "success", "rates": rates_json})
+
+
+@app.route("/api/v1/dupa-qa", methods=["GET"])
+def get_dupa_qa():
+    """Returns the QA summary of official DPWH Detailed Unit Price Analysis (DUPA) rates."""
+    return jsonify(get_dupa_qa_summary())
 
 
 # --------------------------------------------------------------------
@@ -317,36 +324,43 @@ def process_drawing():
     Auto-saves session to Supabase V2 (if configured) and writes last_session.json cache.
     """
     file = request.files.get("file")
-    drawing_name = file.filename if file else "sample_structural_plan.pdf"
+    req_data = request.get_json(silent=True) or {}
+    drawing_name = file.filename if file else req_data.get("drawing_name") or "plan part 1.pdf"
     session_id = str(uuid.uuid4())
 
-    parser = DrawingParserV2()
-    project_inputs = None
+    target_path = None
+    user_downloads = r"E:\Users\Louis\Downloads"
+    uploads_dir = os.path.join(BASE_DIR, "uploads")
 
+    possible_paths = [
+        os.path.join(user_downloads, drawing_name),
+        os.path.join(uploads_dir, drawing_name),
+        os.path.join(BASE_DIR, drawing_name),
+    ]
+    for p in possible_paths:
+        if os.path.exists(p):
+            target_path = p
+            break
+
+    parser = DrawingParserV2()
     if file:
-        # Save uploaded file to temp location and parse it
-        suffix = os.path.splitext(file.filename)[-1].lower() or '.pdf'
-        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
-            file.save(tmp.name)
-            tmp_path = tmp.name
-        try:
-            if suffix == '.dxf':
-                parse_res = parser.parse_dxf(tmp_path)
-            else:
-                parse_res = parser.parse_pdf(tmp_path)
-            project_inputs = parse_res.project_inputs  # may be None if no annotations parsed
-        finally:
-            os.unlink(tmp_path)
+        os.makedirs(uploads_dir, exist_ok=True)
+        save_path = os.path.join(uploads_dir, file.filename)
+        file.save(save_path)
+        suffix = os.path.splitext(file.filename)[-1].lower()
+        parse_res = parser.parse_dxf(save_path) if suffix in ('.dxf', '.dwg') else parser.parse_pdf(save_path)
+    elif target_path:
+        suffix = os.path.splitext(target_path)[-1].lower()
+        parse_res = parser.parse_dxf(target_path) if suffix in ('.dxf', '.dwg') else parser.parse_pdf(target_path)
     else:
         sample_pdf = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
         parse_res = parser.parse_pdf(sample_pdf)
 
-    # Use parsed inputs if available, else fall back to sample
-    inputs_used = project_inputs if project_inputs else SAMPLE_PROJECT_INPUTS
+    project_inputs = parse_res.project_inputs
     source = "pdf_parsed" if project_inputs else "sample_defaults"
 
     # Run full 13-trade engine
-    takeoff = run_full_takeoff(inputs_used)
+    takeoff = run_full_takeoff(project_inputs)
     boq_rows = _takeoff_to_boq_rows(takeoff)
     grand_total = takeoff["grand_total_direct_cost"]
 
@@ -363,6 +377,29 @@ def process_drawing():
         supabase_result = supabase_save_session(session_id, drawing_name, boq_rows, grand_total,
                                                 takeoff["sections_2_to_13_subtotal"])
 
+    # Convert parsed vector entities into JSON elements
+    parsed_elements = []
+    if hasattr(parse_res, 'entities') and parse_res.entities:
+        for idx, ent in enumerate(parse_res.entities):
+            etype = 'unclassified'
+            lbl = ent.label or 'ELEMENT'
+            if 'FOOTING' in ent.layer or 'F-' in lbl: etype = 'footing'
+            elif 'COLUMN' in ent.layer or 'C-' in lbl: etype = 'column'
+            elif 'BEAM' in ent.layer or 'B-' in lbl:   etype = 'beam'
+            elif 'SLAB' in ent.layer or 'S-' in lbl:   etype = 'slab'
+            elif 'WALL' in ent.layer or 'W-' in lbl:   etype = 'chb_wall'
+
+            parsed_elements.append({
+                "element_id": f"{lbl}_{idx+1}",
+                "element_type": etype,
+                "label": lbl[:30],
+                "bounding_box": ent.bounding_box,
+                "location": f"Layer {ent.layer}",
+                "count": 1,
+            })
+
+    elements_list = parsed_elements if parsed_elements else _sample_elements_json()
+
     return jsonify({
         "status": "success",
         "session_id": session_id,
@@ -371,8 +408,12 @@ def process_drawing():
             "filename": drawing_name,
             "width":    getattr(parse_res, 'width', 842.0),
             "height":   getattr(parse_res, 'height', 595.0),
+            "page_image": getattr(parse_res, 'page_image', None),
+            "comparison_image": getattr(parse_res, 'comparison_image', None),
         },
-        "elements": _sample_elements_json(),
+        "framing_plan": getattr(parse_res, 'framing_plan', []),
+        "suggestions": getattr(parse_res, 'suggestions', []),
+        "elements": elements_list,
         "boq":     boq_rows,
         "summary": {
             "sections_2_to_13_subtotal": takeoff["sections_2_to_13_subtotal"],
@@ -473,6 +514,31 @@ def export_json_full():
         as_attachment=True,
         download_name="Plan2Takeoff_V2_Takeoff.json",
     )
+
+
+@app.route("/api/v1/sessions", methods=["GET"])
+def get_sessions_list():
+    """Lists saved drawing sessions from local SQLite DB."""
+    sessions = local_list_sessions(limit=50)
+    return jsonify({"status": "success", "sessions": sessions})
+
+
+@app.route("/api/v1/sessions/<path:drawing_name>", methods=["DELETE", "OPTIONS"])
+def delete_drawing_session(drawing_name):
+    if request.method == "OPTIONS":
+        return "", 204
+    """Deletes drawing session and file from database and uploads directory."""
+    local_delete_by_drawing(drawing_name)
+
+    # Delete from uploads directory if exists
+    target = os.path.join(BASE_DIR, "uploads", drawing_name)
+    if os.path.exists(target):
+        try:
+            os.remove(target)
+        except Exception:
+            pass
+
+    return jsonify({"status": "deleted", "drawing_name": drawing_name})
 
 
 # --------------------------------------------------------------------

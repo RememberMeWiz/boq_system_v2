@@ -342,7 +342,8 @@ def calculate_section_3_concrete_and_formworks(elements: list) -> dict:
         wastage = el.get("wastage", 0.05)
 
         if etype == "footing":
-            L, W, H = el["length_m"], el["width_m"], el["height_m"]
+            L, W = el["length_m"], el["width_m"]
+            H = el.get("depth_m") or el.get("height_m") or 0.40
             v = L * W * H * N
             area = 2 * (L + W) * H * N
         elif etype == "column":
@@ -543,18 +544,18 @@ def calculate_section_5_metals_and_rebar(rebar_elements: list,
         unit_w = rebar_unit_weight_kg_per_m(db_mm)
 
         if member == "footing_mat":
-            L = el["member_length_m"]
+            L = el.get("member_length_m") or el.get("length_m") or 1.5
             cover = el.get("cover_m", 0.075)
             hook = 12 * db_m
-            cut_len = (L - 2 * cover) + 2 * hook
+            cut_len = max(0.5, (L - 2 * cover) + 2 * hook)
         elif member == "column_main":
-            H = el["story_height_m"]
+            H = el.get("story_height_m") or el.get("length_m") or 3.2
             splice = 40 * db_m
             dowel = el.get("dowel_length_m", 0.0)
             cut_len = H + splice + dowel
         elif member == "beam_stirrup":
-            w = el["beam_width_m"]
-            d = el["beam_depth_m"]
+            w = el.get("beam_width_m") or 0.25
+            d = el.get("beam_depth_m") or 0.40
             cover = el.get("cover_m", 0.040)
             hook_allow = 2 * (10 * db_m)          # 135 deg seismic hook, 2 legs
             apply_bend = el.get("apply_bend_deduction", False)

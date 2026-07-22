@@ -53,8 +53,9 @@ function CostSummaryCard({ rows, allSectionIds }) {
     .filter(s => s !== 'I')
     .reduce((s, sid) => s + (sectionTotals[sid] || 0), 0);
 
-  const section1Total = sectionTotals['I'] ||
-    (sub2_13 * (SECTION_I_PCTS.mobilization + SECTION_I_PCTS.temp_facilities + SECTION_I_PCTS.safety) + 18500);
+  const section1Total = (rows['I'] && rows['I'].length > 0)
+    ? sectionTotal(rows['I'])
+    : (sub2_13 > 0 ? (sub2_13 * (SECTION_I_PCTS.mobilization + SECTION_I_PCTS.temp_facilities + SECTION_I_PCTS.safety) + 18500) : 0);
 
   const grandTotal = sub2_13 + section1Total;
 
@@ -318,6 +319,22 @@ function SectionPanel({ meta, rows, isOpen, onToggle, onRateChange }) {
   );
 }
 
+const PREFIX_TO_SECTION = {
+  'GEN': 'I',   'I': 'I',   '1': 'I',   1: 'I',
+  'EW': 'II',   'II': 'II',  '2': 'II',  2: 'II',
+  'CON': 'III', 'FRM': 'III', 'III': 'III', '3': 'III', 3: 'III',
+  'MW': 'IV',   'MAS': 'IV', 'IV': 'IV',   '4': 'IV',  4: 'IV',
+  'REB': 'V',   'STL': 'V', 'MET': 'V', 'V': 'V', '5': 'V', 5: 'V',
+  'RF': 'VI',   'ROOF': 'VI', 'VI': 'VI',  '6': 'VI',  6: 'VI',
+  'DR': 'VII',  'WIN': 'VII', 'VII': 'VII', '7': 'VII', 7: 'VII',
+  'TL': 'VIII', 'FLR': 'VIII', 'VIII': 'VIII', '8': 'VIII', 8: 'VIII',
+  'PNT': 'IX',  'IX': 'IX',  '9': 'IX',  9: 'IX',
+  'PLM': 'X',   'X': 'X',    '10': 'X', 10: 'X',
+  'ELC': 'XI',  'XI': 'XI',  '11': 'XI', 11: 'XI',
+  'MCH': 'XII', 'XII': 'XII', '12': 'XII', 12: 'XII',
+  'SP': 'XIII', 'XIII': 'XIII', '13': 'XIII', 13: 'XIII',
+};
+
 // ---------------------------------------------------------------------------
 // Main TradeAccordion export
 // ---------------------------------------------------------------------------
@@ -330,7 +347,9 @@ export default function TradeAccordion({ boqItems }) {
     allIds.forEach(sid => { grouped[sid] = []; });
     if (items && Array.isArray(items) && items.length > 0) {
       items.forEach(item => {
-        const sid = item.section_id || (item.item_code ? item.item_code.split('-')[0] : 'III');
+        let rawPrefix = item.section_id !== undefined ? item.section_id : (item.item_code ? item.item_code.split('-')[0] : 'III');
+        if (typeof rawPrefix === 'number') rawPrefix = String(rawPrefix);
+        const sid = PREFIX_TO_SECTION[rawPrefix] || rawPrefix || 'III';
         if (!grouped[sid]) grouped[sid] = [];
         grouped[sid].push({
           id: item.item_code || `${sid}-${Math.random()}`,

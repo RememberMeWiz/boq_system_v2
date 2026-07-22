@@ -39,7 +39,7 @@ function ExecutiveSummary({ tradeTotals }) {
   const [collapsed, setCollapsed] = useState(false);
 
   const grandTotal = Object.values(tradeTotals || {}).reduce((s, v) => s + v, 0);
-  const genReq = grandTotal * 0.0325 + 18500; // 1% mob + 1.5% temp + 0.75% safety + ₱18,500 permits
+  const genReq = grandTotal > 0 ? (grandTotal * 0.0325 + 18500) : 0; // 1% mob + 1.5% temp + 0.75% safety + ₱18,500 permits
   const overallTotal = grandTotal + genReq;
 
   return (

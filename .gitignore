@@ -12,3 +12,9 @@ backend/.env
 *.log
 .DS_Store
 *.tmp
+scratch/
+backend/boq_v2.db
+backend/outputs/
+outputs/*.png
+outputs/*.jpg
+

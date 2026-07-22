@@ -158,3 +158,16 @@ def list_sessions(limit: int = 20) -> List[Dict]:
     except Exception as e:
         log.error(f"Local SQLite list_sessions failed: {e}")
         return []
+
+
+def delete_session_by_drawing(drawing_name: str) -> bool:
+    """Deletes all sessions and BOQ items associated with drawing_name from local SQLite DB."""
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM boq_sessions_v2 WHERE drawing_name = ?", (drawing_name,))
+            conn.commit()
+            return True
+    except Exception as e:
+        log.error(f"Local SQLite delete_session_by_drawing failed: {e}")
+        return False

@@ -1,22 +1,92 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import BlueprintViewer from './components/BlueprintViewer';
 import CostedBOQChecklist from './components/CostedBOQChecklist';
 import TradeAccordion from './components/TradeAccordion';
 import RebarOptimizerView from './components/RebarOptimizerView';
 import RightPanel from './components/RightPanel';
+import UploadModal from './components/UploadModal';
+
+// ── Custom Drawing Dropdown with Delete Button ────────────────────────────────
+function DrawingDropdownMenu({ drawing, drawingsList, onSelect, onDelete }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div style={{ position: 'relative', minWidth: '270px' }}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          width: '100%',
+          background: '#0f172a', border: '1px solid #334155',
+          borderRadius: '7px', color: drawing ? '#e2e8f0' : '#94a3b8',
+          fontSize: '12px', padding: '7px 12px', cursor: 'pointer',
+          fontFamily: 'Inter, sans-serif', textAlign: 'left',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        }}
+      >
+        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '210px' }}>
+          {drawing || '-- Select or Import Drawing --'}
+        </span>
+        <span style={{ fontSize: '10px', color: '#64748b', marginLeft: '6px' }}>{isOpen ? '▲' : '▼'}</span>
+      </button>
+
+      {isOpen && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px',
+          background: '#0f172a', border: '1px solid #334155', borderRadius: '8px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.8)', zIndex: 250, maxHeight: '260px', overflowY: 'auto',
+        }}>
+          {drawingsList.length === 0 ? (
+            <div style={{ padding: '10px 12px', fontSize: '11px', color: '#64748b' }}>No saved drawings in database</div>
+          ) : (
+            drawingsList.map(d => (
+              <div
+                key={d}
+                onClick={() => {
+                  onSelect(d);
+                  setIsOpen(false);
+                }}
+                style={{
+                  padding: '8px 12px', fontSize: '12px', color: d === drawing ? '#38bdf8' : '#cbd5e1',
+                  background: d === drawing ? 'rgba(56,189,248,0.1)' : 'transparent',
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                  cursor: 'pointer', borderBottom: '1px solid #1e293b',
+                  transition: 'background 0.15s',
+                }}
+              >
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '200px' }}>
+                  📄 {d}
+                </span>
+                <button
+                  onClick={(e) => onDelete(d, e)}
+                  title="Delete drawing from database"
+                  style={{
+                    background: 'rgba(239,68,68,0.15)', border: '1px solid #ef4444',
+                    color: '#ef4444', fontSize: '10px', fontWeight: 700,
+                    cursor: 'pointer', padding: '2px 6px', borderRadius: '4px',
+                  }}
+                >
+                  ✕ Delete
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function App() {
   const [data, setData]               = useState(null);
   const [rebarData, setRebarData]     = useState(null);
   const [loading, setLoading]         = useState(false);
   const [banner, setBanner]           = useState(null);
-  const [drawingsList, setDrawingsList] = useState(['sample_structural_plan.pdf']);
-  const [drawing, setDrawing]         = useState('sample_structural_plan.pdf');
+  const [drawingsList, setDrawingsList] = useState([]);
+  const [drawing, setDrawing]         = useState('');
   const [boqView, setBoqView]         = useState('checklist');
   const [selectedElement, setSelectedElement] = useState(null);
   const [tradeTotals, setTradeTotals] = useState({});
-
-  const fileInputRef = useRef(null);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   // Load saved sessions to populate drawing dropdown
   const loadSavedSessions = async () => {
@@ -28,7 +98,6 @@ export default function App() {
         const unique = Array.from(new Set(names));
         if (unique.length > 0) {
           setDrawingsList(unique);
-          setDrawing(unique[0]);
         }
       }
     } catch {
@@ -41,7 +110,7 @@ export default function App() {
   }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
-  const fetchTakeoff = async (uploadedFile = null) => {
+  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null) => {
     setLoading(true);
     setBanner(null);
 
@@ -52,6 +121,10 @@ export default function App() {
         const formData = new FormData();
         formData.append('file', uploadedFile);
         reqOptions.body = formData;
+      } else {
+        const targetName = selectedDrawingName || drawing || 'plan part 1.pdf';
+        reqOptions.headers = { 'Content-Type': 'application/json' };
+        reqOptions.body = JSON.stringify({ drawing_name: targetName });
       }
 
       const res  = await fetch('/api/v1/process-drawing', reqOptions);
@@ -59,13 +132,13 @@ export default function App() {
 
       if (json.status === 'success') {
         setData(json);
-        const fileName = uploadedFile ? uploadedFile.name : json.drawing?.filename || drawing;
+        const fileName = uploadedFile ? uploadedFile.name : json.drawing?.filename || drawing || 'imported_drawing.pdf';
         setDrawing(fileName);
 
         // Add file name to drawings list if not already present
         setDrawingsList(prev => prev.includes(fileName) ? prev : [fileName, ...prev]);
 
-        const sourceLabel = json.input_source === 'pdf_parsed' ? 'PDF Text Parsed' : 'Engine Standard Inputs';
+        const sourceLabel = json.input_source === 'pdf_parsed' ? 'PDF Text Parsed' : 'Fajardo Takeoff Engine';
         setBanner({
           type: 'success',
           msg: `✓ Drawing processed [${sourceLabel}]: ${json.boq?.length || 30} takeoff items computed. Grand Total: ₱${(json.summary?.grand_total_direct_cost || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
@@ -83,25 +156,61 @@ export default function App() {
     } catch (err) {
       setBanner({
         type: 'info',
-        msg: `⚠ Note: Backend connecting/offline. ${err.message || ''}`
+        msg: `⚠ Note: ${err.message || 'Error processing drawing.'}`
       });
     } finally {
       setLoading(false);
     }
   };
 
-  // ── Import Action (Triggers File Picker) ───────────────────────────────
-  const handleImportClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+  // ── Delete Drawing Action ─────────────────────────────────────────────
+  const handleDeleteDrawing = async (drawingToDelete, e) => {
+    e.stopPropagation();
+    if (!window.confirm(`Are you sure you want to delete "${drawingToDelete}" from the database?`)) return;
+
+    try {
+      await fetch(`/api/v1/sessions/${encodeURIComponent(drawingToDelete)}`, { method: 'DELETE' });
+      setDrawingsList(prev => prev.filter(d => d !== drawingToDelete));
+
+      if (drawing === drawingToDelete) {
+        handleReset();
+      }
+
+      setBanner({
+        type: 'success',
+        msg: `✓ Deleted "${drawingToDelete}" from database and local storage.`
+      });
+    } catch (err) {
+      setBanner({ type: 'error', msg: `✕ Failed to delete session: ${err.message}` });
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      fetchTakeoff(file);
+  // ── Import Action (Opens Upload Modal) ──────────────────────────────────
+  const handleImportClick = () => {
+    setIsUploadModalOpen(true);
+  };
+
+  const handleModalUpload = (file) => {
+    fetchTakeoff(file);
+  };
+
+  // ── Refresh Action ──────────────────────────────────────────────────────
+  const handleRefresh = () => {
+    if (drawing || data) {
+      fetchTakeoff(null, drawing);
+    } else {
+      setBanner({ type: 'info', msg: 'ℹ Select a drawing or click "Import PDF/DXF" to compute takeoff data.' });
     }
+  };
+
+  // ── Reset Action ────────────────────────────────────────────────────────
+  const handleReset = () => {
+    setData(null);
+    setRebarData(null);
+    setSelectedElement(null);
+    setTradeTotals({});
+    setDrawing('');
+    setBanner({ type: 'info', msg: '✓ Session reset. All takeoff data cleared.' });
   };
 
   // ── Supabase Sync Action ───────────────────────────────────────────────
@@ -154,14 +263,6 @@ export default function App() {
     setBanner({ type: 'success', msg: '📥 Downloading Plan2Takeoff_V2_Takeoff.json...' });
   };
 
-  const handleReset = () => {
-    setData(null);
-    setRebarData(null);
-    setBanner(null);
-    setSelectedElement(null);
-    setTradeTotals({});
-  };
-
   const onElementSelect = useCallback((el) => setSelectedElement(el), []);
   const onTotalsChange  = useCallback((totals) => setTradeTotals(totals), []);
 
@@ -183,13 +284,11 @@ export default function App() {
   return (
     <div style={{ minHeight: '100vh', background: '#020617', color: '#f8fafc', fontFamily: 'Inter, system-ui, sans-serif' }}>
       
-      {/* Hidden file input for file selection */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        accept=".pdf,.dxf,.dwg"
-        style={{ display: 'none' }}
+      {/* Mini Drag & Drop File Upload Modal */}
+      <UploadModal
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUpload={handleModalUpload}
       />
 
       {/* ── Header ── */}
@@ -212,18 +311,15 @@ export default function App() {
 
           {/* Controls */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <select
-              value={drawing}
-              onChange={e => setDrawing(e.target.value)}
-              style={{
-                background: '#0f172a', border: '1px solid #334155',
-                borderRadius: '7px', color: '#cbd5e1',
-                fontSize: '12px', padding: '7px 12px', cursor: 'pointer',
-                fontFamily: 'Inter, sans-serif', outline: 'none', minWidth: '220px',
+            <DrawingDropdownMenu
+              drawing={drawing}
+              drawingsList={drawingsList}
+              onSelect={(val) => {
+                setDrawing(val);
+                fetchTakeoff(null, val);
               }}
-            >
-              {drawingsList.map(d => <option key={d} value={d}>{d}</option>)}
-            </select>
+              onDelete={handleDeleteDrawing}
+            />
 
             <button
               onClick={handleImportClick} disabled={loading}
@@ -244,7 +340,7 @@ export default function App() {
               📄 Export JSON
             </button>
 
-            <button onClick={() => fetchTakeoff()} disabled={loading} style={btn()}>
+            <button onClick={handleRefresh} disabled={loading} style={btn()}>
               🔄 Refresh
             </button>
 
@@ -254,22 +350,59 @@ export default function App() {
           </div>
         </div>
 
-        {/* Banner */}
-        {banner && (
-          <div style={{
-            padding: '8px 16px',
-            background: banner.type === 'success' ? '#052e16' : banner.type === 'error' ? '#7f1d1d' : '#0f172a',
-            borderTop: '1px solid #0f172a',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+      {/* Floating Notification Toast Overlay */}
+      {banner && (
+        <div style={{
+          position: 'fixed',
+          top: '85px',
+          right: '24px',
+          zIndex: 1000,
+          background: banner.type === 'success'
+            ? 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)'
+            : banner.type === 'error'
+            ? 'linear-gradient(135deg, #7f1d1d 0%, #450a0a 100%)'
+            : 'linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%)',
+          border: `1px solid ${
+            banner.type === 'success' ? '#10b981' : banner.type === 'error' ? '#ef4444' : '#3b82f6'
+          }`,
+          borderRadius: '12px',
+          padding: '13px 20px',
+          boxShadow: `0 10px 30px ${
+            banner.type === 'success' ? 'rgba(16,185,129,0.3)' : banner.type === 'error' ? 'rgba(239,68,68,0.3)' : 'rgba(59,130,246,0.3)'
+          }`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+          maxWidth: '520px',
+          animation: 'fadeIn 0.2s ease-in-out',
+        }}>
+          <span style={{
+            fontSize: '14px',
+            fontWeight: 600,
+            color: banner.type === 'success' ? '#6ee7b7' : banner.type === 'error' ? '#fca5a5' : '#93c5fd',
+            lineHeight: '1.4',
           }}>
-            <span style={{ fontSize: '12px', color: banner.type === 'success' ? '#6ee7b7' : banner.type === 'error' ? '#fca5a5' : '#60a5fa' }}>
-              {banner.msg}
-            </span>
-            <button onClick={() => setBanner(null)} style={{ background: 'none', border: 'none', color: '#475569', cursor: 'pointer', fontSize: '14px' }}>×</button>
-          </div>
-        )}
+            {banner.msg}
+          </span>
+          <button
+            onClick={() => setBanner(null)}
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '24px', height: '24px',
+              color: '#cbd5e1',
+              cursor: 'pointer',
+              fontSize: '13px',
+              fontWeight: 700,
+              display: 'flex', justifyContent: 'center', alignItems: 'center',
+              flexShrink: 0,
+            }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
         {/* View mode toggle */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 0', flexWrap: 'wrap' }}>
@@ -306,6 +439,10 @@ export default function App() {
             <BlueprintViewer
               elements={data?.elements}
               drawingName={drawing}
+              pageImage={data?.drawing?.page_image}
+              comparisonImage={data?.drawing?.comparison_image}
+              framingPlan={data?.framing_plan}
+              suggestions={data?.suggestions}
               onElementSelect={onElementSelect}
             />
           )}
