@@ -122,3 +122,13 @@ CREATE TABLE IF NOT EXISTS boq_items_v2 (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Enable RLS and grant public access policies
+ALTER TABLE boq_sessions_v2 ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read/write on boq_sessions_v2" ON boq_sessions_v2;
+CREATE POLICY "Allow public read/write on boq_sessions_v2" ON boq_sessions_v2 FOR ALL USING (true) WITH CHECK (true);
+
+ALTER TABLE boq_items_v2 ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Allow public read/write on boq_items_v2" ON boq_items_v2;
+CREATE POLICY "Allow public read/write on boq_items_v2" ON boq_items_v2 FOR ALL USING (true) WITH CHECK (true);
+
+
