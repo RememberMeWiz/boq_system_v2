@@ -1,299 +1,1028 @@
 """
-Plan2Takeoff V2 — Fajardo Quantity Takeoff & Direct Costing Engine
-Based on Max Fajardo's Simplified Construction Estimate and Philippine DPWH CMPD Rates.
+backend/engine/fajardo.py
 
-Supported Trades (CSI MasterFormat / DPWH Categories):
-- Division 02: Earthworks (Excavation, Gravel Bedding, Backfill)
-- Division 03: Concrete Works & Formworks (Footings, Columns, Beams, Slabs, Forms)
-- Division 04: Masonry Works (100mm & 150mm CHB, Mortar Laying, Plastering)
-- Division 05: Metals & Reinforcement (Deformed Rebar Grade 40/60, G.I. Tie Wire)
+Plan2Takeoff V2 — 13-Trade Direct Costing Calculation Engine
+==============================================================
+
+Computes quantities, material breakdowns, labor mandays, equipment hours,
+and DPWH-style Total Direct Costs
+
+    C_total = C_material + C_labor + C_equipment
+
+across all 13 trade sections referenced in:
+    - formula_exhaustive_handbook.md (standard PH quantity-surveying
+      methodology: PNS steel standards, DPWH CMPD costing structure,
+      CHB/mortar ratios, etc.)
+    - sample_solved_cases.md (worked example verification)
+    - tech_spec_v2.md (13-trade breakdown + DPWH CMPD rate matrix)
+
+All unit rates in DPWH_RATES are ILLUSTRATIVE placeholders. Swap in live
+DPWH CMPD regional rates or supplier/subcontractor quotes for production
+use. Every calculate_section_* function returns a dict with:
+
+    {
+        "quantities": {...},   # raw computed quantities (m3, m2, kg, pcs, m, etc.)
+        "materials": {...},    # material breakdown in purchasable units
+        "labor_manday": float,
+        "equipment_hours": float,
+        "cost": {
+            "material": float,
+            "labor": float,
+            "equipment": float,
+            "total": float,
+        },
+    }
+
+The top-level `run_full_takeoff` orchestrator wires Sections II-XIII
+together and then feeds their combined direct cost subtotal into
+Section I (General Requirements), which is priced as a lump-sum
+percentage of that subtotal.
 """
+
+from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from typing import List, Dict, Any, Optional
+from typing import Optional
 
-# ====================================================================
-# FAJARDO FORMULA LIBRARY REFERENCE FACTORS
-# ====================================================================
 
-# 1. Concrete Mix Factors per 1.0 cu.m. (40kg Cement Bag Standard)
-CONCRETE_MIX_FACTORS = {
-    "Class AA": {"cement_bags": 12.0, "sand_m3": 0.50, "gravel_m3": 1.00},
-    "Class A":  {"cement_bags": 9.00, "sand_m3": 0.50, "gravel_m3": 1.00},
-    "Class B":  {"cement_bags": 7.50, "sand_m3": 0.50, "gravel_m3": 1.00},
-    "Class C":  {"cement_bags": 6.00, "sand_m3": 0.50, "gravel_m3": 1.00},
+# ---------------------------------------------------------------------------
+# Global constants
+# ---------------------------------------------------------------------------
+
+CEMENT_BAG_KG = 40.0
+
+# Section III — concrete mix design table (per 1.0 m3 finished concrete)
+CONCRETE_MIX = {
+    "AA": {"cement_bags": 12.00, "sand_m3": 0.50, "gravel_m3": 1.00},
+    "A":  {"cement_bags": 9.00,  "sand_m3": 0.50, "gravel_m3": 1.00},
+    "B":  {"cement_bags": 7.50,  "sand_m3": 0.50, "gravel_m3": 1.00},
+    "C":  {"cement_bags": 6.00,  "sand_m3": 0.50, "gravel_m3": 1.00},
 }
 
-# 2. Rebar Theoretical Unit Weights (kg/m) based on PNS 49 / ASTM A615 (D^2 / 162.2)
-REBAR_UNIT_WEIGHTS = {
-    10: 0.617,
-    12: 0.888,
-    16: 1.578,
-    20: 2.466,
-    25: 3.853,
-    28: 4.834,
-    32: 6.313,
+# Section V — PNS 49 theoretical unit weight: W(kg/m) = d^2 / 162.2
+def rebar_unit_weight_kg_per_m(diameter_mm: float) -> float:
+    return (diameter_mm ** 2) / 162.2
+
+
+# Section IV — masonry factors per 1.0 m2 net wall area
+CHB_PCS_PER_M2 = 12.5
+MORTAR_FACTORS = {
+    # thickness_mm: (cement_bags_per_m2, sand_m3_per_m2)
+    100: (0.522, 0.0435),
+    150: (1.010, 0.0840),
+    200: (1.350, 0.1120),
+}
+PLASTER_CEMENT_BAGS_PER_M2_FACE_16MM = 0.192
+PLASTER_SAND_M3_PER_M2_FACE_16MM = 0.016
+
+# Section III — formwork material factors
+MARINE_PLY_SHEETS_PER_M2 = 0.28
+FORM_LUMBER_BDFT_PER_M2 = 7.0
+
+# Section VI
+ROOFING_LAP_ALLOWANCE = 0.12          # +12% lap
+ROOFING_RIVETS_PCS_PER_M2 = 26
+HARDIFLEX_WASTE = 0.05                # +5%
+METAL_FURRING_M_PER_M2 = 2.5
+
+# Section VIII
+TILE_WASTE_STANDARD = 0.08            # 8%
+TILE_WASTE_DIAGONAL = 0.15            # 15% for 45-degree diagonal lay
+TILE_MORTAR_BED_BAGS_PER_M2 = 0.24    # 20mm 1:4 mortar bed
+TILE_GROUT_KG_PER_M2 = 0.40
+
+# Section IX
+PAINT_PRIMER_COVERAGE_M2_PER_L_SMOOTH = 10.0
+PAINT_PRIMER_COVERAGE_M2_PER_L_ROUGH = 6.25   # 6.0-6.5 m2/L, midpoint
+PAINT_TOPCOAT_COVERAGE_M2_PER_L = 8.0
+CEILING_LATEX_COVERAGE_M2_PER_L = 8.0
+METAL_PRIMER_COVERAGE_M2_PER_L = 8.0
+METAL_ENAMEL_COVERAGE_M2_PER_L = 9.0
+
+# Section X
+UPVC_FITTINGS_ALLOWANCE = 0.10        # +10%
+PIPE_STD_LENGTH_M = 3.0               # commercial pipe length -> ceil(L/3)
+
+# Section XI
+WIRE_SLACK_ALLOWANCE = 0.12           # +12% drop/slack
+CONDUIT_STD_LENGTH_M = 3.0
+
+# Section XII
+ACU_BTU_PER_M2 = 700.0
+COPPER_PIPING_ALLOWANCE = 0.10        # +10%
+
+# Section XIII
+ACP_WASTE = 0.08                      # +8%
+WATERPROOFING_KG_PER_M2 = 1.2         # 2-coat elastomeric
+
+# Section II
+BACKFILL_SHRINKAGE = 0.18             # 18% (mixed soil, matches worked example)
+SOIL_POISONING_L_PER_M2 = 5.0
+
+# Section I — lump-sum percentages of Sections II-XIII direct cost subtotal
+GENREQ_MOBILIZATION_PCT = 0.010
+GENREQ_TEMP_FACILITIES_PCT = 0.015
+GENREQ_SAFETY_PCT = 0.0075
+GENREQ_PERMITS_LOT = 18_500.00
+
+
+# ---------------------------------------------------------------------------
+# DPWH CMPD Master Direct Cost Matrix (illustrative placeholder rates, PHP)
+# Each entry: (material_rate, labor_rate, equipment_rate) per stated unit.
+# Swap with live regional CMPD rates / supplier quotes for production.
+# ---------------------------------------------------------------------------
+
+DPWH_RATES = {
+    # unit-priced materials
+    "cement_bag":            (205.36, 0.00, 0.00),     # per bag
+    "sand_m3":                (1_473.21, 0.00, 0.00),  # per m3
+    "gravel_m3":              (1_517.86, 0.00, 0.00),  # per m3
+    "rebar_kg":               (42.68, 12.00, 2.50),    # per kg
+    "tie_wire_kg":            (62.50, 12.00, 0.00),    # per kg
+    "chb_100_pc":             (15.18, 19.20, 1.20),    # per pc
+    "chb_150_pc":             (22.32, 19.20, 1.20),    # per pc
+    "chb_200_pc":             (28.50, 19.20, 1.20),    # per pc (extrapolated)
+    "marine_ply_sheet":       (750.00, 210.00, 0.00),  # per sheet
+    "form_lumber_bdft":       (48.00, 12.00, 0.00),    # per bd.ft
+    "gravel_bedding_m3":      (1_650.00, 0.00, 0.00),  # per m3 (placed)
+    "excavation_m3":          (0.00, 350.00, 0.00),    # labor-only
+    "backfill_m3":            (0.00, 280.00, 0.00),    # labor-only
+    "soil_poison_l":          (185.00, 25.00, 0.00),   # per liter applied
+    "structural_steel_kg":    (68.00, 15.00, 5.00),    # per kg
+    "handrail_m":             (1_450.00, 350.00, 0.00),# per lin.m (stainless)
+
+    # concrete classes: material rate is a synthetic composite baked in via
+    # cement/sand/gravel unit rates; labor+equipment given per m3 poured.
+    "concrete_labor_m3":      (0.00, 850.00, 250.00),
+
+    # roofing
+    "longspan_roofing_m2":    (620.00, 180.00, 0.00),
+    "purlin_kg":              (68.00, 15.00, 0.00),
+    "rivet_pc":                (3.50, 0.00, 0.00),
+    "gi_strap_pc":            (35.00, 10.00, 0.00),
+    "hardiflex_m2":            (295.00, 120.00, 0.00),
+    "metal_furring_m":         (45.00, 15.00, 0.00),
+
+    # doors/windows
+    "aluminum_window_m2":      (4_200.00, 650.00, 0.00),
+    "tempered_glass_door_set": (12_500.00, 1_200.00, 0.00),
+    "panel_door_set":          (8_500.00, 900.00, 0.00),
+    "flush_door_set":          (4_200.00, 700.00, 0.00),
+    "jamb_lumber_bdft":        (48.00, 12.00, 0.00),
+
+    # tile & flooring
+    "floor_tile_m2":           (850.00, 220.00, 0.00),
+    "wall_tile_m2":             (750.00, 220.00, 0.00),
+    "tile_mortar_bed_bag":     (205.36, 60.00, 0.00),
+    "tile_grout_kg":            (95.00, 0.00, 0.00),
+
+    # painting
+    "neutralizer_l":           (185.00, 0.00, 0.00),
+    "primer_l":                 (220.00, 0.00, 0.00),
+    "topcoat_l":                 (280.00, 0.00, 0.00),
+    "ceiling_latex_l":          (260.00, 0.00, 0.00),
+    "metal_primer_l":           (240.00, 0.00, 0.00),
+    "metal_enamel_l":           (310.00, 0.00, 0.00),
+    "paint_labor_m2":           (0.00, 85.00, 0.00),
+
+    # plumbing
+    "upvc_4in_pc":              (620.00, 150.00, 0.00),
+    "upvc_2in_pc":              (280.00, 120.00, 0.00),
+    "ppr_pipe_pc":              (350.00, 120.00, 0.00),
+    "fixture_set":              (4_500.00, 850.00, 0.00),
+    "catch_basin_lot":          (6_500.00, 1_800.00, 0.00),
+
+    # electrical
+    "thhn_wire_m":              (32.00, 18.00, 0.00),
+    "pvc_conduit_pc":           (95.00, 40.00, 0.00),
+    "outlet_pc":                 (180.00, 120.00, 0.00),
+    "led_panel_pc":              (850.00, 150.00, 0.00),
+    "breaker_pc":                 (650.00, 200.00, 0.00),
+
+    # sanitary / mechanical
+    "acu_unit_per_ton":         (28_000.00, 3_500.00, 0.00),
+    "copper_piping_m":           (650.00, 180.00, 0.00),
+    "commissioning_lot":          (0.00, 5_000.00, 0.00),
+
+    # special works
+    "acp_cladding_m2":            (1_850.00, 350.00, 0.00),
+    "waterproofing_kg":            (145.00, 0.00, 0.00),
+    "waterproofing_labor_m2":     (0.00, 65.00, 0.00),
 }
 
-# Tie wire factor (#16 G.I. wire kg per kg of rebar)
-TIE_WIRE_FACTOR = 0.015  # 15kg per metric ton
 
-# 3. Masonry factors per 1.0 sq.m. of net wall surface area.
-MORTAR_CLASS_CEMENT_BAGS_PER_M3 = {
-    "Class A": 18.0,
-    "Class B": 12.0,
-    "Class C": 9.0,
-    "Class D": 7.5,
-}
-
-CHB_COUNT_PER_SQM = 12.5  # Constant for 100mm and 150mm CHB
-
-MORTAR_CLASS_B_FACTORS = {
-    "100mm": {"cement_bags": 0.522, "sand_m3": 0.0435},
-    "150mm": {"cement_bags": 1.010, "sand_m3": 0.0840},
-}
-
-PLASTER_CLASS_B_FACTORS_PER_FACE = {
-    "16mm": {"cement_bags": 0.192, "sand_m3": 0.016}
-}
-
-# 4. Formwork factors (Plywood & Lumber per sq.m. of contact area)
-FORMWORK_FACTORS = {
-    "plywood_sheets_per_sqm": 0.28,  # 1/4" or 1/2" Marine Plywood
-    "lumber_bdft_per_sqm": 7.0,      # 2x2 or 2x3 Form Lumber
-}
-
-QA_DIVERGENCE_THRESHOLD = 0.02
-
-# DPWH Construction Materials Price Data (CMPD) & Labor Productivity Matrix
-DPWH_CMPD_RATES = {
-    # Materials
-    "Cement (40kg bag)": 205.36,          # MG03.0002 PORTLAND CEMENT
-    "Sand (cu.m.)": 1473.21,              # MG01.0008 FINE AGGREGATE
-    "Gravel (cu.m.)": 1517.86,            # MG01.0009 GRAVEL 3/4"
-    "Rebar (per kg)": 42.68,              # MG10.0001 REINFORCING STEEL BAR (GRADE 40)
-    "Tie Wire #16 G.I. (per kg)": 62.50,  # MG10.0003 GI TIE WIRE #16
-    "100mm CHB (per pc)": 15.18,           # MG04.0003 CHB ORDINARY 4"
-    "150mm CHB (per pc)": 22.32,           # MG04.0004 CHB ORDINARY 6"
-    "Marine Plywood 1/2 (per sheet)": 750.0,# Formwork Plywood
-    "Form Lumber (per bdft)": 45.0,       # Form Lumber 2x2 / 2x3
-    
-    # Labor & Equipment Productivity Rates (DPWH DO standard crew costs)
-    "Concrete Labor (per cu.m.)": 850.0,
-    "Concrete Equipment (per cu.m.)": 250.0,  # Bagger Mixer + Vibrator
-    "Rebar Labor (per kg)": 12.0,
-    "Rebar Equipment (per kg)": 2.50,         # Bar Cutter + Bar Bender
-    "Masonry Labor (per sq.m.)": 240.0,
-    "Masonry Equipment (per sq.m.)": 15.0,
-    "Earthworks Labor (per cu.m.)": 350.0,
-    "Formworks Labor (per sq.m.)": 280.0,
-}
+def _rate(key: str) -> tuple[float, float, float]:
+    return DPWH_RATES[key]
 
 
-@dataclass
-class TakeoffElementV2:
-    element_id: str
-    element_type: str  # 'footing', 'column', 'beam', 'slab', 'chb_wall', 'excavation', 'formwork'
-    label: str
-    location: str
-    drawing_ref: str
-    length: float
-    width: float
-    height_or_thickness: float
-    count: int = 1
-    concrete_class: str = "Class A"
-    rebar_specs: List[Dict[str, Any]] = field(default_factory=list)
-    chb_thickness: str = "150mm"
-    plaster_faces: int = 2
-    mortar_class: str = "Class B"
-    plaster_class: str = "Class B"
-    opening_area: float = 0.0
-    bounding_box: List[float] = field(default_factory=list)  # [x1, y1, x2, y2] on blueprint
+def _cost_line(qty: float, rate_key: str) -> tuple[float, float, float]:
+    """Returns (material_cost, labor_cost, equipment_cost) for qty x rate."""
+    m, l, e = _rate(rate_key)
+    return (qty * m, qty * l, qty * e)
 
 
-@dataclass
-class BackupComputationRowV2:
-    division: str  # 'Division 02 — Earthworks', 'Division 03 — Concrete & Formwork', etc.
-    item_code: str
-    description: str
-    location: str
-    drawing_ref: str
-    length: float
-    width: float
-    height: float
-    count: float
-    quantity: float
-    unit: str  # 'cu.m.', 'sq.m.', 'kg', 'pc', 'sheet', 'bdft'
-    material_unit_cost: float = 0.0
-    labor_unit_cost: float = 0.0
-    equipment_unit_cost: float = 0.0
-    total_unit_cost: float = 0.0
-    total_amount: float = 0.0
-    status: str = "Confirmed"
+def _sum_costs(*lines: tuple[float, float, float]) -> dict:
+    mat = sum(l[0] for l in lines)
+    lab = sum(l[1] for l in lines)
+    eq = sum(l[2] for l in lines)
+    return {"material": round(mat, 2), "labor": round(lab, 2),
+            "equipment": round(eq, 2), "total": round(mat + lab + eq, 2)}
 
 
-@dataclass
-class BOQAccordionItemV2:
-    item_no: str
-    item_code: str
-    division: str
-    description: str
-    unit: str
-    qty: float
-    material_unit_cost: float = 0.0
-    labor_unit_cost: float = 0.0
-    equipment_unit_cost: float = 0.0
-    total_unit_cost: float = 0.0
-    total_amount: float = 0.0
-    status: str = "Confirmed"
+def _round_up(x: float) -> int:
+    return int(math.ceil(x - 1e-9))
 
 
-class FajardoTakeoffEngineV2:
-    def __init__(self, rates_override: Optional[Dict[str, float]] = None):
-        self.rates = dict(DPWH_CMPD_RATES)
-        if rates_override:
-            self.rates.update(rates_override)
-        self.backup_rows: List[BackupComputationRowV2] = []
+# ===========================================================================
+# SECTION II — EARTHWORKS
+# ===========================================================================
 
-    def compute_element(self, elem: TakeoffElementV2) -> List[BackupComputationRowV2]:
-        """Compute takeoff for an element across material, labor, and equipment."""
-        rows = []
-        elem_type = elem.element_type.lower()
+def calculate_section_2_earthworks(footing_specs: list, slab_area: float,
+                                    slab_t: float) -> dict:
+    """
+    footing_specs: list of dicts, each:
+        {
+            "length_m": float, "width_m": float, "depth_m": float,
+            "count": int,
+            "clearance_m": float (working clearance per side, default 0.25),
+        }
+    slab_area: plan area (m2) of slab-on-grade requiring gravel bedding.
+    slab_t: (kept for interface compatibility; not used directly in bedding
+             thickness, which is fixed per handbook convention).
+    """
+    total_exc_v = 0.0
+    total_footing_v = 0.0
+    footing_footprint_area = 0.0
 
-        # Division 02: Earthworks
-        if elem_type == 'excavation':
-            vol = elem.length * elem.width * elem.height_or_thickness * elem.count
-            l_cost = self.rates["Earthworks Labor (per cu.m.)"]
-            row = BackupComputationRowV2(
-                division="Division 02 — Earthworks",
-                item_code="EXC-2.1",
-                description=f"Structural Excavation ({elem.label})",
-                location=elem.location,
-                drawing_ref=elem.drawing_ref,
-                length=elem.length, width=elem.width, height=elem.height_or_thickness,
-                count=elem.count, quantity=vol, unit="cu.m.",
-                material_unit_cost=0.0, labor_unit_cost=l_cost, equipment_unit_cost=0.0,
-                total_unit_cost=l_cost, total_amount=vol * l_cost
-            )
-            rows.append(row)
+    for spec in footing_specs:
+        L = spec["length_m"]
+        W = spec["width_m"]
+        H = spec["depth_m"]
+        N = spec["count"]
+        clr = spec.get("clearance_m", 0.25)
 
-        # Division 03: Concrete & Formwork
-        elif elem_type in ['footing', 'column', 'beam', 'slab']:
-            vol = elem.length * elem.width * elem.height_or_thickness * elem.count
-            mix = CONCRETE_MIX_FACTORS.get(elem.concrete_class, CONCRETE_MIX_FACTORS["Class A"])
-            
-            # Concrete Volume Row
-            c_mat = mix["cement_bags"] * self.rates["Cement (40kg bag)"] + \
-                    mix["sand_m3"] * self.rates["Sand (cu.m.)"] + \
-                    mix["gravel_m3"] * self.rates["Gravel (cu.m.)"]
-            c_lab = self.rates["Concrete Labor (per cu.m.)"]
-            c_eqp = self.rates["Concrete Equipment (per cu.m.)"]
-            total_uc = c_mat + c_lab + c_eqp
+        exc_L = L + clr
+        exc_W = W + clr
+        exc_v = exc_L * exc_W * H * N
+        footing_v = L * W * H * N
 
-            code_map = {'footing': 'CON-3.1', 'column': 'CON-3.2', 'beam': 'CON-3.3', 'slab': 'CON-3.4'}
-            row_conc = BackupComputationRowV2(
-                division="Division 03 — Concrete & Formwork",
-                item_code=code_map.get(elem_type, 'CON-3.5'),
-                description=f"Concrete Works ({elem.label}, {elem.concrete_class})",
-                location=elem.location,
-                drawing_ref=elem.drawing_ref,
-                length=elem.length, width=elem.width, height=elem.height_or_thickness,
-                count=elem.count, quantity=vol, unit="cu.m.",
-                material_unit_cost=c_mat, labor_unit_cost=c_lab, equipment_unit_cost=c_eqp,
-                total_unit_cost=total_uc, total_amount=vol * total_uc
-            )
-            rows.append(row_conc)
+        total_exc_v += exc_v
+        total_footing_v += footing_v
+        footing_footprint_area += (L * W) * N
 
-            # Rebar if specified
-            for rspec in elem.rebar_specs:
-                dia = rspec.get('diameter', 16)
-                cnt = rspec.get('count', 4)
-                length = rspec.get('length', elem.length)
-                weight_per_m = REBAR_UNIT_WEIGHTS.get(dia, 0.617)
-                total_length = length * cnt * elem.count
-                total_weight = total_length * weight_per_m
+    backfill_v = (total_exc_v - total_footing_v) * (1 + BACKFILL_SHRINKAGE)
+    gravel_bedding_v = footing_footprint_area * 0.10  # 100mm under footings
+    if slab_area:
+        gravel_bedding_v += slab_area * 0.05           # 50mm under slabs
 
-                r_mat = self.rates["Rebar (per kg)"]
-                r_lab = self.rates["Rebar Labor (per kg)"]
-                r_eqp = self.rates["Rebar Equipment (per kg)"]
-                r_uc = r_mat + r_lab + r_eqp
+    soil_poison_area = footing_footprint_area + slab_area
+    soil_poison_l = soil_poison_area * SOIL_POISONING_L_PER_M2
 
-                row_reb = BackupComputationRowV2(
-                    division="Division 05 — Metals & Rebar",
-                    item_code=f"REB-5.{dia}",
-                    description=f"Deformed Rebar {dia}mm ({elem.label})",
-                    location=elem.location,
-                    drawing_ref=elem.drawing_ref,
-                    length=length, width=0, height=0, count=cnt * elem.count,
-                    quantity=total_weight, unit="kg",
-                    material_unit_cost=r_mat, labor_unit_cost=r_lab, equipment_unit_cost=r_eqp,
-                    total_unit_cost=r_uc, total_amount=total_weight * r_uc
-                )
-                rows.append(row_reb)
+    quantities = {
+        "excavation_m3": round(total_exc_v, 3),
+        "backfill_m3": round(backfill_v, 3),
+        "gravel_bedding_m3": round(gravel_bedding_v, 3),
+        "soil_poisoning_l": round(soil_poison_l, 2),
+    }
 
-        # Division 04: Masonry Works
-        elif elem_type == 'chb_wall':
-            gross_area = elem.length * elem.height_or_thickness * elem.count
-            net_area = max(0.0, gross_area - (elem.opening_area * elem.count))
-            chb_count = net_area * CHB_COUNT_PER_SQM
+    costs = _sum_costs(
+        _cost_line(quantities["excavation_m3"], "excavation_m3"),
+        _cost_line(quantities["backfill_m3"], "backfill_m3"),
+        _cost_line(quantities["gravel_bedding_m3"], "gravel_bedding_m3"),
+        _cost_line(quantities["soil_poisoning_l"], "soil_poison_l"),
+    )
 
-            chb_price_key = "150mm CHB (per pc)" if elem.chb_thickness == "150mm" else "100mm CHB (per pc)"
-            m_mat = self.rates.get(chb_price_key, 22.32)
-            m_lab = self.rates["Masonry Labor (per sq.m.)"] / CHB_COUNT_PER_SQM
-            m_eqp = self.rates["Masonry Equipment (per sq.m.)"] / CHB_COUNT_PER_SQM
-            m_uc = m_mat + m_lab + m_eqp
+    labor_manday = round((quantities["excavation_m3"] / 3.5) +
+                          (quantities["backfill_m3"] / 4.0), 2)
 
-            row_chb = BackupComputationRowV2(
-                division="Division 04 — Masonry Works",
-                item_code="MAS-4.1",
-                description=f"{elem.chb_thickness} Concrete Hollow Blocks ({elem.label})",
-                location=elem.location,
-                drawing_ref=elem.drawing_ref,
-                length=elem.length, width=0, height=elem.height_or_thickness,
-                count=elem.count, quantity=chb_count, unit="pc",
-                material_unit_cost=m_mat, labor_unit_cost=m_lab, equipment_unit_cost=m_eqp,
-                total_unit_cost=m_uc, total_amount=chb_count * m_uc
-            )
-            rows.append(row_chb)
+    return {
+        "quantities": quantities,
+        "materials": {"gravel_m3": quantities["gravel_bedding_m3"],
+                      "soil_poison_l": quantities["soil_poisoning_l"]},
+        "labor_manday": labor_manday,
+        "equipment_hours": round(quantities["excavation_m3"] / 6.0, 2),
+        "cost": costs,
+    }
 
-        self.backup_rows.extend(rows)
-        return rows
 
-    def consolidate_boq(self) -> List[BOQAccordionItemV2]:
-        """Roll up backup rows into consolidated trade accordions."""
-        summaries: Dict[str, Dict[str, Any]] = {}
-        for r in self.backup_rows:
-            key = f"{r.division}::{r.item_code}::{r.description}"
-            if key not in summaries:
-                summaries[key] = {
-                    "division": r.division,
-                    "item_code": r.item_code,
-                    "description": r.description,
-                    "unit": r.unit,
-                    "qty": 0.0,
-                    "mat_cost": r.material_unit_cost,
-                    "lab_cost": r.labor_unit_cost,
-                    "eqp_cost": r.equipment_unit_cost,
-                    "total_uc": r.total_unit_cost,
-                    "amount": 0.0
-                }
-            summaries[key]["qty"] += r.quantity
-            summaries[key]["amount"] += r.total_amount
+# ===========================================================================
+# SECTION III — CONCRETE WORKS & FORMWORKS
+# ===========================================================================
 
-        result = []
-        for idx, (k, v) in enumerate(summaries.items(), 1):
-            result.append(BOQAccordionItemV2(
-                item_no=str(idx),
-                item_code=v["item_code"],
-                division=v["division"],
-                description=v["description"],
-                unit=v["unit"],
-                qty=round(v["qty"], 2),
-                material_unit_cost=round(v["mat_cost"], 2),
-                labor_unit_cost=round(v["lab_cost"], 2),
-                equipment_unit_cost=round(v["eqp_cost"], 2),
-                total_unit_cost=round(v["total_uc"], 2),
-                total_amount=round(v["amount"], 2)
-            ))
-        return result
+def calculate_section_3_concrete_and_formworks(elements: list) -> dict:
+    """
+    elements: list of dicts, each describing one structural element group:
+        {
+            "type": "footing" | "column" | "beam" | "slab",
+            "class": "AA" | "A" | "B" | "C",
+            "count": int,
+            # footing:
+            "length_m", "width_m", "height_m",
+            # column:
+            "width_m", "depth_m", "clear_height_m",
+            # beam:
+            "width_m", "depth_m", "clear_span_m",
+            # slab:
+            "area_m2", "thickness_m",
+            "wastage": float (default 0.05 site-mixed, 0.03 ready-mix),
+        }
+    """
+    total_volume = 0.0
+    total_formwork_area = 0.0
+    cement_bags = 0.0
+    sand_m3 = 0.0
+    gravel_m3 = 0.0
+    volume_by_class: dict[str, float] = {}
+
+    for el in elements:
+        etype = el["type"]
+        cls = el.get("class", "A")
+        N = el.get("count", 1)
+        wastage = el.get("wastage", 0.05)
+
+        if etype == "footing":
+            L, W, H = el["length_m"], el["width_m"], el["height_m"]
+            v = L * W * H * N
+            area = 2 * (L + W) * H * N
+        elif etype == "column":
+            w, d, Hc = el["width_m"], el["depth_m"], el["clear_height_m"]
+            v = w * d * Hc * N
+            area = 2 * (w + d) * Hc * N
+        elif etype == "beam":
+            w, d, Lc = el["width_m"], el["depth_m"], el["clear_span_m"]
+            v = w * d * Lc * N
+            area = (w + 2 * d) * Lc * N
+        elif etype == "slab":
+            A, t = el["area_m2"], el["thickness_m"]
+            v = A * t
+            area = 0.0  # slab soffit formwork typically shored, not tallied here
+        else:
+            raise ValueError(f"Unknown element type: {etype}")
+
+        v_with_waste = v * (1 + wastage)
+        total_volume += v_with_waste
+        total_formwork_area += area
+        volume_by_class[cls] = volume_by_class.get(cls, 0.0) + v_with_waste
+
+        mix = CONCRETE_MIX[cls]
+        cement_bags += v_with_waste * mix["cement_bags"]
+        sand_m3 += v_with_waste * mix["sand_m3"]
+        gravel_m3 += v_with_waste * mix["gravel_m3"]
+
+    marine_ply_sheets = total_formwork_area * MARINE_PLY_SHEETS_PER_M2
+    form_lumber_bdft = total_formwork_area * FORM_LUMBER_BDFT_PER_M2
+
+    quantities = {
+        "concrete_volume_m3": round(total_volume, 3),
+        "volume_by_class_m3": {k: round(v, 3) for k, v in volume_by_class.items()},
+        "formwork_contact_area_m2": round(total_formwork_area, 3),
+    }
+    materials = {
+        "cement_bags": _round_up(cement_bags),
+        "sand_m3": round(sand_m3, 3),
+        "gravel_m3": round(gravel_m3, 3),
+        "marine_ply_sheets": _round_up(marine_ply_sheets),
+        "form_lumber_bdft": round(form_lumber_bdft, 2),
+    }
+
+    costs = _sum_costs(
+        _cost_line(materials["cement_bags"], "cement_bag"),
+        _cost_line(materials["sand_m3"], "sand_m3"),
+        _cost_line(materials["gravel_m3"], "gravel_m3"),
+        _cost_line(quantities["concrete_volume_m3"], "concrete_labor_m3"),
+        _cost_line(materials["marine_ply_sheets"], "marine_ply_sheet"),
+        _cost_line(materials["form_lumber_bdft"], "form_lumber_bdft"),
+    )
+
+    labor_manday = round(quantities["concrete_volume_m3"] / 4.0 +
+                          total_formwork_area / 8.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": round(quantities["concrete_volume_m3"] / 5.0, 2),
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION IV — MASONRY WORKS
+# ===========================================================================
+
+def calculate_section_4_masonry_works(wall_elements: list) -> dict:
+    """
+    wall_elements: list of dicts:
+        {
+            "length_m": float, "height_m": float,
+            "thickness_mm": 100 | 150 | 200,
+            "openings": [{"width_m": float, "height_m": float}, ...],
+            "stiffener_area_m2": float (optional, embedded RC stiffeners),
+            "plaster_faces": 0 | 1 | 2 (default 2),
+        }
+    """
+    total_chb = 0.0
+    chb_by_thickness: dict[int, float] = {}
+    total_mortar_cement = 0.0
+    total_mortar_sand = 0.0
+    total_plaster_area = 0.0
+    total_plaster_cement = 0.0
+    total_plaster_sand = 0.0
+
+    for wall in wall_elements:
+        L, H = wall["length_m"], wall["height_m"]
+        thickness = wall["thickness_mm"]
+        openings = wall.get("openings", [])
+        stiffener_area = wall.get("stiffener_area_m2", 0.0)
+        plaster_faces = wall.get("plaster_faces", 2)
+
+        gross_area = L * H
+        opening_area = sum(o["width_m"] * o["height_m"] for o in openings)
+        net_area = gross_area - opening_area - stiffener_area
+
+        chb_pcs = net_area * CHB_PCS_PER_M2
+        total_chb += chb_pcs
+        chb_by_thickness[thickness] = chb_by_thickness.get(thickness, 0.0) + chb_pcs
+
+        cement_f, sand_f = MORTAR_FACTORS[thickness]
+        total_mortar_cement += net_area * cement_f
+        total_mortar_sand += net_area * sand_f
+
+        # jamb returns for each opening (Appendix B.3)
+        jamb_area = sum(2 * (o["width_m"] + o["height_m"]) * (thickness / 1000.0)
+                         for o in openings)
+
+        plaster_area_this_wall = (net_area + jamb_area) * plaster_faces
+        total_plaster_area += plaster_area_this_wall
+        total_plaster_cement += plaster_area_this_wall * PLASTER_CEMENT_BAGS_PER_M2_FACE_16MM
+        total_plaster_sand += plaster_area_this_wall * PLASTER_SAND_M3_PER_M2_FACE_16MM
+
+    quantities = {
+        "chb_count": _round_up(total_chb),
+        "chb_by_thickness": {k: _round_up(v) for k, v in chb_by_thickness.items()},
+        "plaster_area_m2": round(total_plaster_area, 3),
+    }
+    materials = {
+        "mortar_cement_bags": round(total_mortar_cement, 2),
+        "mortar_sand_m3": round(total_mortar_sand, 3),
+        "plaster_cement_bags": round(total_plaster_cement, 2),
+        "plaster_sand_m3": round(total_plaster_sand, 3),
+    }
+
+    chb_cost = (0.0, 0.0, 0.0)
+    for thickness, pcs in quantities["chb_by_thickness"].items():
+        key = f"chb_{thickness}_pc" if thickness in (100, 150, 200) else "chb_150_pc"
+        c = _cost_line(pcs, key)
+        chb_cost = tuple(a + b for a, b in zip(chb_cost, c))
+
+    total_cement_bags = materials["mortar_cement_bags"] + materials["plaster_cement_bags"]
+    total_sand_m3 = materials["mortar_sand_m3"] + materials["plaster_sand_m3"]
+
+    costs = _sum_costs(
+        chb_cost,
+        _cost_line(_round_up(total_cement_bags), "cement_bag"),
+        _cost_line(total_sand_m3, "sand_m3"),
+        _cost_line(quantities["plaster_area_m2"], "paint_labor_m2"),  # generic plaster labor proxy
+    )
+
+    labor_manday = round(quantities["chb_count"] / 150.0 +
+                          quantities["plaster_area_m2"] / 10.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION V — METALS & STEEL REINFORCEMENT
+# ===========================================================================
+
+def calculate_section_5_metals_and_rebar(rebar_elements: list,
+                                          structural_steel_kg: float = 0.0) -> dict:
+    """
+    rebar_elements: list of dicts, each describing a rebar group:
+        {
+            "member": "footing_mat" | "column_main" | "beam_stirrup" | "generic",
+            "diameter_mm": float,
+            "count": int,                  # number of bars / stirrups
+            # footing_mat:
+            "member_length_m": float,      # footing dimension bar runs along
+            "cover_m": float (default 0.075),
+            # column_main:
+            "story_height_m": float,
+            "dowel_length_m": float (default 0.0),
+            # beam_stirrup:
+            "beam_width_m": float, "beam_depth_m": float,
+            "cover_m": float (default 0.040),
+            "apply_bend_deduction": bool (default False — see note below),
+            # generic:
+            "length_m": float,             # straight cut length, no deductions
+        }
+
+    NOTE on beam_stirrup bend deduction: sample_solved_cases.md Case 2.2
+    (the verified V2 baseline) computes the 135-deg-hook stirrup length as
+    2*(w-2c) + 2*(d-2c) + 2*(10*db) WITHOUT subtracting the 12*db bend
+    shortening described in the handbook's Appendix B.2. This function
+    matches the verified baseline by default (apply_bend_deduction=False).
+    Set apply_bend_deduction=True per-element for the stricter Appendix B.2
+    fabrication length (subtracts 12*db per stirrup for bend shortening).
+    """
+    total_weight_kg = 0.0
+    weight_by_diameter: dict[float, float] = {}
+
+    for el in rebar_elements:
+        member = el.get("member", "generic")
+        db_mm = el["diameter_mm"]
+        db_m = db_mm / 1000.0
+        N = el["count"]
+        unit_w = rebar_unit_weight_kg_per_m(db_mm)
+
+        if member == "footing_mat":
+            L = el["member_length_m"]
+            cover = el.get("cover_m", 0.075)
+            hook = 12 * db_m
+            cut_len = (L - 2 * cover) + 2 * hook
+        elif member == "column_main":
+            H = el["story_height_m"]
+            splice = 40 * db_m
+            dowel = el.get("dowel_length_m", 0.0)
+            cut_len = H + splice + dowel
+        elif member == "beam_stirrup":
+            w = el["beam_width_m"]
+            d = el["beam_depth_m"]
+            cover = el.get("cover_m", 0.040)
+            hook_allow = 2 * (10 * db_m)          # 135 deg seismic hook, 2 legs
+            apply_bend = el.get("apply_bend_deduction", False)
+            bend_deduction = (12 * db_m) if apply_bend else 0.0  # 4 bends x 3*db each
+            cut_len = (2 * (w - 2 * cover) + 2 * (d - 2 * cover)
+                       + hook_allow - bend_deduction)
+        elif member == "generic":
+            cut_len = el["length_m"]
+        else:
+            raise ValueError(f"Unknown rebar member type: {member}")
+
+        weight = cut_len * N * unit_w
+        total_weight_kg += weight
+        weight_by_diameter[db_mm] = weight_by_diameter.get(db_mm, 0.0) + weight
+
+    tie_wire_kg = total_weight_kg * 0.015
+
+    quantities = {
+        "rebar_weight_kg": round(total_weight_kg, 2),
+        "rebar_weight_by_diameter_kg": {k: round(v, 2) for k, v in weight_by_diameter.items()},
+        "structural_steel_kg": round(structural_steel_kg, 2),
+    }
+    materials = {
+        "tie_wire_kg": round(tie_wire_kg, 2),
+    }
+
+    costs = _sum_costs(
+        _cost_line(quantities["rebar_weight_kg"], "rebar_kg"),
+        _cost_line(materials["tie_wire_kg"], "tie_wire_kg"),
+        _cost_line(quantities["structural_steel_kg"], "structural_steel_kg"),
+    )
+
+    labor_manday = round(quantities["rebar_weight_kg"] / 250.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION VI — ROOFING & CEILING WORKS
+# ===========================================================================
+
+def calculate_section_6_roofing_and_ceiling(roof_plan_area: float,
+                                             pitch_deg: float,
+                                             ceiling_area: float) -> dict:
+    theta = math.radians(pitch_deg)
+    slope_area_raw = roof_plan_area / math.cos(theta)
+    slope_area_with_lap = slope_area_raw * (1 + ROOFING_LAP_ALLOWANCE)
+
+    rivets = slope_area_with_lap * ROOFING_RIVETS_PCS_PER_M2
+    ceiling_with_waste = ceiling_area * (1 + HARDIFLEX_WASTE)
+    furring_m = ceiling_area * METAL_FURRING_M_PER_M2
+
+    quantities = {
+        "roof_slope_area_m2": round(slope_area_with_lap, 3),
+        "ceiling_area_m2": round(ceiling_with_waste, 3),
+        "metal_furring_m": round(furring_m, 2),
+    }
+    materials = {
+        "roofing_rivets_pcs": _round_up(rivets),
+    }
+
+    costs = _sum_costs(
+        _cost_line(quantities["roof_slope_area_m2"], "longspan_roofing_m2"),
+        _cost_line(materials["roofing_rivets_pcs"], "rivet_pc"),
+        _cost_line(quantities["ceiling_area_m2"], "hardiflex_m2"),
+        _cost_line(quantities["metal_furring_m"], "metal_furring_m"),
+    )
+
+    labor_manday = round(quantities["roof_slope_area_m2"] / 15.0 +
+                          quantities["ceiling_area_m2"] / 12.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION VII — DOORS & WINDOWS
+# ===========================================================================
+
+def calculate_section_7_doors_and_windows(windows_sqm: float, doors: list) -> dict:
+    """
+    doors: list of dicts:
+        {"type": "tempered_glass" | "panel" | "flush", "count": int,
+         "jamb_lumber_bdft_each": float (default 8.0)}
+    """
+    door_counts = {"tempered_glass": 0, "panel": 0, "flush": 0}
+    jamb_lumber_bdft = 0.0
+    for d in doors:
+        dtype = d["type"]
+        n = d["count"]
+        door_counts[dtype] = door_counts.get(dtype, 0) + n
+        jamb_lumber_bdft += n * d.get("jamb_lumber_bdft_each", 8.0)
+
+    tempered_glass_with_waste = door_counts["tempered_glass"] * (1 + 0.02)
+
+    quantities = {
+        "windows_m2": round(windows_sqm, 2),
+        "door_counts": door_counts,
+        "jamb_lumber_bdft": round(jamb_lumber_bdft, 2),
+    }
+    materials = {}
+
+    costs = _sum_costs(
+        _cost_line(quantities["windows_m2"], "aluminum_window_m2"),
+        _cost_line(math.ceil(tempered_glass_with_waste), "tempered_glass_door_set"),
+        _cost_line(door_counts["panel"], "panel_door_set"),
+        _cost_line(door_counts["flush"], "flush_door_set"),
+        _cost_line(quantities["jamb_lumber_bdft"], "jamb_lumber_bdft"),
+    )
+
+    labor_manday = round(sum(door_counts.values()) / 4.0 + windows_sqm / 8.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION VIII — TILE & FLOORING WORKS
+# ===========================================================================
+
+def calculate_section_8_tile_and_flooring(floor_area: float, wall_area: float,
+                                           is_diagonal: bool = False) -> dict:
+    waste = TILE_WASTE_DIAGONAL if is_diagonal else TILE_WASTE_STANDARD
+    floor_with_waste = floor_area * (1 + waste)
+    wall_with_waste = wall_area * (1 + TILE_WASTE_STANDARD)
+
+    mortar_bags = floor_area * TILE_MORTAR_BED_BAGS_PER_M2
+    grout_kg = (floor_area + wall_area) * TILE_GROUT_KG_PER_M2
+
+    quantities = {
+        "floor_tile_area_m2": round(floor_with_waste, 3),
+        "wall_tile_area_m2": round(wall_with_waste, 3),
+    }
+    materials = {
+        "mortar_bed_bags": round(mortar_bags, 2),
+        "tile_grout_kg": round(grout_kg, 2),
+    }
+
+    costs = _sum_costs(
+        _cost_line(quantities["floor_tile_area_m2"], "floor_tile_m2"),
+        _cost_line(quantities["wall_tile_area_m2"], "wall_tile_m2"),
+        _cost_line(materials["mortar_bed_bags"], "tile_mortar_bed_bag"),
+        _cost_line(materials["tile_grout_kg"], "tile_grout_kg"),
+    )
+
+    labor_manday = round((floor_area + wall_area) / 8.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION IX — PAINTING WORKS
+# ===========================================================================
+
+def calculate_section_9_painting_works(masonry_area: float, ceiling_area: float,
+                                        metal_area: float,
+                                        is_rough_chb: bool = False) -> dict:
+    primer_coverage = (PAINT_PRIMER_COVERAGE_M2_PER_L_ROUGH if is_rough_chb
+                        else PAINT_PRIMER_COVERAGE_M2_PER_L_SMOOTH)
+
+    neutralizer_l = masonry_area / PAINT_PRIMER_COVERAGE_M2_PER_L_SMOOTH
+    primer_l = masonry_area / primer_coverage
+    topcoat_l = (masonry_area * 2) / PAINT_TOPCOAT_COVERAGE_M2_PER_L  # 2 topcoats
+
+    ceiling_latex_l = ceiling_area / CEILING_LATEX_COVERAGE_M2_PER_L
+    metal_primer_l = metal_area / METAL_PRIMER_COVERAGE_M2_PER_L
+    metal_enamel_l = metal_area / METAL_ENAMEL_COVERAGE_M2_PER_L
+
+    quantities = {
+        "masonry_area_m2": round(masonry_area, 2),
+        "ceiling_area_m2": round(ceiling_area, 2),
+        "metal_area_m2": round(metal_area, 2),
+    }
+    materials = {
+        "neutralizer_l": round(neutralizer_l, 2),
+        "primer_l": round(primer_l, 2),
+        "topcoat_l": round(topcoat_l, 2),
+        "ceiling_latex_l": round(ceiling_latex_l, 2),
+        "metal_primer_l": round(metal_primer_l, 2),
+        "metal_enamel_l": round(metal_enamel_l, 2),
+    }
+
+    total_paint_area = masonry_area + ceiling_area + metal_area
+
+    costs = _sum_costs(
+        _cost_line(materials["neutralizer_l"], "neutralizer_l"),
+        _cost_line(materials["primer_l"], "primer_l"),
+        _cost_line(materials["topcoat_l"], "topcoat_l"),
+        _cost_line(materials["ceiling_latex_l"], "ceiling_latex_l"),
+        _cost_line(materials["metal_primer_l"], "metal_primer_l"),
+        _cost_line(materials["metal_enamel_l"], "metal_enamel_l"),
+        _cost_line(total_paint_area, "paint_labor_m2"),
+    )
+
+    labor_manday = round(total_paint_area / 20.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION X — PLUMBING WORKS
+# ===========================================================================
+
+def calculate_section_10_plumbing_works(sanitary_run_m: float, water_run_m: float,
+                                         fixtures_count: int) -> dict:
+    sanitary_4in_pcs = _round_up((sanitary_run_m / PIPE_STD_LENGTH_M) * (1 + UPVC_FITTINGS_ALLOWANCE))
+    sanitary_2in_pcs = _round_up((sanitary_run_m * 0.5 / PIPE_STD_LENGTH_M) * (1 + UPVC_FITTINGS_ALLOWANCE))
+    ppr_pcs = _round_up((water_run_m / PIPE_STD_LENGTH_M) * (1 + UPVC_FITTINGS_ALLOWANCE))
+
+    quantities = {
+        "sanitary_run_m": round(sanitary_run_m, 2),
+        "water_run_m": round(water_run_m, 2),
+        "fixtures_count": fixtures_count,
+    }
+    materials = {
+        "upvc_4in_pcs": sanitary_4in_pcs,
+        "upvc_2in_pcs": sanitary_2in_pcs,
+        "ppr_pcs": ppr_pcs,
+    }
+
+    costs = _sum_costs(
+        _cost_line(sanitary_4in_pcs, "upvc_4in_pc"),
+        _cost_line(sanitary_2in_pcs, "upvc_2in_pc"),
+        _cost_line(ppr_pcs, "ppr_pipe_pc"),
+        _cost_line(fixtures_count, "fixture_set"),
+        _cost_line(1, "catch_basin_lot"),
+    )
+
+    labor_manday = round((sanitary_run_m + water_run_m) / 20.0 + fixtures_count / 2.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION XI — ELECTRICAL WORKS
+# ===========================================================================
+
+def calculate_section_11_electrical_works(outlets_count: int, homerun_m: float) -> dict:
+    wire_m = homerun_m * (1 + WIRE_SLACK_ALLOWANCE)
+    conduit_pcs = _round_up(homerun_m / CONDUIT_STD_LENGTH_M)
+
+    quantities = {
+        "wire_m": round(wire_m, 2),
+        "conduit_pcs": conduit_pcs,
+        "outlets_count": outlets_count,
+    }
+    materials = {}
+
+    costs = _sum_costs(
+        _cost_line(quantities["wire_m"], "thhn_wire_m"),
+        _cost_line(conduit_pcs, "pvc_conduit_pc"),
+        _cost_line(outlets_count, "outlet_pc"),
+        _cost_line(math.ceil(outlets_count / 3.0), "led_panel_pc"),
+        _cost_line(1, "breaker_pc"),
+    )
+
+    labor_manday = round(wire_m / 60.0 + outlets_count / 8.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION XII — SANITARY / MECHANICAL WORKS
+# ===========================================================================
+
+def calculate_section_12_sanitary_mechanical(room_area_m2: float,
+                                              pipe_run_m: float) -> dict:
+    btu_required = room_area_m2 * ACU_BTU_PER_M2
+    tons_required = btu_required / 12_000.0  # 1 ton = 12,000 BTU/h
+    copper_piping_m = pipe_run_m * (1 + COPPER_PIPING_ALLOWANCE)
+
+    quantities = {
+        "cooling_load_btu": round(btu_required, 2),
+        "acu_tons": round(tons_required, 2),
+        "copper_piping_m": round(copper_piping_m, 2),
+    }
+    materials = {}
+
+    costs = _sum_costs(
+        _cost_line(quantities["acu_tons"], "acu_unit_per_ton"),
+        _cost_line(quantities["copper_piping_m"], "copper_piping_m"),
+        _cost_line(1, "commissioning_lot"),
+    )
+
+    labor_manday = round(copper_piping_m / 15.0 + 1.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION XIII — SPECIAL WORKS
+# ===========================================================================
+
+def calculate_section_13_special_works(handrail_m: float, acp_m2: float,
+                                        waterproofing_m2: float) -> dict:
+    acp_with_waste = acp_m2 * (1 + ACP_WASTE)
+    waterproofing_kg = waterproofing_m2 * WATERPROOFING_KG_PER_M2
+
+    quantities = {
+        "handrail_m": round(handrail_m, 2),
+        "acp_cladding_m2": round(acp_with_waste, 2),
+        "waterproofing_m2": round(waterproofing_m2, 2),
+    }
+    materials = {
+        "waterproofing_kg": round(waterproofing_kg, 2),
+    }
+
+    costs = _sum_costs(
+        _cost_line(quantities["handrail_m"], "handrail_m"),
+        _cost_line(quantities["acp_cladding_m2"], "acp_cladding_m2"),
+        _cost_line(materials["waterproofing_kg"], "waterproofing_kg"),
+        _cost_line(quantities["waterproofing_m2"], "waterproofing_labor_m2"),
+    )
+
+    labor_manday = round(handrail_m / 10.0 + acp_m2 / 8.0 + waterproofing_m2 / 25.0, 2)
+
+    return {
+        "quantities": quantities,
+        "materials": materials,
+        "labor_manday": labor_manday,
+        "equipment_hours": 0.0,
+        "cost": costs,
+    }
+
+
+# ===========================================================================
+# SECTION I — GENERAL REQUIREMENTS (priced off Sections II-XIII subtotal)
+# ===========================================================================
+
+def calculate_section_1_general_requirements(sections_2_to_13_direct_cost: float) -> dict:
+    base = sections_2_to_13_direct_cost
+    mobilization = base * GENREQ_MOBILIZATION_PCT
+    temp_facilities = base * GENREQ_TEMP_FACILITIES_PCT
+    safety_ppe = base * GENREQ_SAFETY_PCT
+    permits = GENREQ_PERMITS_LOT
+
+    line_items = {
+        "mobilization_demobilization": round(mobilization, 2),
+        "temporary_facilities": round(temp_facilities, 2),
+        "safety_health_ppe": round(safety_ppe, 2),
+        "permits_clearances": round(permits, 2),
+    }
+    total = round(sum(line_items.values()), 2)
+
+    return {
+        "quantities": {"basis_direct_cost": round(base, 2)},
+        "materials": {},
+        "line_items": line_items,
+        "labor_manday": 0.0,
+        "equipment_hours": 0.0,
+        "cost": {"material": 0.0, "labor": 0.0, "equipment": 0.0, "total": total},
+    }
+
+
+# ===========================================================================
+# ORCHESTRATOR — full 13-section takeoff
+# ===========================================================================
+
+def run_full_takeoff(project_inputs: dict) -> dict:
+    """
+    project_inputs: a dict keyed by section number (2-13) whose values are
+    the keyword-argument dicts for that section's calculate_section_N_*
+    function. Section 1 is computed automatically from the II-XIII subtotal.
+
+    Example:
+        run_full_takeoff({
+            2: {"footing_specs": [...], "slab_area": 120.0, "slab_t": 0.10},
+            3: {"elements": [...]},
+            4: {"wall_elements": [...]},
+            5: {"rebar_elements": [...], "structural_steel_kg": 850.0},
+            6: {"roof_plan_area": 140.0, "pitch_deg": 20, "ceiling_area": 130.0},
+            7: {"windows_sqm": 18.0, "doors": [...]},
+            8: {"floor_area": 110.0, "wall_area": 40.0, "is_diagonal": False},
+            9: {"masonry_area": 200.0, "ceiling_area": 130.0, "metal_area": 15.0,
+                "is_rough_chb": False},
+            10: {"sanitary_run_m": 40.0, "water_run_m": 35.0, "fixtures_count": 6},
+            11: {"outlets_count": 24, "homerun_m": 60.0},
+            12: {"room_area_m2": 60.0, "pipe_run_m": 15.0},
+            13: {"handrail_m": 12.0, "acp_m2": 20.0, "waterproofing_m2": 45.0},
+        })
+    """
+    section_fns = {
+        2: calculate_section_2_earthworks,
+        3: calculate_section_3_concrete_and_formworks,
+        4: calculate_section_4_masonry_works,
+        5: calculate_section_5_metals_and_rebar,
+        6: calculate_section_6_roofing_and_ceiling,
+        7: calculate_section_7_doors_and_windows,
+        8: calculate_section_8_tile_and_flooring,
+        9: calculate_section_9_painting_works,
+        10: calculate_section_10_plumbing_works,
+        11: calculate_section_11_electrical_works,
+        12: calculate_section_12_sanitary_mechanical,
+        13: calculate_section_13_special_works,
+    }
+
+    results = {}
+    subtotal = 0.0
+    for n, fn in section_fns.items():
+        kwargs = project_inputs.get(n, {})
+        result = fn(**kwargs)
+        results[n] = result
+        subtotal += result["cost"]["total"]
+
+    results[1] = calculate_section_1_general_requirements(subtotal)
+
+    grand_total = subtotal + results[1]["cost"]["total"]
+
+    return {
+        "sections": results,
+        "sections_2_to_13_subtotal": round(subtotal, 2),
+        "grand_total_direct_cost": round(grand_total, 2),
+    }
+
+
+if __name__ == "__main__":
+    # Minimal smoke test using the handbook's own worked examples.
+    result = calculate_section_3_concrete_and_formworks([
+        {"type": "footing", "class": "A", "count": 4,
+         "length_m": 1.50, "width_m": 1.50, "height_m": 0.40},
+    ])
+    print("Section III smoke test (expect ~3.78 m3 with 5% wastage):")
+    print(result["quantities"])
+    print(result["materials"])
+    print(result["cost"])
