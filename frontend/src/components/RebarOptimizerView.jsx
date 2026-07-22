@@ -1,7 +1,17 @@
 import React from 'react';
 
 export default function RebarOptimizerView({ optimizations }) {
-  if (!optimizations || optimizations.length === 0) return null;
+  if (!optimizations || optimizations.length === 0) {
+    return (
+      <div style={{ background: '#0a0f1e', border: '1px solid #1e293b', borderRadius: '14px', padding: '60px 20px', textAlign: 'center', color: '#64748b', margin: '20px 0' }}>
+        <div style={{ fontSize: '32px', marginBottom: '12px' }}>⚙️</div>
+        <div style={{ fontSize: '15px', fontWeight: 700, color: '#e2e8f0', marginBottom: '6px' }}>No Rebar Cut List Data</div>
+        <div style={{ fontSize: '12px', color: '#94a3b8', maxWidth: '400px', margin: '0 auto' }}>
+          Click <strong>"📥 Import PDF/DXF"</strong> or process a drawing plan to run 1D commercial rebar stock optimization.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-slate-900 rounded-xl p-5 border border-slate-800 shadow-xl mt-6">
