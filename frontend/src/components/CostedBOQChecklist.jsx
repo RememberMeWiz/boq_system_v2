@@ -63,13 +63,38 @@ const STATUS_COLORS = {
 };
 
 // ---------------------------------------------------------------------------
-export default function CostedBOQChecklist({ onRowSelect, onTotalsChange }) {
+export default function CostedBOQChecklist({ boqData, onRowSelect, onTotalsChange }) {
   const [rows, setRows] = useState(() =>
     INITIAL_ROWS.map(r => {
       const rate = CMPD_RATES[r.prefix] || { mat: 0, lab: 0, eqp: 0 };
       return { ...r, mat: rate.mat, lab: rate.lab, eqp: rate.eqp, usingCmpd: false };
     })
   );
+
+  // Sync rows whenever backend returns new BOQ data
+  React.useEffect(() => {
+    if (boqData && Array.isArray(boqData) && boqData.length > 0) {
+      const mapped = boqData.map(b => {
+        const prefix = (b.item_code || 'CON').split('-')[0];
+        const rate = CMPD_RATES[prefix] || { mat: b.material_unit_cost || 0, lab: b.labor_unit_cost || 0, eqp: b.equipment_unit_cost || 0 };
+        return {
+          id: b.item_code || 'ITEM',
+          trade: b.trade || b.division || 'General',
+          desc: b.description || 'Line Item',
+          qty: b.quantity || 0,
+          backup: b.backup_qty || b.quantity * 0.97,
+          unit: b.unit || 'unit',
+          prefix,
+          mat: b.material_unit_cost ?? rate.mat,
+          lab: b.labor_unit_cost ?? rate.lab,
+          eqp: b.equipment_unit_cost ?? rate.eqp,
+          usingCmpd: false,
+          status: b.status || 'Confirmed',
+        };
+      });
+      setRows(mapped);
+    }
+  }, [boqData]);
   const [showDivOnly, setShowDivOnly] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 

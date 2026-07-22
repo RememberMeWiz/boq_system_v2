@@ -1,7 +1,7 @@
 """
 Plan2Takeoff V2 — Core API Server
 Flask backend wiring the 13-trade fajardo.py engine, rebar optimizer,
-PDF parser, manifest, agent-sync, and export routes.
+PDF parser, vision OCR, Supabase V2 persistence, manifest, agent-sync, and export routes.
 """
 
 import os
@@ -9,9 +9,19 @@ import sys
 import json
 import csv
 import io
+import uuid
+import tempfile
+import time
 from flask import Flask, request, jsonify, send_from_directory, render_template_string, send_file
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Load .env if present
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+except ImportError:
+    pass
 
 # Engine imports (function-based V2 engine)
 from engine.fajardo import (
@@ -33,11 +43,17 @@ from engine.fajardo import (
 )
 from engine.rebar_optimizer import RebarStockOptimizer, RebarCutDemand
 from engine.pdf_dxf_parser import DrawingParserV2
+from engine.vision_ocr import crop_schedule_region, parse_schedule_text, auto_scan_pdf_schedules
 from api.manifest import generate_project_manifest
 from api.agent_sync import process_agent_sync_payload, AUTH_SYNC_TOKEN
+from api.supabase_client import save_session as supabase_save_session, load_session as supabase_load_session, list_sessions as supabase_list_sessions, is_configured as supabase_is_configured
+from api.local_db import init_db as init_local_db, save_session as local_save_session, load_session as local_load_session, list_sessions as local_list_sessions
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIST_DIR = os.path.join(BASE_DIR, "frontend", "dist")
+
+# Initialize local SQLite DB (boq_v2.db)
+init_local_db()
 
 app = Flask(__name__, static_folder=FRONTEND_DIST_DIR, static_url_path="")
 
@@ -295,34 +311,74 @@ def _sample_elements_json():
 @app.route("/api/v1/process-drawing", methods=["POST"])
 def process_drawing():
     """
-    Runs the full 13-trade Fajardo takeoff on sample project inputs.
-    Accepts optional multipart file upload (ignored for now — uses sample inputs).
+    Runs the full 13-trade Fajardo takeoff.
+    If a PDF/DXF file is uploaded, attempts to extract project dimensions from it.
+    Falls back to sample inputs when parsing yields no data.
+    Auto-saves session to Supabase V2 (if configured) and writes last_session.json cache.
     """
     file = request.files.get("file")
     drawing_name = file.filename if file else "sample_structural_plan.pdf"
+    session_id = str(uuid.uuid4())
 
-    # Parse drawing (graceful degradation when PyMuPDF not installed)
     parser = DrawingParserV2()
-    sample_pdf = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
-    parse_res = parser.parse_pdf(sample_pdf)
+    project_inputs = None
+
+    if file:
+        # Save uploaded file to temp location and parse it
+        suffix = os.path.splitext(file.filename)[-1].lower() or '.pdf'
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            file.save(tmp.name)
+            tmp_path = tmp.name
+        try:
+            if suffix == '.dxf':
+                parse_res = parser.parse_dxf(tmp_path)
+            else:
+                parse_res = parser.parse_pdf(tmp_path)
+            project_inputs = parse_res.project_inputs  # may be None if no annotations parsed
+        finally:
+            os.unlink(tmp_path)
+    else:
+        sample_pdf = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
+        parse_res = parser.parse_pdf(sample_pdf)
+
+    # Use parsed inputs if available, else fall back to sample
+    inputs_used = project_inputs if project_inputs else SAMPLE_PROJECT_INPUTS
+    source = "pdf_parsed" if project_inputs else "sample_defaults"
 
     # Run full 13-trade engine
-    takeoff = run_full_takeoff(SAMPLE_PROJECT_INPUTS)
+    takeoff = run_full_takeoff(inputs_used)
     boq_rows = _takeoff_to_boq_rows(takeoff)
+    grand_total = takeoff["grand_total_direct_cost"]
+
+    # Write session cache for manifest live stats
+    _write_session_cache(session_id, drawing_name, grand_total)
+
+    # 1. Always save to local SQLite database (boq_v2.db)
+    local_result = local_save_session(session_id, drawing_name, boq_rows, grand_total,
+                                      takeoff["sections_2_to_13_subtotal"])
+
+    # 2. Attempt Supabase cloud sync if configured
+    supabase_result = {"status": "skipped"}
+    if supabase_is_configured():
+        supabase_result = supabase_save_session(session_id, drawing_name, boq_rows, grand_total,
+                                                takeoff["sections_2_to_13_subtotal"])
 
     return jsonify({
         "status": "success",
+        "session_id": session_id,
+        "input_source": source,
         "drawing": {
             "filename": drawing_name,
-            "width": parse_res.width,
-            "height": parse_res.height,
+            "width":    getattr(parse_res, 'width', 842.0),
+            "height":   getattr(parse_res, 'height', 595.0),
         },
         "elements": _sample_elements_json(),
-        "boq": boq_rows,
+        "boq":     boq_rows,
         "summary": {
             "sections_2_to_13_subtotal": takeoff["sections_2_to_13_subtotal"],
-            "grand_total_direct_cost":   takeoff["grand_total_direct_cost"],
+            "grand_total_direct_cost":   grand_total,
         },
+        "supabase": supabase_result,
     })
 
 
@@ -443,6 +499,10 @@ def catch_all(path):
             "GET  /api/v1/cmpd-rates",
             "POST /api/v1/process-drawing",
             "POST /api/v1/optimize-rebar",
+            "POST /api/v1/sync-supabase",
+            "GET  /api/v1/sessions",
+            "GET  /api/v1/sessions/<id>",
+            "POST /api/v1/parse-schedule",
             "GET  /api/v1/export-csv",
             "GET  /api/v1/export-json",
             "POST /api/v1/agent-sync",
@@ -450,9 +510,160 @@ def catch_all(path):
     })
 
 
+# --------------------------------------------------------------------
+# Session Cache Helper
+# --------------------------------------------------------------------
+
+def _write_session_cache(session_id: str, drawing_name: str, grand_total: float):
+    """Writes last session summary to outputs/last_session.json for manifest stats."""
+    cache_path = os.path.join(BASE_DIR, "outputs", "last_session.json")
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
+    try:
+        # Count total sessions by reading existing cache
+        existing = {}
+        if os.path.exists(cache_path):
+            with open(cache_path) as f:
+                existing = json.load(f)
+        total = existing.get("total_sessions", 0) + 1
+        with open(cache_path, "w") as f:
+            json.dump({
+                "last_session_id":   session_id,
+                "last_drawing":      drawing_name,
+                "last_grand_total":  grand_total,
+                "last_processed_at": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
+                "total_sessions":    total,
+            }, f, indent=2)
+    except Exception as e:
+        pass  # Non-critical
+
+
+# --------------------------------------------------------------------
+# Supabase Sync Endpoints
+# --------------------------------------------------------------------
+
+@app.route("/api/v1/sync-supabase", methods=["POST"])
+def sync_supabase():
+    """
+    Manually push a completed session to local SQLite DB and Supabase V2.
+    Expects JSON: {"session_id": "...", "boq": [...], "grand_total": float}
+    """
+    payload = request.get_json(force=True, silent=True) or {}
+    session_id  = payload.get("session_id") or str(uuid.uuid4())
+    drawing     = payload.get("drawing_name", "unknown.pdf")
+    boq_rows    = payload.get("boq", [])
+    grand_total = float(payload.get("grand_total", 0))
+    subtotal    = float(payload.get("sections_subtotal", grand_total))
+
+    # Save locally to SQLite
+    local_res = local_save_session(session_id, drawing, boq_rows, grand_total, subtotal)
+
+    # Attempt Supabase cloud sync if configured
+    supabase_res = {"status": "skipped"}
+    if supabase_is_configured():
+        supabase_res = supabase_save_session(session_id, drawing, boq_rows, grand_total, subtotal)
+
+    return jsonify({
+        "status": "saved",
+        "session_id": session_id,
+        "local_storage": local_res,
+        "supabase": supabase_res,
+    })
+
+
+@app.route("/api/v1/sessions", methods=["GET"])
+def get_sessions():
+    """Returns list of saved BOQ sessions from local SQLite DB (and Supabase if configured)."""
+    limit = int(request.args.get("limit", 20))
+    sessions = local_list_sessions(limit=limit)
+    if not sessions and supabase_is_configured():
+        sessions = supabase_list_sessions(limit=limit)
+    return jsonify({"status": "success", "sessions": sessions, "count": len(sessions)})
+
+
+@app.route("/api/v1/sessions/<session_id>", methods=["GET"])
+def get_session(session_id):
+    """Loads a saved BOQ session by ID from local SQLite DB or Supabase V2."""
+    data = local_load_session(session_id)
+    if data is None and supabase_is_configured():
+        data = supabase_load_session(session_id)
+    if data is None:
+        return jsonify({"status": "error", "reason": "Session not found"}), 404
+    return jsonify({"status": "success", **data})
+
+
+# --------------------------------------------------------------------
+# Schedule Parse Endpoint
+# --------------------------------------------------------------------
+
+@app.route("/api/v1/parse-schedule", methods=["POST"])
+def parse_schedule():
+    """
+    Crops a schedule table region from an uploaded PDF and returns structured JSON.
+    Form fields:
+      - file: PDF file upload
+      - region: JSON array [x1, y1, x2, y2] in PDF points (optional — full page if omitted)
+      - type: "rebar" | "column" | "beam" | "footing" | "auto" (default: "auto")
+      - page: page number 0-indexed (default: 0)
+    """
+    file = request.files.get("file")
+    if not file:
+        return jsonify({"status": "error", "reason": "No file uploaded"}), 400
+
+    schedule_type = request.form.get("type", "auto")
+    page_num = int(request.form.get("page", 0))
+    region_raw = request.form.get("region", "")
+
+    suffix = os.path.splitext(file.filename)[-1].lower() or '.pdf'
+    with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+        file.save(tmp.name)
+        tmp_path = tmp.name
+
+    try:
+        if region_raw:
+            import ast
+            region = ast.literal_eval(region_raw)
+            text = crop_schedule_region(tmp_path, region, page_num)
+        else:
+            from engine.vision_ocr import extract_all_page_text
+            text = extract_all_page_text(tmp_path, page_num)
+
+        result = parse_schedule_text(text, schedule_type)
+        result["raw_text_length"] = len(text)
+        return jsonify({"status": "success", **result})
+
+    except Exception as e:
+        return jsonify({"status": "error", "reason": str(e)}), 500
+    finally:
+        os.unlink(tmp_path)
+
+
+@app.route("/api/v1/scan-schedules", methods=["POST"])
+def scan_schedules():
+    """
+    Auto-scans all pages of an uploaded PDF for structural schedules.
+    Returns all rebar, column, beam, and footing data found.
+    """
+    file = request.files.get("file")
+    if not file:
+        return jsonify({"status": "error", "reason": "No file uploaded"}), 400
+
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp:
+        file.save(tmp.name)
+        tmp_path = tmp.name
+
+    try:
+        result = auto_scan_pdf_schedules(tmp_path)
+        return jsonify({"status": "success", **result})
+    except Exception as e:
+        return jsonify({"status": "error", "reason": str(e)}), 500
+    finally:
+        os.unlink(tmp_path)
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     print(f"[Plan2Takeoff V2] Backend API running on http://127.0.0.1:{port}")
-    print(f"[Plan2Takeoff V2] API routes: /api/v1/health, /api/v1/process-drawing, /api/v1/optimize-rebar")
-    print(f"[Plan2Takeoff V2] Export: /api/v1/export-csv, /api/v1/export-json")
+    print(f"[Plan2Takeoff V2] Supabase V2: {'CONFIGURED' if supabase_is_configured() else 'not configured (add .env)'}")
+    print(f"[Plan2Takeoff V2] Routes: /api/v1/health | /api/v1/process-drawing | /api/v1/sync-supabase | /api/v1/sessions | /api/v1/parse-schedule")
     app.run(host="0.0.0.0", port=port, debug=True, use_reloader=False)
+
