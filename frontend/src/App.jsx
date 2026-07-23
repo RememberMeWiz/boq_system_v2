@@ -195,15 +195,18 @@ export default function App() {
           type: 'success',
           msg: `✓ Drawing processed [${sourceLabel}]: ${json.boq?.length || 30} takeoff items computed. Grand Total: ₱${(json.summary?.grand_total_direct_cost || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
         });
+        // Fetch Rebar Optimization in background (non-blocking)
+        fetch('/api/v1/optimize-rebar', { method: 'POST' })
+          .then(r => r.json())
+          .then(rJson => {
+            if (rJson.status === 'success') {
+              setRebarData(rJson.optimizations);
+            }
+          })
+          .catch(() => { /* ignore non-critical rebar optimization errors */ });
+
       } else {
         throw new Error(json.reason || json.message || 'Failed to process drawing');
-      }
-
-      // Fetch Rebar Optimization
-      const rRes  = await fetch('/api/v1/optimize-rebar', { method: 'POST' });
-      const rJson = await rRes.json();
-      if (rJson.status === 'success') {
-        setRebarData(rJson.optimizations);
       }
     } catch (err) {
       setBanner({
