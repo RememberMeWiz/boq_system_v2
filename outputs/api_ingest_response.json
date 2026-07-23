@@ -44,79 +44,21 @@
       "beams": [],
       "columns": [
         {
-          "C-1": {
-            "MAIN BAR": "8-20mm\u00f8",
-            "SIZE": "400 x 400",
-            "TIES": "10mm\u00f8 (2 SETS)"
-          },
-          "C-2": {
-            "MAIN BAR": "12-25mm\u00f8",
-            "SIZE": "400 x 400",
-            "TIES": "10mm\u00f8 (3 SETS)"
-          },
-          "C-3": {
-            "MAIN BAR": "8-25mm\u00f8",
-            "SIZE": "400 x 400",
-            "TIES": "10mm\u00f8 (2 SETS)"
-          },
+          "C-1": "MAIN BAR: 8-20mm\u00d8\nTIES : 10mm\u00d8 (2 SETS)",
+          "C-2": "MAIN BAR: 12-25mm\u00d8\nTIES : 10mm\u00d8 (3 SETS)",
+          "C-3": "MAIN BAR: 8-25mm\u00d8\nTIES : 10mm\u00d8 (2 SETS)",
           "LEVEL": "2ND FLOOR LEVEL TO ROOF LEVEL",
           "provenance": "vision_extracted"
         },
         {
-          "C-1": {
-            "MAIN BAR": "8-20mm\u00f8",
-            "SIZE": "400 x 400",
-            "TIES": "10mm\u00f8 (2 SETS)"
-          },
-          "C-2": {
-            "MAIN BAR": "14-25mm\u00f8",
-            "SIZE": "400 x 400",
-            "TIES": "10mm\u00f8 (3 SETS)"
-          },
-          "C-3": {
-            "MAIN BAR": "12-25mm\u00f8",
-            "SIZE": "400 x 400",
-            "TIES": "10mm\u00f8 (3 SETS)"
-          },
+          "C-1": "MAIN BAR: 8-20mm\u00d8\nTIES : 10mm\u00d8 (2 SETS)",
+          "C-2": "MAIN BAR: 14-25mm\u00d8\nTIES : 10mm\u00d8 (3 SETS)",
+          "C-3": "MAIN BAR: 12-25mm\u00d8\nTIES : 10mm\u00d8 (3 SETS)",
           "LEVEL": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
           "provenance": "vision_extracted"
         }
       ],
-      "footings": [
-        {
-          "BAR X": "7 - 20mm\u00d8",
-          "BAR Y": "7 - 20mm\u00d8",
-          "DEPTH (D)": "1500",
-          "FOOTING MARK": "F-1",
-          "LENGTH (L)": "1400",
-          "REMARKS": "SQUARE FOOTING",
-          "Thickness (t)": "350",
-          "WIDTH (W)": "1400",
-          "provenance": "vision_extracted"
-        },
-        {
-          "BAR X": "11 - 20mm\u00d8",
-          "BAR Y": "11 - 20mm\u00d8",
-          "DEPTH (D)": "1500",
-          "FOOTING MARK": "F-2",
-          "LENGTH (L)": "2300",
-          "REMARKS": "SQUARE FOOTING",
-          "Thickness (t)": "350",
-          "WIDTH (W)": "2300",
-          "provenance": "vision_extracted"
-        },
-        {
-          "BAR X": "10 - 20mm\u00d8",
-          "BAR Y": "10 - 20mm\u00d8",
-          "DEPTH (D)": "1500",
-          "FOOTING MARK": "F-3",
-          "LENGTH (L)": "2100",
-          "REMARKS": "SQUARE FOOTING",
-          "Thickness (t)": "350",
-          "WIDTH (W)": "2100",
-          "provenance": "vision_extracted"
-        }
-      ],
+      "footings": [],
       "slabs": [],
       "walls": []
     },
@@ -128,7 +70,7 @@
     },
     "verification_gate": {
       "blocking_issues": [],
-      "computed_at": "2026-07-23T07:51:02.939322+00:00",
+      "computed_at": "2026-07-23T08:00:20.497161+00:00",
       "resolution_log": [],
       "status": "READY",
       "warning_issues": [
@@ -149,5 +91,5 @@
       ]
     }
   },
-  "session_id": "79de24f6-4b14-45fb-b140-595e601dd6d7"
+  "session_id": "e7509695-909e-4dd7-9174-bcf51e8f7320"
 }

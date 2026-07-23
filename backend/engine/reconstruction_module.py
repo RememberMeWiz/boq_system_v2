@@ -39,6 +39,11 @@ class VisualReconstructionEngine:
         """
         Adapter converting Stage 4 Parser payload (schedules + grid_nodes)
         into visual elements[] (x, y, width, height, type, label, rebar).
+
+        Reads actual vision_parser schedule field names:
+          Footings: "FOOTING MARK", "LENGTH (L)", "WIDTH (W)" (values in mm)
+          Columns:  level-grouped rows with nested mark dicts {"DIMENSION": "400 x 400", ...}
+        Also supports legacy flat format: "mark"/"label", "length_m", "width_m", "width_mm".
         """
         if "elements" in data and isinstance(data["elements"], list) and data["elements"]:
             return data["elements"]
@@ -58,20 +63,37 @@ class VisualReconstructionEngine:
             grid_coords = [{"x": float(gn.get("x", 150)), "y": float(gn.get("y", 150))} for gn in grid_nodes]
 
         # 1. Footings
+        # vision_parser fields: "FOOTING MARK", "LENGTH (L)", "WIDTH (W)" (values in mm as strings)
+        # legacy fields: "mark"/"label", "length_m", "width_m"
         idx = 0
         for f in schedules.get("footings", []):
-            mark = f.get("mark") or f.get("label") or f"F-{idx+1}"
-            dim_l = f.get("length_m", 1.5)
-            dim_w = f.get("width_m", 1.5)
+            mark = (f.get("FOOTING MARK") or f.get("mark") or f.get("label") or f"F-{idx+1}")
+            raw_l = f.get("LENGTH (L)") or f.get("length_m")
+            raw_w = f.get("WIDTH (W)") or f.get("width_m")
+            # Convert mm strings to metres if > 20 (heuristic: 1400mm → 1.4m, 1.5 stays 1.5)
+            try:
+                dim_l = float(str(raw_l).replace(",", "").strip())
+                if dim_l > 20:
+                    dim_l = round(dim_l / 1000, 2)
+            except (TypeError, ValueError):
+                dim_l = 1.5
+            try:
+                dim_w = float(str(raw_w).replace(",", "").strip())
+                if dim_w > 20:
+                    dim_w = round(dim_w / 1000, 2)
+            except (TypeError, ValueError):
+                dim_w = dim_l
             pos = grid_coords[idx % len(grid_coords)]
+            # Scale SVG box proportionally (cap between 40px–120px)
+            svg_size = max(40, min(120, int(dim_l * 40)))
             elements.append({
                 "id": f"footing_{idx+1}",
                 "type": "footing",
                 "label": f"{mark} ({dim_l}x{dim_w}m)",
-                "x": pos["x"] - 40,
-                "y": pos["y"] - 40,
-                "width": 80,
-                "height": 80,
+                "x": pos["x"] - svg_size // 2,
+                "y": pos["y"] - svg_size // 2,
+                "width": svg_size,
+                "height": svg_size,
                 "rebar": [
                     {"type": "horizontal", "count": 5, "color": "#ef4444"},
                     {"type": "vertical", "count": 5, "color": "#ef4444"},
@@ -80,16 +102,55 @@ class VisualReconstructionEngine:
             idx += 1
 
         # 2. Columns
+        # Three possible formats from vision_parser:
+        #   A) Flat rows (current): {"COLUMN": "C-1", "DIMENSION": "400 x 400 mm", "LEVEL": "...", ...}
+        #   B) Level-grouped dict vals: {"LEVEL": "...", "C-1": {"DIMENSION": "400 x 400", ...}, ...}
+        #   C) Level-grouped string vals: {"LEVEL": "...", "C-1": "MAIN BAR: ...\nTIES: ...", ...}
+        # De-duplicate by column mark across all rows; use first occurrence's DIMENSION.
         col_idx = 0
-        for c in schedules.get("columns", []):
-            mark = c.get("mark") or c.get("label") or f"C-{col_idx+1}"
-            dim_w = c.get("width_mm", 300)
-            dim_d = c.get("depth_mm", 300)
+        seen_marks: dict = {}
+        import re as _re
+        COLUMN_MARK_RE = _re.compile(r"^[A-Z]-?\d+$")
+        for row in schedules.get("columns", []):
+            if not isinstance(row, dict):
+                continue
+            # Format A: flat row with explicit "COLUMN" key
+            flat_col_mark = row.get("COLUMN") or row.get("mark") or row.get("label")
+            if flat_col_mark and COLUMN_MARK_RE.match(str(flat_col_mark)) and flat_col_mark not in seen_marks:
+                seen_marks[flat_col_mark] = row
+                continue
+            # Format B & C: level-grouped — keys like "C-1", "C-2" map to dicts (B) or strings (C)
+            for key, val in row.items():
+                if COLUMN_MARK_RE.match(str(key)) and key not in seen_marks:
+                    if isinstance(val, dict):
+                        seen_marks[key] = val          # B: has DIMENSION, MAIN BAR etc.
+                    elif isinstance(val, str):
+                        seen_marks[key] = {"_raw": val}  # C: no DIMENSION — store raw string
+
+        for mark, val in sorted(seen_marks.items()):
+            # Parse DIMENSION string "400 x 400 mm" or legacy width_mm/depth_mm
+            raw_dim = val.get("DIMENSION") or val.get("dimension") or ""
+            dim_w = dim_d = 400  # default 400x400mm (matches all observed schedules)
+            dim_label_suffix = ""
+            if raw_dim:
+                parts = [p.strip() for p in str(raw_dim).replace("x", " ").replace("X", " ").split()
+                         if p.strip().isdigit()]
+                if len(parts) >= 2:
+                    dim_w, dim_d = int(parts[0]), int(parts[1])
+                elif len(parts) == 1:
+                    dim_w = dim_d = int(parts[0])
+            elif not val.get("width_mm"):
+                # Format C had no DIMENSION — mark visually so estimator knows to verify
+                dim_label_suffix = "?"
+            else:
+                dim_w = int(val.get("width_mm", 400))
+                dim_d = int(val.get("depth_mm", 400))
+
             pos = grid_coords[col_idx % len(grid_coords)]
             elements.append({
                 "id": f"column_{col_idx+1}",
                 "type": "column",
-                "label": f"{mark} ({dim_w}x{dim_d}mm)",
+                "label": f"{mark} ({dim_w}x{dim_d}mm{dim_label_suffix})",
                 "x": pos["x"] - 20,
                 "y": pos["y"] - 20,
                 "width": 40,
@@ -99,6 +160,7 @@ class VisualReconstructionEngine:
                 ]
             })
             col_idx += 1
+
 
         # 3. Beams
         beam_idx = 0
