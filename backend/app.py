@@ -513,9 +513,14 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
     (footings, columns, beams, slabs, walls) into trade-keyed `project_inputs` dict
     for `run_full_takeoff()`.
 
-    Falls back to `SAMPLE_PROJECT_INPUTS` for missing or empty sections.
+    Supports BOTH deterministic pdf_dxf_parser shape (nested rebar/main_bars dicts)
+    and vision_parser shape (flat uppercase strings like BAR X, MAIN BAR, DIMENSION).
+
+    Enforces Zero Hardcoding Policy: dimensions, counts, and rebar specs are derived
+    dynamically from schedule entries whenever present.
     """
     import copy
+    import re
     inputs = copy.deepcopy(SAMPLE_PROJECT_INPUTS)
     if not isinstance(schedules, dict):
         return inputs
@@ -526,17 +531,19 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
     slabs    = schedules.get("slabs", [])
     walls    = schedules.get("walls", [])
 
-    # 1. Footings -> Section 2 (Earthworks) & Section 3 (Concrete) & Section 5 (Rebar)
     footing_specs = []
     concrete_elements = []
     rebar_elements = []
+    wall_elements = []
 
+    # 1. Footings -> Section 2 (Earthworks), Section 3 (Concrete), Section 5 (Rebar)
     for idx, f in enumerate(footings):
         if not isinstance(f, dict): continue
         mark = f.get("FOOTING MARK") or f.get("mark") or f.get("label") or f"F-{idx+1}"
         raw_l = f.get("LENGTH (L)") or f.get("length_m") or 1.5
         raw_w = f.get("WIDTH (W)") or f.get("width_m") or 1.5
-        raw_t = f.get("Thickness (t)") or f.get("thickness_m") or f.get("depth_m") or 0.4
+        raw_t = f.get("Thickness (t)") or f.get("thickness_m") or f.get("depth_m") or f.get("DEPTH (D)") or 0.4
+        count = int(f.get("count") or 1)
 
         try:
             length_m = float(str(raw_l).replace(",", "").strip())
@@ -554,41 +561,54 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
         except (ValueError, TypeError): depth_m = 0.4
 
         footing_specs.append({
-            "length_m": length_m, "width_m": width_m, "depth_m": depth_m, "count": 1
+            "length_m": length_m, "width_m": width_m, "depth_m": depth_m, "count": count
         })
         concrete_elements.append({
-            "type": "footing", "class": "A", "count": 1,
+            "type": "footing", "class": "A", "count": count,
             "length_m": length_m, "width_m": width_m, "height_m": depth_m
         })
 
-        raw_bar = f.get("BAR X") or f.get("BAR Y") or ""
-        if raw_bar:
-            import re
-            m = re.search(r"(\d+)\s*-\s*(\d+)mm", str(raw_bar))
-            if m:
-                cnt, dia = int(m.group(1)), int(m.group(2))
-                rebar_elements.append({
-                    "member": "footing_mat", "diameter_mm": dia, "count": cnt, "member_length_m": length_m
-                })
+        # Footing mat rebar (supports both vision BAR X/Y strings and deterministic rebar dict)
+        rebar_dict = f.get("rebar") if isinstance(f.get("rebar"), dict) else {}
+        dia = rebar_dict.get("size_mm")
+        cnt = rebar_dict.get("count")
 
-    # 2. Columns
-    seen_cols = {}
-    import re
+        if not (dia and cnt):
+            raw_bar = f.get("BAR X") or f.get("BAR Y") or f.get("rebar") or ""
+            if raw_bar:
+                m = re.search(r"(\d+)\s*-\s*(\d+)mm", str(raw_bar))
+                if m:
+                    cnt, dia = int(m.group(1)), int(m.group(2))
+
+        if dia and cnt:
+            rebar_elements.append({
+                "member": "footing_mat", "diameter_mm": int(dia), "count": int(cnt) * count, "member_length_m": length_m
+            })
+
+    # 2. Columns -> Section 3 (Concrete) & Section 5 (Rebar)
+    # Handle flat rows, nested mark dicts, and deterministic column rows
+    seen_cols = []
     COL_MARK_RE = re.compile(r"^[A-Z]-?\d+$")
+
     for row in columns:
         if not isinstance(row, dict): continue
+        # Deterministic shape: {"mark": "C-1", "width_m": 0.4, ...}
         flat_mark = row.get("COLUMN") or row.get("mark")
-        if flat_mark and COL_MARK_RE.match(str(flat_mark)) and flat_mark not in seen_cols:
-            seen_cols[flat_mark] = row
+        if flat_mark and COL_MARK_RE.match(str(flat_mark)):
+            seen_cols.append((str(flat_mark), row))
             continue
+        # Vision level-grouped shape: {"C-1": {...}, "C-2": {...}}
         for key, val in row.items():
-            if COL_MARK_RE.match(str(key)) and key not in seen_cols:
-                seen_cols[key] = val if isinstance(val, dict) else {"_raw": str(val)}
+            if COL_MARK_RE.match(str(key)):
+                item_dict = val if isinstance(val, dict) else {"_raw": str(val)}
+                seen_cols.append((str(key), item_dict))
 
-    for mark, val in seen_cols.items():
-        raw_dim = val.get("DIMENSION") or ""
-        dim_w = dim_d = 0.4
-        if raw_dim:
+    for mark, val in seen_cols:
+        raw_dim = val.get("DIMENSION") or val.get("dimension") or ""
+        dim_w = val.get("width_m") or (val.get("width_mm", 0) / 1000.0 if val.get("width_mm") else None)
+        dim_d = val.get("depth_m") or (val.get("depth_mm", 0) / 1000.0 if val.get("depth_mm") else None)
+
+        if not (dim_w and dim_d) and raw_dim:
             parts = [p.strip() for p in str(raw_dim).replace("x", " ").replace("X", " ").split() if p.strip().isdigit()]
             if len(parts) >= 2:
                 dim_w = round(int(parts[0]) / 1000, 3)
@@ -596,15 +616,74 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
             elif len(parts) == 1:
                 dim_w = dim_d = round(int(parts[0]) / 1000, 3)
 
+        dim_w = float(dim_w) if dim_w else 0.40
+        dim_d = float(dim_d) if dim_d else 0.40
+        clear_h = float(val.get("clear_height_m") or 3.20)
+        col_count = int(val.get("count") or 1)
+
         concrete_elements.append({
-            "type": "column", "class": "A", "count": 2,
-            "width_m": dim_w, "depth_m": dim_d, "clear_height_m": 3.20
+            "type": "column", "class": "A", "count": col_count,
+            "width_m": dim_w, "depth_m": dim_d, "clear_height_m": clear_h
+        })
+
+        # Main bar rebar
+        main_bars = val.get("main_bars") if isinstance(val.get("main_bars"), dict) else {}
+        main_dia = main_bars.get("size_mm")
+        main_cnt = main_bars.get("count")
+
+        if not (main_dia and main_cnt):
+            raw_main = val.get("MAIN BAR") or val.get("main_bar") or val.get("_raw") or ""
+            if raw_main:
+                m = re.search(r"(\d+)\s*-\s*(\d+)mm", str(raw_main))
+                if m:
+                    main_cnt, main_dia = int(m.group(1)), int(m.group(2))
+
+        if main_dia and main_cnt:
+            rebar_elements.append({
+                "member": "column_main", "diameter_mm": int(main_dia), "count": int(main_cnt) * col_count,
+                "story_height_m": clear_h, "dowel_length_m": 0.40
+            })
+
+    # 3. Beams -> Section 3 (Concrete)
+    for idx, b in enumerate(beams):
+        if not isinstance(b, dict): continue
+        b_w = b.get("width_m") or (float(b.get("width_mm", 250)) / 1000.0)
+        b_d = b.get("depth_m") or (float(b.get("depth_mm", 400)) / 1000.0)
+        b_span = float(b.get("clear_span_m") or 4.50)
+        b_cnt  = int(b.get("count") or 1)
+        concrete_elements.append({
+            "type": "beam", "class": "A", "count": b_cnt,
+            "width_m": b_w, "depth_m": b_d, "clear_span_m": b_span
+        })
+
+    # 4. Slabs -> Section 3 (Concrete)
+    for idx, s in enumerate(slabs):
+        if not isinstance(s, dict): continue
+        s_area = float(s.get("area_m2") or 120.0)
+        s_t    = s.get("thickness_m") or (float(s.get("thickness_mm", 100)) / 1000.0)
+        s_cnt  = int(s.get("count") or 1)
+        concrete_elements.append({
+            "type": "slab", "class": "B", "count": s_cnt,
+            "area_m2": s_area, "thickness_m": s_t
+        })
+
+    # 5. CHB Walls -> Section 4 (Masonry)
+    for idx, w in enumerate(walls):
+        if not isinstance(w, dict): continue
+        w_len = float(w.get("length_m") or 14.0)
+        w_h   = float(w.get("height_m") or 3.20)
+        w_t   = int(w.get("thickness_mm") or 150)
+        w_pf  = int(w.get("plaster_faces") or 2)
+        wall_elements.append({
+            "length_m": w_len, "height_m": w_h, "thickness_mm": w_t, "plaster_faces": w_pf
         })
 
     if footing_specs:
         inputs[2]["footing_specs"] = footing_specs
     if concrete_elements:
         inputs[3]["elements"] = concrete_elements
+    if wall_elements:
+        inputs[4]["wall_elements"] = wall_elements
     if rebar_elements:
         inputs[5]["rebar_elements"] = rebar_elements
 

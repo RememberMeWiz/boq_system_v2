@@ -2,8 +2,8 @@
   "status": "success",
   "input_source": "pdf_vision_enriched",
   "summary": {
-    "grand_total_direct_cost": 1151173.63,
-    "subtotal_2_to_13": 1097020.47
+    "grand_total_direct_cost": 1210701.54,
+    "subtotal_2_to_13": 1154674.61
   },
   "boq": [
     {
@@ -140,14 +140,14 @@
       "division": "Section V \u2014 Steel Reinforcement",
       "trade": "Steel Reinforcement",
       "description": "Rebar Weight",
-      "quantity": 161.13,
+      "quantity": 1150.1,
       "unit": "kg",
-      "material_unit_cost": 43.6187,
-      "labor_unit_cost": 12.1802,
+      "material_unit_cost": 43.6174,
+      "labor_unit_cost": 12.18,
       "equipment_unit_cost": 2.5,
-      "total_unit_cost": 58.2989,
-      "total_amount": 9393.7,
-      "backup_qty": 156.2961,
+      "total_unit_cost": 58.2974,
+      "total_amount": 67047.84,
+      "backup_qty": 1115.597,
       "status": "Confirmed"
     },
     {
