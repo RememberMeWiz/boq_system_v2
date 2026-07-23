@@ -7,6 +7,8 @@ import RightPanel from './components/RightPanel';
 import UploadModal from './components/UploadModal';
 import ParserDashboard from './components/ParserDashboard';
 
+const EMPTY_BOQ = [];
+
 // ── Custom Drawing Dropdown with Delete Button ────────────────────────────────
 function DrawingDropdownMenu({ drawing, drawingsList, onSelect, onDelete }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -508,7 +510,7 @@ export default function App() {
           )}
 
           {boqView === 'accordion' && (
-            <TradeAccordion boqItems={data?.boq || []} />
+            <TradeAccordion boqItems={data?.boq || EMPTY_BOQ} />
           )}
 
           {boqView === 'rebar' && (

@@ -335,16 +335,16 @@ const PREFIX_TO_SECTION = {
   'SP': 'XIII', 'XIII': 'XIII', '13': 'XIII', 13: 'XIII',
 };
 
+const ALL_IDS = SECTION_META.map(s => s.id);
+
 // ---------------------------------------------------------------------------
 // Main TradeAccordion export
 // ---------------------------------------------------------------------------
 export default function TradeAccordion({ boqItems }) {
-  const allIds = SECTION_META.map(s => s.id);
-
   // Group items by section_id or item_code prefix
   const groupBoqItems = useCallback((items) => {
     const grouped = {};
-    allIds.forEach(sid => { grouped[sid] = []; });
+    ALL_IDS.forEach(sid => { grouped[sid] = []; });
     if (items && Array.isArray(items) && items.length > 0) {
       items.forEach(item => {
         let rawPrefix = item.section_id !== undefined ? item.section_id : (item.item_code ? item.item_code.split('-')[0] : 'III');
@@ -364,7 +364,7 @@ export default function TradeAccordion({ boqItems }) {
       });
     }
     return grouped;
-  }, [allIds]);
+  }, []);
 
   const [rows, setRows] = useState(() => groupBoqItems(boqItems));
 
@@ -375,17 +375,17 @@ export default function TradeAccordion({ boqItems }) {
 
   // Open state — all open by default
   const [openSections, setOpenSections] = useState(() =>
-    Object.fromEntries(allIds.map(id => [id, true]))
+    Object.fromEntries(ALL_IDS.map(id => [id, true]))
   );
-  const allOpen = allIds.every(id => openSections[id]);
+  const allOpen = ALL_IDS.every(id => openSections[id]);
 
   const toggleSection = useCallback((id) => {
     setOpenSections(prev => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
   const toggleAll = useCallback(() => {
-    setOpenSections(Object.fromEntries(allIds.map(id => [id, !allOpen])));
-  }, [allOpen, allIds]);
+    setOpenSections(Object.fromEntries(ALL_IDS.map(id => [id, !allOpen])));
+  }, [allOpen]);
 
   const onRateChange = useCallback((rowId, field, value) => {
     setRows(prev => {
