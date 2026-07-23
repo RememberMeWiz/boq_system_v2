@@ -201,13 +201,15 @@ def parser_ingest():
                     saved_path = os.path.join(root, filename)
                     break
 
-        if not saved_path or not os.path.exists(saved_path):
-            # Fallback to default sample drawing if specified file isn't on disk
-            default_sample = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
-            if os.path.exists(default_sample):
-                saved_path = default_sample
-            else:
-                return jsonify({"error": f"Drawing file '{filename}' not found on server."}), 404
+    is_fallback = False
+    if not saved_path or not os.path.exists(saved_path):
+        # Fallback to default sample drawing if specified file isn't on disk
+        default_sample = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
+        if os.path.exists(default_sample):
+            saved_path = default_sample
+            is_fallback = True
+        else:
+            return jsonify({"error": f"Drawing file '{filename}' not found on server."}), 404
 
     allowed_exts = {"pdf", "dxf", "dwg"}
     ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
@@ -227,13 +229,17 @@ def parser_ingest():
         if ext == "pdf":
             inspector = VisionBlueprintInspector(filepath=saved_path)
             payload = inspector.enrich(payload)
+
+        if is_fallback:
+            payload["input_source"] = "sample_fallback"
+            payload["is_fallback"] = True
     except Exception as exc:
         app.logger.exception("Parsing failed for %s", filename)
         return jsonify({"error": f"Parsing failed: {exc}"}), 422
 
     _PARSER_SESSIONS[session_id] = {"payload": payload, "saved_path": saved_path}
 
-    return jsonify({"session_id": session_id, "payload": payload}), 200
+    return jsonify({"session_id": session_id, "payload": payload, "source": "sample_fallback" if is_fallback else "file_parsed"}), 200
 
 
 @app.route("/api/v1/parser/reconstruct", methods=["POST"])
