@@ -113,53 +113,19 @@ export default function App() {
   }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
-  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null) => {
+  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null, activeSessionId = null) => {
     setLoading(true);
     setBanner(null);
 
+    const targetName = uploadedFile ? uploadedFile.name : (selectedDrawingName || drawing || 'plan part 1.pdf');
+    setDrawing(targetName);
+    setDrawingsList(prev => prev.includes(targetName) ? prev : [targetName, ...prev]);
+
     try {
-      let reqOptions = { method: 'POST' };
+      let currentSessionId = activeSessionId;
 
-      if (uploadedFile) {
-        const formData = new FormData();
-        formData.append('file', uploadedFile);
-        reqOptions.body = formData;
-      } else {
-        const targetName = selectedDrawingName || drawing || 'plan part 1.pdf';
-        reqOptions.headers = { 'Content-Type': 'application/json' };
-        reqOptions.body = JSON.stringify({ drawing_name: targetName });
-      }
-
-      const res  = await fetch('/api/v1/process-drawing', reqOptions);
-      const json = await res.json();
-
-      if (json.status === 'success') {
-        setData(json);
-        const fileName = uploadedFile ? uploadedFile.name : json.drawing?.filename || drawing || 'imported_drawing.pdf';
-        setDrawing(fileName);
-
-        // Add file name to drawings list if not already present
-        setDrawingsList(prev => prev.includes(fileName) ? prev : [fileName, ...prev]);
-
-        const sourceLabel = json.input_source === 'pdf_parsed' ? 'PDF Text Parsed' : 'Fajardo Takeoff Engine';
-        setBanner({
-          type: 'success',
-          msg: `✓ Drawing processed [${sourceLabel}]: ${json.boq?.length || 30} takeoff items computed. Grand Total: ₱${(json.summary?.grand_total_direct_cost || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
-        });
-      } else {
-        throw new Error(json.reason || 'Failed to process drawing');
-      }
-
-      // Fetch Rebar Optimization
-      const rRes  = await fetch('/api/v1/optimize-rebar', { method: 'POST' });
-      const rJson = await rRes.json();
-      if (rJson.status === 'success') {
-        setRebarData(rJson.optimizations);
-      }
-
-      // Parser ingest (PDF only) — feeds the Parser & Signoff tab
-      const currentFileName = uploadedFile ? uploadedFile.name : (selectedDrawingName || drawing || 'plan part 1.pdf');
-      if (currentFileName.toLowerCase().endsWith('.pdf')) {
+      // Step 1: Run Parser Ingest FIRST (for PDFs) to get single unified session_id & verification_gate
+      if (!currentSessionId && targetName.toLowerCase().endsWith('.pdf')) {
         try {
           let pReqOptions = { method: 'POST' };
           if (uploadedFile) {
@@ -168,12 +134,51 @@ export default function App() {
             pReqOptions.body = pFormData;
           } else {
             pReqOptions.headers = { 'Content-Type': 'application/json' };
-            pReqOptions.body = JSON.stringify({ drawing_name: currentFileName });
+            pReqOptions.body = JSON.stringify({ drawing_name: targetName });
           }
           const pRes  = await fetch('/api/v1/parser/ingest', pReqOptions);
           const pJson = await pRes.json();
-          if (pRes.ok) setParserData(pJson);
-        } catch { /* parser ingest is non-blocking */ }
+          if (pRes.ok) {
+            setParserData(pJson);
+            currentSessionId = pJson.session_id;
+          }
+        } catch { /* non-blocking fallback */ }
+      }
+
+      // Step 2: Run process-drawing WITH session_id to reuse session and enforce verification gate
+      let reqOptions = { method: 'POST', headers: { 'Content-Type': 'application/json' } };
+      let bodyData = { drawing_name: targetName };
+      if (currentSessionId) bodyData.session_id = currentSessionId;
+      reqOptions.body = JSON.stringify(bodyData);
+
+      const res  = await fetch('/api/v1/process-drawing', reqOptions);
+      const json = await res.json();
+
+      if (res.status === 409) {
+        // Verification Gate Blocked!
+        setData(null);
+        setBanner({
+          type: 'error',
+          msg: `🔒 Takeoff Calculation BLOCKED by Verification Gate: ${json.message || 'Resolve blocking issues or submit signoff in Parser & Signoff tab.'}`
+        });
+      } else if (json.status === 'success') {
+        setData(json);
+        const sourceLabel = json.input_source === 'pdf_vision_enriched'
+          ? 'AI Vision Enriched'
+          : (json.input_source === 'pdf_vector_parsed' ? 'Vector Parsed' : 'Fajardo Takeoff Engine');
+        setBanner({
+          type: 'success',
+          msg: `✓ Drawing processed [${sourceLabel}]: ${json.boq?.length || 30} takeoff items computed. Grand Total: ₱${(json.summary?.grand_total_direct_cost || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+        });
+      } else {
+        throw new Error(json.reason || json.message || 'Failed to process drawing');
+      }
+
+      // Fetch Rebar Optimization
+      const rRes  = await fetch('/api/v1/optimize-rebar', { method: 'POST' });
+      const rJson = await rRes.json();
+      if (rJson.status === 'success') {
+        setRebarData(rJson.optimizations);
       }
     } catch (err) {
       setBanner({
@@ -488,7 +493,15 @@ export default function App() {
           )}
 
           {boqView === 'parser' && (
-            <ParserDashboard parserData={parserData} setParserData={setParserData} />
+            <ParserDashboard
+              parserData={parserData}
+              setParserData={setParserData}
+              onSignoffComplete={(updatedGate) => {
+                if (parserData?.session_id) {
+                  fetchTakeoff(null, drawing, parserData.session_id);
+                }
+              }}
+            />
           )}
         </div>
 

@@ -339,7 +339,7 @@ function ReconstructionPanel({ svgCode }) {
 }
 
 // ── Main ParserDashboard Component ────────────────────────────────────────────
-export default function ParserDashboard({ parserData, setParserData }) {
+export default function ParserDashboard({ parserData, setParserData, onSignoffComplete }) {
   const [signoffIssue, setSignoffIssue] = useState(null);
   const [svgCode, setSvgCode]           = useState(null);
   const [loadingSvg, setLoadingSvg]     = useState(false);
@@ -390,6 +390,9 @@ export default function ParserDashboard({ parserData, setParserData }) {
         payload: { ...prev.payload, verification_gate: json.verification_gate },
       }));
       setSignoffIssue(null);
+      if (typeof onSignoffComplete === 'function') {
+        onSignoffComplete(json.verification_gate);
+      }
     } catch (err) {
       setError(err.message);
     }
