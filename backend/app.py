@@ -12,7 +12,9 @@ import io
 import uuid
 import tempfile
 import time
+from datetime import datetime, timezone
 from flask import Flask, request, jsonify, send_from_directory, render_template_string, send_file
+
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,7 +25,6 @@ try:
 except ImportError:
     pass
 
-# Engine imports (function-based V2 engine)
 from engine.fajardo import (
     run_full_takeoff,
     calculate_section_2_earthworks,
@@ -43,6 +44,8 @@ from engine.fajardo import (
 )
 from engine.rebar_optimizer import RebarStockOptimizer, RebarCutDemand
 from engine.pdf_dxf_parser import DrawingParserV2
+from engine.vision_parser import VisionBlueprintInspector
+from engine.reconstruction_module import VisualReconstructionEngine, generate_comparison
 from engine.dupa_loader import get_dupa_qa_summary
 from engine.vision_ocr import crop_schedule_region, parse_schedule_text, auto_scan_pdf_schedules
 from api.manifest import generate_project_manifest
@@ -52,6 +55,10 @@ from api.local_db import init_db as init_local_db, save_session as local_save_se
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FRONTEND_DIST_DIR = os.path.join(BASE_DIR, "frontend", "dist")
+
+# Parser session cache for in-memory & SQLite persistence
+_PARSER_SESSIONS: dict = {}
+
 
 # Initialize local SQLite DB (boq_v2.db)
 init_local_db()
@@ -138,10 +145,168 @@ def get_cmpd_rates():
     return jsonify({"status": "success", "rates": rates_json})
 
 
+# --------------------------------------------------------------------
+# Stage 4 Parser API Endpoints (tech_spec_parser_v2.md §2.1)
+# --------------------------------------------------------------------
+
+@app.route("/api/v1/parser/ingest", methods=["POST"])
+def parser_ingest():
+    """
+    Accepts a multipart file upload (field 'file'), runs deterministic DrawingParserV2
+    + VisionBlueprintInspector enrichment, computes verification_gate status, and returns payload.
+    """
+    if "file" not in request.files:
+        return jsonify({"error": "No file part in request. Expected multipart field 'file'."}), 400
+
+    file = request.files["file"]
+    if file.filename == "":
+        return jsonify({"error": "Empty filename."}), 400
+
+    allowed_exts = {"pdf", "dxf", "dwg"}
+    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    if ext not in allowed_exts:
+        return jsonify({"error": f"Unsupported file type. Allowed: {sorted(allowed_exts)}"}), 400
+
+    session_id = str(uuid.uuid4())
+    uploads_dir = os.path.join(BASE_DIR, "uploads")
+    os.makedirs(uploads_dir, exist_ok=True)
+    saved_path = os.path.join(uploads_dir, f"{session_id}_{file.filename}")
+    file.save(saved_path)
+
+    if ext == "dwg":
+        return jsonify({
+            "error": "dwg_conversion_required",
+            "message": "DWG files require conversion to DXF via ODA File Converter CLI before ingestion.",
+        }), 422
+
+    try:
+        parser = DrawingParserV2(filepath=saved_path, filename=file.filename)
+        payload = parser.parse()
+
+        if ext == "pdf":
+            inspector = VisionBlueprintInspector(filepath=saved_path)
+            payload = inspector.enrich(payload)
+    except Exception as exc:
+        app.logger.exception("Parsing failed for %s", file.filename)
+        return jsonify({"error": f"Parsing failed: {exc}"}), 422
+
+    _PARSER_SESSIONS[session_id] = {"payload": payload, "saved_path": saved_path}
+
+    return jsonify({"session_id": session_id, "payload": payload}), 200
+
+
+@app.route("/api/v1/parser/reconstruct", methods=["POST"])
+def parser_reconstruct():
+    """
+    Accepts structural payload (or session_id) and returns SVG vector drawing
+    + side-by-side / direct overlay PNG comparison dashboard via VisualReconstructionEngine.
+    """
+    body = request.get_json(silent=True) or {}
+    payload = body.get("payload")
+    session_id = body.get("session_id")
+
+    if payload is None and session_id:
+        sess = _PARSER_SESSIONS.get(session_id)
+        if sess:
+            payload = sess.get("payload")
+
+    if payload is None:
+        return jsonify({"error": "Provide either 'payload' JSON or a valid 'session_id'."}), 400
+
+    try:
+        engine = VisualReconstructionEngine(payload)
+        svg_code = engine.render_svg()
+
+        # Generate comparison dashboard if output directory exists
+        out_dir = os.path.join(BASE_DIR, "outputs")
+        os.makedirs(out_dir, exist_ok=True)
+        dashboard_path = os.path.join(out_dir, f"dashboard_{session_id or 'latest'}.png")
+
+        original_pdf_path = None
+        if session_id and session_id in _PARSER_SESSIONS:
+            original_pdf_path = _PARSER_SESSIONS[session_id].get("saved_path")
+
+        comp_path = generate_comparison(original_pdf_path, payload, dashboard_path)
+
+        return jsonify({
+            "status": "success",
+            "svg_code": svg_code,
+            "comparison_dashboard_path": comp_path,
+        }), 200
+    except Exception as exc:
+        app.logger.exception("Reconstruction rendering failed")
+        return jsonify({"error": f"Reconstruction failed: {exc}"}), 500
+
+
+@app.route("/api/v1/parser/signoff", methods=["POST"])
+def parser_signoff():
+    """
+    Accepts itemized resolutions array (tech_spec_parser_v2.md §3.2).
+    Validates per-issue action against resolution_required[], appends resolution_log[],
+    and recomputes verification_gate.status (READY when all issues resolved).
+    """
+    body = request.get_json(silent=True) or {}
+    session_id = body.get("session_id")
+    resolutions = body.get("resolutions")
+
+    if not session_id or session_id not in _PARSER_SESSIONS:
+        return jsonify({"error": "Invalid or missing 'session_id'."}), 400
+    if not isinstance(resolutions, list) or not resolutions:
+        return jsonify({"error": "'resolutions' must be a non-empty array."}), 400
+
+    payload = _PARSER_SESSIONS[session_id]["payload"]
+    gate = payload["verification_gate"]
+    all_issues_by_id = {i["id"]: i for i in gate["blocking_issues"] + gate["warning_issues"]}
+
+    errors = []
+    accepted = []
+    for resolution in resolutions:
+        issue_id = resolution.get("issue_id")
+        action = resolution.get("action")
+        note = resolution.get("note")
+        signed_off_by = resolution.get("signed_off_by")
+
+        issue = all_issues_by_id.get(issue_id)
+        if issue is None:
+            errors.append(f"Unknown issue_id: '{issue_id}'.")
+            continue
+        if action not in issue.get("resolution_required", []):
+            errors.append(f"Action '{action}' is not permitted for issue '{issue_id}' (allowed: {issue.get('resolution_required')}).")
+            continue
+        if not note or not signed_off_by:
+            errors.append(f"issue_id '{issue_id}' requires both 'note' and 'signed_off_by'.")
+            continue
+
+        accepted.append((issue, resolution, action, note, signed_off_by))
+
+    if errors:
+        return jsonify({"error": "One or more resolutions were rejected.", "details": errors}), 400
+
+    now = datetime.now(timezone.utc).isoformat()
+    for issue, resolution, action, note, signed_off_by in accepted:
+        issue["resolved"] = True
+        gate["resolution_log"].append({
+            "issue_id": issue["id"],
+            "action": action,
+            "note": note,
+            "signed_off_by": signed_off_by,
+            "signed_off_at": now,
+            "resolved": True,
+        })
+
+    blocking_unresolved = any(not i["resolved"] for i in gate["blocking_issues"])
+    warning_unresolved = any(not i["resolved"] for i in gate["warning_issues"])
+    gate["status"] = "BLOCKED" if (blocking_unresolved or warning_unresolved) else "READY"
+    gate["computed_at"] = now
+
+    return jsonify({"verification_gate": gate}), 200
+
+
 @app.route("/api/v1/dupa-qa", methods=["GET"])
 def get_dupa_qa():
     """Returns the QA summary of official DPWH Detailed Unit Price Analysis (DUPA) rates."""
     return jsonify(get_dupa_qa_summary())
+
 
 
 # --------------------------------------------------------------------
@@ -315,49 +480,54 @@ def _sample_elements_json():
     ]
 
 
+@app.route("/api/v1/solver/process", methods=["POST"])
 @app.route("/api/v1/process-drawing", methods=["POST"])
 def process_drawing():
     """
-    Runs the full 13-trade Fajardo takeoff.
-    If a PDF/DXF file is uploaded, attempts to extract project dimensions from it.
-    Falls back to sample inputs when parsing yields no data.
-    Auto-saves session to Supabase V2 (if configured) and writes last_session.json cache.
+    Runs the full 13-trade Fajardo cost takeoff.
+    Per tech_spec_parser_v2.md §2.1 & §4, enforces Verification Gate Guardrail:
+    Hard-rejects with HTTP 409 Conflict if verification_gate.status == 'BLOCKED'.
     """
-    file = request.files.get("file")
     req_data = request.get_json(silent=True) or {}
+    session_id = req_data.get("session_id")
+
+    # Verification Gate Check
+    if session_id and session_id in _PARSER_SESSIONS:
+        payload = _PARSER_SESSIONS[session_id].get("payload", {})
+        gate = payload.get("verification_gate", {})
+        if gate.get("status") == "BLOCKED":
+            unresolved = [i for i in gate.get("blocking_issues", []) if not i.get("resolved")]
+            return jsonify({
+                "error": "verification_gate_blocked",
+                "message": "Solver execution blocked by verification gate. Resolve blocking issues or provide itemized signoff.",
+                "verification_gate": gate,
+                "unresolved_blocking_issues": unresolved,
+            }), 409
+
+    file = request.files.get("file")
     drawing_name = file.filename if file else req_data.get("drawing_name") or "plan part 1.pdf"
-    session_id = str(uuid.uuid4())
+    session_id = session_id or str(uuid.uuid4())
+
 
     target_path = None
     user_downloads = r"E:\Users\Louis\Downloads"
     uploads_dir = os.path.join(BASE_DIR, "uploads")
 
-    possible_paths = [
-        os.path.join(user_downloads, drawing_name),
-        os.path.join(uploads_dir, drawing_name),
-        os.path.join(BASE_DIR, drawing_name),
-    ]
-    for p in possible_paths:
-        if os.path.exists(p):
-            target_path = p
-            break
-
-    parser = DrawingParserV2()
+    active_path = target_path or os.path.join(BASE_DIR, "sample_structural_plan.pdf")
     if file:
         os.makedirs(uploads_dir, exist_ok=True)
-        save_path = os.path.join(uploads_dir, file.filename)
-        file.save(save_path)
-        suffix = os.path.splitext(file.filename)[-1].lower()
-        parse_res = parser.parse_dxf(save_path) if suffix in ('.dxf', '.dwg') else parser.parse_pdf(save_path)
-    elif target_path:
-        suffix = os.path.splitext(target_path)[-1].lower()
-        parse_res = parser.parse_dxf(target_path) if suffix in ('.dxf', '.dwg') else parser.parse_pdf(target_path)
-    else:
-        sample_pdf = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
-        parse_res = parser.parse_pdf(sample_pdf)
+        active_path = os.path.join(uploads_dir, file.filename)
+        file.save(active_path)
 
-    project_inputs = parse_res.project_inputs
+    try:
+        parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
+        payload = parser.parse()
+        project_inputs = payload.get("schedules", {})
+    except Exception as exc:
+        project_inputs = {}
+
     source = "pdf_parsed" if project_inputs else "sample_defaults"
+
 
     # Run full 13-trade engine
     takeoff = run_full_takeoff(project_inputs)

@@ -279,14 +279,19 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 10:16:00 PST] — REDLINED STAGE 3 ARCHITECTURE TECH SPEC COMPLETED
+---
 
-### 1. Architectural Redlines Integrated
-Successfully synced all 3 redlines in [`tech_spec_parser_v2.md`](file:///e:/Users/Louis/Documents/boq_system_v2/tech_spec_parser_v2.md):
-1. **Endpoint Naming Standardization**: Explicitly defined `POST /api/v1/solver/process` under the `solver/*` namespace. Explicitly documented that solver execution is invoked by the frontend upon user action, NOT auto-invoked by `/signoff`.
-2. **Itemized Per-Issue `/signoff` Schema**: Added Section 3.2 itemized signoff schema (`POST /api/v1/parser/signoff`) accepting `resolutions[]`. Replaced single global `signoff` block with `resolution_log[]` in `verification_gate`.
-3. **Sheet S-7 Classification**: Added `missing_connection_details` for Sheet `S-7` (connection & weld details) as a **`BLOCKING`** severity issue (`sug_4`), requiring explicit signoff or standard DPWH 10% hardware allowance.
-4. **Internal Cross-Reference Numbering**: Fixed rule cross-reference numbers (4.3 & 4.5) in Section 4.
+## [2026-07-23 10:41:00 PST] — STAGE 4 PARSER PIPELINE & VERIFICATION GATE INTEGRATION TEST VERIFIED
+
+### 1. Verification Test Results (`scratch/test_stage4_pipeline.py`)
+- Executed automated integration test suite validating all Stage 4 parser endpoints & verification gate rules:
+  1. `POST /api/v1/parser/ingest`: Successfully ingests PDF blueprint, performs sheet detection & schedule parsing, generates structural JSON payload.
+  2. `POST /api/v1/parser/reconstruct`: Successfully renders SVG vector drawing XML & side-by-side comparison dashboards.
+  3. `POST /api/v1/solver/process` (Guardrail): Hard-rejects `BLOCKED` payloads with `HTTP 409 Conflict`.
+  4. `POST /api/v1/parser/signoff`: Validates itemized resolutions, appends per-issue audit entries to `verification_gate.resolution_log[]`, and promotes gate status to `READY`.
+  5. `POST /api/v1/solver/process` (Post-Signoff): Executes full 13-trade civil cost takeoff once gate status is `READY`.
+
+
 
 
 
