@@ -90,6 +90,8 @@ export default function App() {
   const [tradeTotals, setTradeTotals] = useState({});
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
+  const [drawingSessions, setDrawingSessions] = useState({}); // drawing_name -> session_id mapping
+
   // Load saved sessions to populate drawing dropdown
   const loadSavedSessions = async () => {
     try {
@@ -122,10 +124,14 @@ export default function App() {
     setDrawingsList(prev => prev.includes(targetName) ? prev : [targetName, ...prev]);
 
     try {
-      let currentSessionId = activeSessionId;
+      // Preserve session_id across navigation (dropdown, refresh, mount)
+      let currentSessionId = activeSessionId || drawingSessions[targetName] || (parserData?.session_id);
 
-      // Step 1: Run Parser Ingest FIRST (for PDFs) to get single unified session_id & verification_gate
-      if (!currentSessionId && targetName.toLowerCase().endsWith('.pdf')) {
+      const ext = targetName.split('.').pop().toLowerCase();
+      const isParseable = ['pdf', 'dxf', 'dwg'].includes(ext);
+
+      // Step 1: Run Parser Ingest FIRST (for PDF/DXF/DWG) to get single unified session_id & verification_gate
+      if (!currentSessionId && isParseable) {
         try {
           let pReqOptions = { method: 'POST' };
           if (uploadedFile) {
@@ -141,8 +147,22 @@ export default function App() {
           if (pRes.ok) {
             setParserData(pJson);
             currentSessionId = pJson.session_id;
+            setDrawingSessions(prev => ({ ...prev, [targetName]: pJson.session_id }));
           }
         } catch { /* non-blocking fallback */ }
+      } else if (currentSessionId && (!parserData || parserData.session_id !== currentSessionId)) {
+        // Restore parser data for existing session if available
+        try {
+          const pRes = await fetch('/api/v1/parser/reconstruct', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session_id: currentSessionId }),
+          });
+          const pJson = await pRes.json();
+          if (pRes.ok) {
+            setParserData(prev => ({ session_id: currentSessionId, payload: pJson.payload || prev?.payload }));
+          }
+        } catch { /* ignore */ }
       }
 
       // Step 2: Run process-drawing WITH session_id to reuse session and enforce verification gate
