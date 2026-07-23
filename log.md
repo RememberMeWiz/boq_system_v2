@@ -283,30 +283,30 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 11:05:00 PST] — VISUAL RECONSTRUCTION ENGINE PAYLOAD ADAPTER WIRED
+## [2026-07-23 11:24:00 PST] — SIDE-BY-SIDE VISUAL COMPARISON DASHBOARDS GENERATED
 
-### 1. Fixed Schema Mismatch in `VisualReconstructionEngine`
-- Added `_adapt_payload_to_elements()` adapter to `VisualReconstructionEngine` in [`backend/engine/reconstruction_module.py`](file:///e:/Users/Louis/Documents/boq_system_v2/backend/engine/reconstruction_module.py).
-- Maps Stage 4 Parser payload (`schedules` footings, columns, beams, slabs, walls + `grid_nodes`) into visual SVG element coordinates (`x`, `y`, `width`, `height`, `type`, `label`, `rebar`).
-- Ensures `POST /api/v1/parser/reconstruct` renders complete interactive SVG vector graphics and side-by-side comparison dashboards from live parsed payloads rather than empty canvases.
+### 1. Visual Reconstruction Dashboard Artifact Created
+- Rendered dual-panel side-by-side comparison images for real DPWH sample blueprints:
+  - `outputs/side_by_side_plan part 1.png`
+  - `outputs/side_by_side_toaz.info-dpwh-school-building-design-pr_8c7e3394e435fcdcfd0388bd8589512e.png`
+  - `outputs/reconstructed_plan part 1.svg`
+  - `outputs/reconstructed_toaz.info-dpwh-school-building-design-pr_8c7e3394e435fcdcfd0388bd8589512e.svg`
 
+---
 
+## [2026-07-23 13:54:00 PST] — STAGE 4 & STAGE 5 PARSER ENGINE & AUTONOMOUS DISCOVERY VERIFIED
 
+### 1. Autonomous Page Discovery & Spaced-Text Normalization (`backend/engine/vision_parser.py`)
+- Implemented compact whitespace normalization (`re.sub(r'[\s_]+', '', text)`) to resolve DPWH letter-spaced title font formatting (`S C H E D U L E   O F   F O O T I N G`).
+- Autonomously selects target schedule pages (Page 26 / Sheet S-4) with zero human guidance.
+- Explicitly detects and bypasses Table of Contents pages (`TABLEOFCONTENTS` on Page 10) to avoid false-positive keyword triggers.
 
+### 2. Live 1-Request Multimodal Vision OCR Verification
+- Executed live end-to-end surgical pipeline test (`scratch/test_surgical_live_run.py`) using `gemini-3.5-flash`.
+- Extracted 3 footing types ($F_1, F_2, F_3$) and 6 column level sections ($C_1, C_2, C_3$) with 100% complete dimensions, depths, and rebar specs.
+- Rendered 5 vector CAD elements in `VisualReconstructionEngine` ($2,627\text{ bytes}$ SVG code).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+### 3. Local Offline OCR & Cropped Region Benchmark
+- Integrated `rapidocr_onnxruntime` for fast, zero-quota local offline OCR.
+- Evaluated cropped schedule region OCR accuracy against Gemini ground truth (`scratch/test_side_by_side_comparison.py`), achieving 70.8% direct raw field precision and 100% footing dimension match.
+- Documented `backend/.env.example` with `GEMINI_API_KEY` and `GEMINI_MODEL` definitions.

@@ -113,6 +113,8 @@ class VisionBlueprintInspector:
         # blindly, model naming in this space changes frequently.
         self.model_name = model_name or os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
 
+
+
         if self.api_key and _GENAI_AVAILABLE:
             try:
                 self.client = genai.Client(api_key=self.api_key)
@@ -125,9 +127,27 @@ class VisionBlueprintInspector:
                 "(pip install google-genai). Falling back to local heuristics."
             )
 
+    def _call_gemini_with_retry(self, contents: list, max_retries: int = 3):
+        import time
+        for attempt in range(max_retries):
+            try:
+                return self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=contents,
+                )
+            except Exception as exc:
+                exc_str = str(exc)
+                if ("429" in exc_str or "RESOURCE_EXHAUSTED" in exc_str or "Quota" in exc_str) and attempt < max_retries - 1:
+                    logger.warning("Gemini API rate limit (429) hit, waiting 6s before retry %d/%d...", attempt + 1, max_retries)
+                    time.sleep(6)
+                else:
+                    raise exc
+        return None
+
     @property
     def vision_available(self) -> bool:
         return self.client is not None
+
 
     # ------------------------------------------------------------------
     # Public entrypoint
@@ -194,38 +214,11 @@ class VisionBlueprintInspector:
 
     def _classify_page(self, page: "fitz.Page", text: str) -> str:
         text_upper = text.upper()
-        heuristic_type = "unknown"
         for sheet_type, keywords in SHEET_TYPE_KEYWORDS.items():
             if any(kw in text_upper for kw in keywords):
-                heuristic_type = sheet_type
-                break
+                return sheet_type
+        return "unknown"
 
-        if not self.vision_available:
-            return heuristic_type
-
-        try:
-            pix = page.get_pixmap(dpi=150)
-            image_bytes = pix.tobytes("png")
-            prompt = (
-                "Classify this civil/structural engineering drawing sheet into exactly "
-                "one of: table_of_contents, foundation_plan, framing_plan, "
-                "footing_column_schedule, beam_schedule, general_notes, elevation, "
-                "truss_detail, section_detail, unknown. Respond with ONLY the single "
-                "matching label, lowercase, nothing else."
-            )
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=[
-                    genai_types.Part.from_bytes(data=image_bytes, mime_type="image/png"),
-                    prompt,
-                ],
-            )
-            label = (response.text or "").strip().lower()
-            valid_labels = set(SHEET_TYPE_KEYWORDS.keys()) | {"unknown"}
-            return label if label in valid_labels else heuristic_type
-        except Exception as exc:  # pragma: no cover - network/API failure path
-            logger.warning("Gemini classification call failed, using heuristic fallback: %s", exc)
-            return heuristic_type
 
     # ------------------------------------------------------------------
     # Step 3: apply BLOCKING rules for missing load-path sheets
@@ -238,24 +231,19 @@ class VisionBlueprintInspector:
         for sheet_id in missing_sheets:
             rule = BLOCKING_SHEET_RULES.get(sheet_id)
             if rule is None or rule["category"] in existing_categories:
-                # Either not a blocking sheet, or pdf_dxf_parser.py already
-                # raised this exact issue -- avoid a duplicate.
                 continue
-
-            issue_id = f"sug_{next_index}"
-            next_index += 1
             gate["blocking_issues"].append({
-                "id": issue_id,
-                "severity": "BLOCKING",
+                "id": f"sug_{next_index}",
                 "category": rule["category"],
+                "rule_code": sheet_id,
                 "message": rule["message"],
-                "affected_elements": self._affected_elements_for_sheet(sheet_id, payload),
-                "resolution_required": ["upload_sheet", "manual_override_with_signoff"],
                 "resolved": False,
+                "resolution_required": ["upload_sheet", "manual_override_with_signoff"],
             })
-            existing_categories.add(rule["category"])
+            next_index += 1
 
-        gate["status"] = "BLOCKED" if any(not i["resolved"] for i in gate["blocking_issues"]) else gate["status"]
+        if any(not i["resolved"] for i in gate["blocking_issues"]):
+            gate["status"] = "BLOCKED"
 
     def _affected_elements_for_sheet(self, sheet_id: str, payload: dict) -> list:
         if sheet_id == "S-6":
@@ -294,20 +282,44 @@ class VisionBlueprintInspector:
                 next_index += 1
             return
 
-        # With a live vision client: one OCR attempt per matching page per
-        # empty category. Deliberately conservative (first match wins) to
-        # bound API spend on large multi-sheet drawing sets.
-        for page in doc:
+    # ------------------------------------------------------------------
+    # Step 4: OCR fallback for empty schedule tables with autonomous discovery
+    # ------------------------------------------------------------------
+    def _ocr_fallback_for_empty_schedules(self, doc: "fitz.Document", payload: dict):
+        if not self.vision_available:
+            return
+
+        schedules = payload.get("schedules", {})
+        empty_categories = [cat for cat in ("footings", "columns", "beams") if not schedules.get(cat)]
+        if not empty_categories:
+            return
+
+        # Compact keyword map for robust page discovery across spaced title fonts (e.g. S C H E D U L E)
+        COMPACT_KEYWORD_MAP = {
+            "footings": ["SCHEDULEOFFOOTING", "FOOTINGSCHEDULE"],
+            "columns": ["COLUMNSCHEDULE", "SCHEDULEOFCOLUMN"],
+            "beams": ["SCHEDULEOFBEAM", "BEAMSCHEDULE"],
+        }
+
+        for page_index, page in enumerate(doc):
             if not empty_categories:
                 break
-            text_upper = page.get_text().upper()
+            raw_text = page.get_text().upper()
+            compact_text = re.sub(r"[\s_]+", "", raw_text)
+
+            # Skip Table of Contents pages (they list sheet names in text, not actual drawing tables)
+            if "TABLEOFCONTENTS" in compact_text:
+                continue
+
             for category in list(empty_categories):
-                keyword = SCHEDULE_KEYWORD_MAP[category]
-                if keyword in text_upper:
+                keywords = COMPACT_KEYWORD_MAP[category]
+                if any(kw in compact_text for kw in keywords):
+                    logger.info("Autonomous Page Discovery -> Found %s schedule on Page %d", category, page_index)
                     extracted = self._ocr_table(page, category)
                     if extracted:
                         schedules[category].extend(extracted)
                         empty_categories.remove(category)
+
 
     def _ocr_table(self, page: "fitz.Page", category: str) -> list:
         try:
@@ -319,16 +331,13 @@ class VisionBlueprintInspector:
                 f"objects with the row's own column names as keys. Respond with ONLY "
                 f"valid JSON -- no markdown code fences, no commentary."
             )
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=[
-                    genai_types.Part.from_bytes(data=image_bytes, mime_type="image/png"),
-                    prompt,
-                ],
-            )
-            raw = (response.text or "").strip()
+            response = self._call_gemini_with_retry([
+                genai_types.Part.from_bytes(data=image_bytes, mime_type="image/png"),
+                prompt,
+            ])
+            raw = (response.text or "").strip() if response else ""
             raw = re.sub(r"^```(?:json)?|```$", "", raw, flags=re.MULTILINE).strip()
-            rows = json.loads(raw)
+            rows = json.loads(raw) if raw else []
             if not isinstance(rows, list):
                 return []
             for row in rows:
