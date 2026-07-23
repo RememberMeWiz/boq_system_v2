@@ -9,7 +9,8 @@ Pipeline. Per Stage 4 decision, this module owns:
        issues for S-6 / S-7 / S-8 (Structural Steel Works load-path sheets)
     3. OCR fallback: crops schedule-table regions that pdf_dxf_parser.py could
        not extract via bordered-table detection, and asks Gemini Vision to
-       structure them, tagging provenance = "inferred"
+       structure them, tagging provenance = "vision_extracted"
+
 
 ZERO math / calculations here (Directive 9) -- this module only classifies,
 audits, and structures raw text/table data.
@@ -254,19 +255,20 @@ class VisionBlueprintInspector:
         return ["*"]
 
     # ------------------------------------------------------------------
-    # Step 4: OCR fallback for schedule categories pdf_dxf_parser left empty
+    # Step 4: OCR fallback for empty schedule tables with autonomous discovery
     # ------------------------------------------------------------------
     def _ocr_fallback_for_empty_schedules(self, doc: "fitz.Document", payload: dict):
-        schedules = payload["schedules"]
-        empty_categories = [k for k in SCHEDULE_KEYWORD_MAP if not schedules.get(k)]
+        schedules = payload.get("schedules", {})
+        empty_categories = [cat for cat in ("footings", "columns", "beams") if not schedules.get(cat)]
         if not empty_categories:
             return
 
         if not self.vision_available:
-            gate = payload["verification_gate"]
-            next_index = len(gate["blocking_issues"]) + len(gate["warning_issues"]) + 1
+            gate = payload.get("verification_gate", {})
+            warning_issues = gate.setdefault("warning_issues", [])
+            next_index = len(gate.get("blocking_issues", [])) + len(warning_issues) + 1
             for category in empty_categories:
-                gate["warning_issues"].append({
+                warning_issues.append({
                     "id": f"sug_{next_index}",
                     "severity": "WARNING",
                     "category": "low_confidence_ocr",
@@ -280,18 +282,6 @@ class VisionBlueprintInspector:
                     "resolved": False,
                 })
                 next_index += 1
-            return
-
-    # ------------------------------------------------------------------
-    # Step 4: OCR fallback for empty schedule tables with autonomous discovery
-    # ------------------------------------------------------------------
-    def _ocr_fallback_for_empty_schedules(self, doc: "fitz.Document", payload: dict):
-        if not self.vision_available:
-            return
-
-        schedules = payload.get("schedules", {})
-        empty_categories = [cat for cat in ("footings", "columns", "beams") if not schedules.get(cat)]
-        if not empty_categories:
             return
 
         # Compact keyword map for robust page discovery across spaced title fonts (e.g. S C H E D U L E)
@@ -319,6 +309,7 @@ class VisionBlueprintInspector:
                     if extracted:
                         schedules[category].extend(extracted)
                         empty_categories.remove(category)
+
 
 
     def _ocr_table(self, page: "fitz.Page", category: str) -> list:
