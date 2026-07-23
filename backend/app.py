@@ -712,6 +712,9 @@ def process_drawing():
     Per tech_spec_parser_v2.md §2.1 & §4, enforces Verification Gate Guardrail:
     Hard-rejects with HTTP 409 Conflict if verification_gate.status == 'BLOCKED'.
     """
+    req_data = request.get_json(silent=True) or {}
+    session_id = req_data.get("session_id")
+
     file = request.files.get("file")
     drawing_name = file.filename if file else req_data.get("drawing_name") or "plan part 1.pdf"
 
