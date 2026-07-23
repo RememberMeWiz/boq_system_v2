@@ -283,10 +283,13 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 11:00:00 PST] — RAW LINKS INDEX EXPANDED IN 00_INSTRUCTIONS_FOR_WEB_AI.MD
+## [2026-07-23 11:05:00 PST] — VISUAL RECONSTRUCTION ENGINE PAYLOAD ADAPTER WIRED
 
-### 1. Web AI Permanent Index Comprehensive Update
-Updated [`00_INSTRUCTIONS_FOR_WEB_AI.md`](file:///e:/Users/Louis/Documents/boq_system_v2/00_INSTRUCTIONS_FOR_WEB_AI.md) to explicitly categorize and list raw GitHub HTTPS URLs for all 12 backend engine, parser, and API modules (`app.py`, `fajardo.py`, `pdf_dxf_parser.py`, `vision_parser.py`, `reconstruction_module.py`, `rebar_optimizer.py`, `dupa_loader.py`, `vision_ocr.py`, `manifest.py`, `agent_sync.py`, `supabase_client.py`, `local_db.py`).
+### 1. Fixed Schema Mismatch in `VisualReconstructionEngine`
+- Added `_adapt_payload_to_elements()` adapter to `VisualReconstructionEngine` in [`backend/engine/reconstruction_module.py`](file:///e:/Users/Louis/Documents/boq_system_v2/backend/engine/reconstruction_module.py).
+- Maps Stage 4 Parser payload (`schedules` footings, columns, beams, slabs, walls + `grid_nodes`) into visual SVG element coordinates (`x`, `y`, `width`, `height`, `type`, `label`, `rebar`).
+- Ensures `POST /api/v1/parser/reconstruct` renders complete interactive SVG vector graphics and side-by-side comparison dashboards from live parsed payloads rather than empty canvases.
+
 
 
 

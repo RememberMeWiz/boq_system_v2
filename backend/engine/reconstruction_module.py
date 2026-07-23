@@ -27,12 +27,132 @@ class VisualReconstructionEngine:
             self.data = json_payload
         elif isinstance(json_payload, list):
             self.data = {"elements": json_payload}
-        else:
-            self.data = {"elements": []}
-            
         self.width = self.data.get("width", 800)
         self.height = self.data.get("height", 600)
-        self.elements = self.data.get("elements", [])
+        self.elements = self._adapt_payload_to_elements(self.data)
+
+    def _adapt_payload_to_elements(self, data: dict) -> list:
+        """
+        Adapter converting Stage 4 Parser payload (schedules + grid_nodes)
+        into visual elements[] (x, y, width, height, type, label, rebar).
+        """
+        if "elements" in data and isinstance(data["elements"], list) and data["elements"]:
+            return data["elements"]
+
+        elements = []
+        schedules = data.get("schedules", {})
+        if not isinstance(schedules, dict):
+            schedules = {}
+
+        grid_nodes = data.get("grid_nodes", [])
+
+        grid_coords = [
+            {"x": 150, "y": 150}, {"x": 400, "y": 150}, {"x": 650, "y": 150},
+            {"x": 150, "y": 380}, {"x": 400, "y": 380}, {"x": 650, "y": 380},
+        ]
+        if grid_nodes:
+            grid_coords = [{"x": float(gn.get("x", 150)), "y": float(gn.get("y", 150))} for gn in grid_nodes]
+
+        # 1. Footings
+        idx = 0
+        for f in schedules.get("footings", []):
+            mark = f.get("mark") or f.get("label") or f"F-{idx+1}"
+            dim_l = f.get("length_m", 1.5)
+            dim_w = f.get("width_m", 1.5)
+            pos = grid_coords[idx % len(grid_coords)]
+            elements.append({
+                "id": f"footing_{idx+1}",
+                "type": "footing",
+                "label": f"{mark} ({dim_l}x{dim_w}m)",
+                "x": pos["x"] - 40,
+                "y": pos["y"] - 40,
+                "width": 80,
+                "height": 80,
+                "rebar": [
+                    {"type": "horizontal", "count": 5, "color": "#ef4444"},
+                    {"type": "vertical", "count": 5, "color": "#ef4444"},
+                ]
+            })
+            idx += 1
+
+        # 2. Columns
+        col_idx = 0
+        for c in schedules.get("columns", []):
+            mark = c.get("mark") or c.get("label") or f"C-{col_idx+1}"
+            dim_w = c.get("width_mm", 300)
+            dim_d = c.get("depth_mm", 300)
+            pos = grid_coords[col_idx % len(grid_coords)]
+            elements.append({
+                "id": f"column_{col_idx+1}",
+                "type": "column",
+                "label": f"{mark} ({dim_w}x{dim_d}mm)",
+                "x": pos["x"] - 20,
+                "y": pos["y"] - 20,
+                "width": 40,
+                "height": 40,
+                "rebar": [
+                    {"type": "dots", "count": 4, "color": "#f59e0b"},
+                ]
+            })
+            col_idx += 1
+
+        # 3. Beams
+        beam_idx = 0
+        for b in schedules.get("beams", []):
+            mark = b.get("mark") or b.get("label") or f"B-{beam_idx+1}"
+            dim_w = b.get("width_mm", 250)
+            dim_d = b.get("depth_mm", 400)
+            elements.append({
+                "id": f"beam_{beam_idx+1}",
+                "type": "beam",
+                "label": f"{mark} ({dim_w}x{dim_d}mm)",
+                "x": 150 + (beam_idx * 210) % 500,
+                "y": 138 + (beam_idx // 2) * 230,
+                "width": 210,
+                "height": 24,
+                "rebar": [
+                    {"type": "horizontal", "count": 4, "color": "#eab308"},
+                ]
+            })
+            beam_idx += 1
+
+        # 4. Slabs
+        slab_idx = 0
+        for s in schedules.get("slabs", []):
+            mark = s.get("mark") or s.get("label") or f"S-{slab_idx+1}"
+            thick = s.get("thickness_mm", 120)
+            elements.append({
+                "id": f"slab_{slab_idx+1}",
+                "type": "slab",
+                "label": f"{mark} (t={thick}mm)",
+                "x": 180 + (slab_idx * 220) % 450,
+                "y": 170 + (slab_idx // 2) * 180,
+                "width": 180,
+                "height": 150,
+            })
+            slab_idx += 1
+
+        # 5. CHB Walls
+        wall_idx = 0
+        for w in schedules.get("walls", []):
+            mark = w.get("mark") or w.get("label") or f"W-{wall_idx+1}"
+            thick = w.get("thickness_mm", 150)
+            elements.append({
+                "id": f"wall_{wall_idx+1}",
+                "type": "chb_wall",
+                "label": f"{mark} ({thick}mm CHB)",
+                "x": 100,
+                "y": 500 + wall_idx * 30,
+                "width": 550,
+                "height": 20,
+                "rebar": [
+                    {"type": "dowel", "count": 8, "color": "#06b6d4"},
+                ]
+            })
+            wall_idx += 1
+
+        return elements
+
 
     def render_svg(self) -> str:
         """Renders the reconstructed SVG drawing as an in-memory SVG XML string."""
