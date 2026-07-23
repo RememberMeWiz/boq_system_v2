@@ -281,15 +281,15 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 10:41:00 PST] — STAGE 4 PARSER PIPELINE & VERIFICATION GATE INTEGRATION TEST VERIFIED
+---
 
-### 1. Verification Test Results (`scratch/test_stage4_pipeline.py`)
-- Executed automated integration test suite validating all Stage 4 parser endpoints & verification gate rules:
-  1. `POST /api/v1/parser/ingest`: Successfully ingests PDF blueprint, performs sheet detection & schedule parsing, generates structural JSON payload.
-  2. `POST /api/v1/parser/reconstruct`: Successfully renders SVG vector drawing XML & side-by-side comparison dashboards.
-  3. `POST /api/v1/solver/process` (Guardrail): Hard-rejects `BLOCKED` payloads with `HTTP 409 Conflict`.
-  4. `POST /api/v1/parser/signoff`: Validates itemized resolutions, appends per-issue audit entries to `verification_gate.resolution_log[]`, and promotes gate status to `READY`.
-  5. `POST /api/v1/solver/process` (Post-Signoff): Executes full 13-trade civil cost takeoff once gate status is `READY`.
+## [2026-07-23 10:50:00 PST] — PM GOVERNANCE & WEB AI INSTRUCTIONS UPDATED WITH CDN CACHE-BUSTING RULE
+
+### 1. PM Rule 12 Added (`00_INSTRUCTIONS_FOR_WEB_AI.md`)
+Added **Rule 12 (GitHub Edge CDN Cache-Busting Rule)** to [`00_INSTRUCTIONS_FOR_WEB_AI.md`](file:///e:/Users/Louis/Documents/boq_system_v2/00_INSTRUCTIONS_FOR_WEB_AI.md):
+- Documents Fastly Edge CDN 5-minute cache TTL (`Cache-Control: max-age=300`) on `raw.githubusercontent.com`.
+- Mandates appending `?cb=<short-commit-sha>` or using immutable commit SHA paths whenever handing raw GitHub URLs to Web AIs (Claude Web) to guarantee instant, un-cached live content retrieval.
+
 
 
 

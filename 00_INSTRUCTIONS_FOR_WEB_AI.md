@@ -22,6 +22,8 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 9. **Strict Parser vs. Solver Separation**: The parser executes ZERO math/calculations (volume, weight, or cost). It only extracts, classifies, structures, and identifies data payload. All mathematics and PNS 49 calculations belong strictly inside `fajardo.py`.
 10. **Programmatic Verification Gate & Audit Signoff**: The parser enforces a programmatic `verification_gate` (`BLOCKED` vs `READY`). Missing load-bearing schedule sheets ($S-6, S-7, S-8$) generate `BLOCKING` issues. The solver REST endpoint (`POST /api/v1/solver/process`) hard-rejects unverified payloads with `HTTP 409 Conflict`. Overriding blocking issues or proceeding with warning cards requires an itemized audit signoff (`POST /api/v1/parser/signoff`) passing a `resolutions[]` array, attaching `signed_off_by`, timestamp, and `note` directly to each target `issue_id` in `verification_gate.resolution_log[]`.
 11. **No Unrequested File Edits or Git Commits**: The PM strictly refrains from committing to Git or making unrequested file edits without explicit user approval.
+12. **GitHub Edge CDN Cache-Busting Rule**: `raw.githubusercontent.com` uses Fastly Edge CDN with a 5-minute TTL cache (`Cache-Control: max-age=300`). Whenever the PM hands raw GitHub HTTPS links to Web AIs (Claude Web) after a Git push, the PM **must append an explicit cache-busting query parameter (`?cb=<commit-sha>`) or use the immutable commit SHA path** (e.g. `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/<commit-sha>/file.md`). This forces Fastly/GitHub Edge CDN to immediately bypass its 5-minute cache and return byte-for-byte live content.
+
 
 
 ---
