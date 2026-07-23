@@ -153,7 +153,7 @@ def get_cmpd_rates():
 # Stage 4 Parser API Endpoints (tech_spec_parser_v2.md §2.1)
 # --------------------------------------------------------------------
 
-@app.route("/api/v1/parser/ingest", methods=["POST"])
+@app.route("/api/v1/parser/ingest", methods=["POST", "OPTIONS"])
 def parser_ingest():
     """
     Accepts a multipart file upload (field 'file') OR JSON body {"drawing_name": "..."},
@@ -242,7 +242,7 @@ def parser_ingest():
     return jsonify({"session_id": session_id, "payload": payload, "source": "sample_fallback" if is_fallback else "file_parsed"}), 200
 
 
-@app.route("/api/v1/parser/reconstruct", methods=["POST"])
+@app.route("/api/v1/parser/reconstruct", methods=["POST", "OPTIONS"])
 def parser_reconstruct():
     """
     Accepts structural payload (or session_id) and returns SVG vector drawing
@@ -726,8 +726,8 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
     return inputs
 
 
-@app.route("/api/v1/solver/process", methods=["POST"])
-@app.route("/api/v1/process-drawing", methods=["POST"])
+@app.route("/api/v1/solver/process", methods=["POST", "OPTIONS"])
+@app.route("/api/v1/process-drawing", methods=["POST", "OPTIONS"])
 def process_drawing():
     """
     Runs the full 13-trade Fajardo cost takeoff.
