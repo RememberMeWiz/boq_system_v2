@@ -44,7 +44,6 @@ from engine.fajardo import (
 )
 from engine.rebar_optimizer import RebarStockOptimizer, RebarCutDemand
 from engine.pdf_dxf_parser import DrawingParserV2
-from engine.vision_parser import VisionBlueprintInspector
 from engine.reconstruction_module import VisualReconstructionEngine, generate_comparison
 from engine.dupa_loader import get_dupa_qa_summary
 from engine.vision_ocr import crop_schedule_region, parse_schedule_text, auto_scan_pdf_schedules
@@ -225,10 +224,6 @@ def parser_ingest():
     try:
         parser = DrawingParserV2(filepath=saved_path, filename=filename)
         payload = parser.parse()
-
-        if ext == "pdf":
-            inspector = VisionBlueprintInspector(filepath=saved_path)
-            payload = inspector.enrich(payload)
 
         if is_fallback:
             payload["input_source"] = "sample_fallback"
@@ -796,22 +791,15 @@ def process_drawing():
         try:
             parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
             payload = parser.parse()
-
-            ext = drawing_name.rsplit(".", 1)[-1].lower() if "." in drawing_name else ""
-            if ext == "pdf":
-                inspector = VisionBlueprintInspector(filepath=active_path)
-                payload = inspector.enrich(payload)
         except Exception as exc:
-            app.logger.exception("Parsing/enrichment failed in process_drawing for %s", drawing_name)
+            app.logger.exception("Parsing failed in process_drawing for %s", drawing_name)
             payload = {"schedules": {}}
 
     schedules = payload.get("schedules", {}) if isinstance(payload, dict) else {}
     has_footings = bool(schedules.get("footings"))
     has_columns  = bool(schedules.get("columns"))
 
-    if has_footings or has_columns:
-        source = "pdf_vision_enriched"
-    elif schedules:
+    if has_footings or has_columns or schedules:
         source = "pdf_vector_parsed"
     else:
         source = "sample_defaults"
