@@ -283,7 +283,9 @@ def parser_signoff():
 
     payload = _PARSER_SESSIONS[session_id]["payload"]
     gate = payload["verification_gate"]
-    all_issues_by_id = {i["id"]: i for i in gate["blocking_issues"] + gate["warning_issues"]}
+    blocking = gate.get("blocking_issues", [])
+    warnings = gate.get("warning_issues", [])
+    all_issues_by_id = {i["id"]: i for i in blocking + warnings}
 
     errors = []
     accepted = []

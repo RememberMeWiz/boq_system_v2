@@ -1,0 +1,95 @@
+{
+  "session_id": "sess-audit-001",
+  "process_drawing_response": {
+    "status": "success",
+    "input_source": "pdf_vision_enriched",
+    "grand_total_direct_cost": 1080693.19,
+    "boq_sample_items": [
+      {
+        "backup_qty": 1.1883,
+        "description": "Excavation",
+        "division": "Section II \u2014 Earthworks",
+        "equipment_unit_cost": 0.0,
+        "item_code": "EW-2.1",
+        "labor_unit_cost": 25.5499,
+        "material_unit_cost": 199.25,
+        "quantity": 1.225,
+        "section_id": "2",
+        "status": "Confirmed",
+        "total_amount": 275.38,
+        "total_unit_cost": 224.7999,
+        "trade": "Earthworks",
+        "unit": "cu.m."
+      },
+      {
+        "backup_qty": 0.3725,
+        "description": "Backfill",
+        "division": "Section II \u2014 Earthworks",
+        "equipment_unit_cost": 0.0,
+        "item_code": "EW-2.2",
+        "labor_unit_cost": 25.5499,
+        "material_unit_cost": 199.25,
+        "quantity": 0.384,
+        "section_id": "2",
+        "status": "Confirmed",
+        "total_amount": 86.32,
+        "total_unit_cost": 224.7999,
+        "trade": "Earthworks",
+        "unit": "cu.m."
+      },
+      {
+        "backup_qty": 6.0382,
+        "description": "Gravel Bedding",
+        "division": "Section II \u2014 Earthworks",
+        "equipment_unit_cost": 0.0,
+        "item_code": "EW-2.3",
+        "labor_unit_cost": 25.5499,
+        "material_unit_cost": 199.25,
+        "quantity": 6.225,
+        "section_id": "2",
+        "status": "Confirmed",
+        "total_amount": 1399.38,
+        "total_unit_cost": 224.7999,
+        "trade": "Earthworks",
+        "unit": "cu.m."
+      },
+      {
+        "backup_qty": 592.9125,
+        "description": "Soil Poisoning L",
+        "division": "Section II \u2014 Earthworks",
+        "equipment_unit_cost": 0.0,
+        "item_code": "EW-2.4",
+        "labor_unit_cost": 25.5499,
+        "material_unit_cost": 199.25,
+        "quantity": 611.25,
+        "section_id": "2",
+        "status": "Confirmed",
+        "total_amount": 137408.94,
+        "total_unit_cost": 224.7999,
+        "trade": "Earthworks",
+        "unit": "ltr"
+      },
+      {
+        "backup_qty": 1.4385,
+        "description": "Concrete Volume",
+        "division": "Section III \u2014 Concrete Works",
+        "equipment_unit_cost": 41.1807,
+        "item_code": "CON-3.1",
+        "labor_unit_cost": 280.1544,
+        "material_unit_cost": 1221.1918,
+        "quantity": 1.483,
+        "section_id": "3",
+        "status": "Confirmed",
+        "total_amount": 2287.57,
+        "total_unit_cost": 1542.5269,
+        "trade": "Concrete Works",
+        "unit": "cu.m."
+      }
+    ]
+  },
+  "reconstruct_response": {
+    "status": "success",
+    "elements_count": 0
+  },
+  "signoff_response": null
+}
