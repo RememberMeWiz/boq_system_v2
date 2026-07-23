@@ -14,7 +14,7 @@ timeout /t 3 /nobreak >nul
 
 :: Launch Frontend Vite Dev Server in a new window
 echo [2/3] Starting Frontend UI Server on http://localhost:5173 ...
-start "Plan2Takeoff V2 — Frontend UI (Port 5173)" powershell -NoExit -ExecutionPolicy Bypass -Command "cd '%~dp0frontend'; node node_modules/vite/bin/vite.js"
+start "Plan2Takeoff V2 — Frontend UI (Port 5173)" powershell -NoExit -ExecutionPolicy Bypass -Command "cd '%~dp0frontend'; npm run dev"
 
 :: Wait 3 seconds for Vite server initialization
 timeout /t 3 /nobreak >nul
