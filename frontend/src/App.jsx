@@ -183,6 +183,9 @@ export default function App() {
         });
       } else if (json.status === 'success') {
         setData(json);
+        if (json.session_id) {
+          setParserData({ session_id: json.session_id, payload: json.payload || json });
+        }
         const sourceLabel = json.input_source === 'pdf_vision_enriched'
           ? 'AI Vision Enriched'
           : (json.input_source === 'pdf_vector_parsed' ? 'Vector Parsed' : 'Fajardo Takeoff Engine');
