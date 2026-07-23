@@ -40,8 +40,75 @@
   },
   "grid_nodes": [],
   "schedules": {
-    "footings": [],
-    "columns": [],
+    "footings": [
+      {
+        "FOOTING MARK": "F-1",
+        "LENGTH (L)": "1400",
+        "WIDTH (W)": "1400",
+        "DEPTH (D)": "1500",
+        "Thickness (t)": "350",
+        "BAR X": "7 - 20mm\u00d8",
+        "BAR Y": "7 - 20mm\u00d8",
+        "REMARKS": "SQUARE FOOTING",
+        "provenance": "vision_extracted"
+      },
+      {
+        "FOOTING MARK": "F-2",
+        "LENGTH (L)": "2300",
+        "WIDTH (W)": "2300",
+        "DEPTH (D)": "1500",
+        "Thickness (t)": "350",
+        "BAR X": "11 - 20mm\u00d8",
+        "BAR Y": "11 - 20mm\u00d8",
+        "REMARKS": "SQUARE FOOTING",
+        "provenance": "vision_extracted"
+      },
+      {
+        "FOOTING MARK": "F-3",
+        "LENGTH (L)": "2100",
+        "WIDTH (W)": "2100",
+        "DEPTH (D)": "1500",
+        "Thickness (t)": "350",
+        "BAR X": "10 - 20mm\u00d8",
+        "BAR Y": "10 - 20mm\u00d8",
+        "REMARKS": "SQUARE FOOTING",
+        "provenance": "vision_extracted"
+      }
+    ],
+    "columns": [
+      {
+        "LEVEL": "2ND FLOOR LEVEL TO ROOF LEVEL",
+        "C-1": {
+          "MAIN BAR": "8-20mm\u00d8",
+          "TIES": "10mm\u00d8 (2 SETS)"
+        },
+        "C-2": {
+          "MAIN BAR": "12-25mm\u00d8",
+          "TIES": "10mm\u00d8 (3 SETS)"
+        },
+        "C-3": {
+          "MAIN BAR": "8-25mm\u00d8",
+          "TIES": "10mm\u00d8 (2 SETS)"
+        },
+        "provenance": "vision_extracted"
+      },
+      {
+        "LEVEL": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
+        "C-1": {
+          "MAIN BAR": "8-20mm\u00d8",
+          "TIES": "10mm\u00d8 (2 SETS)"
+        },
+        "C-2": {
+          "MAIN BAR": "14-25mm\u00d8",
+          "TIES": "10mm\u00d8 (3 SETS)"
+        },
+        "C-3": {
+          "MAIN BAR": "12-25mm\u00d8",
+          "TIES": "10mm\u00d8 (3 SETS)"
+        },
+        "provenance": "vision_extracted"
+      }
+    ],
     "beams": [],
     "slabs": [],
     "walls": []
@@ -54,7 +121,7 @@
   },
   "verification_gate": {
     "status": "READY",
-    "computed_at": "2026-07-23T04:51:23.646508+00:00",
+    "computed_at": "2026-07-23T07:20:38.490875+00:00",
     "blocking_issues": [],
     "warning_issues": [
       {
@@ -73,5 +140,6 @@
       }
     ],
     "resolution_log": []
-  }
+  },
+  "_reconstructed_svg_elements_count": 5
 }

@@ -341,7 +341,8 @@ class VisionBlueprintInspector:
             if not isinstance(rows, list):
                 return []
             for row in rows:
-                row["provenance"] = "inferred"
+                row["provenance"] = "vision_extracted"
+
             return rows
         except Exception as exc:  # pragma: no cover - network/API/parse failure path
             logger.warning("OCR fallback failed for category='%s': %s", category, exc)
