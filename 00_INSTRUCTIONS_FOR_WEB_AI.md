@@ -70,11 +70,13 @@ All project files are directly fetchable via your web browsing tool:
 - **SQLite Local DB Manager (`api/local_db.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/local_db.py`
 
 ### 📊 Empirical Benchmark Data & Verified Extraction JSON Outputs:
+- **Raw Task Terminal Execution Logs**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/task_execution_logs.md`
 - **Raw Local Cropped Region OCR Side-by-Side Comparison JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/side_by_side_comparison_results.json`
 - **Raw Local Full-Page OCR Benchmark JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/local_ocr_benchmark_results.json`
 - **Raw Surgical Live Gemini Vision Payload JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/surgical_live_extraction_payload.json`
 - **Raw Single-Page Vision OCR Output JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/single_page_vision_extraction.json`
 - **Raw Plan Part 1 Benchmark JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/benchmark_plan%20part%201.json`
+
 
 
 
