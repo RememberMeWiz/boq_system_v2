@@ -152,26 +152,53 @@ def get_cmpd_rates():
 @app.route("/api/v1/parser/ingest", methods=["POST"])
 def parser_ingest():
     """
-    Accepts a multipart file upload (field 'file'), runs deterministic DrawingParserV2
-    + VisionBlueprintInspector enrichment, computes verification_gate status, and returns payload.
+    Accepts a multipart file upload (field 'file') OR JSON body {"drawing_name": "..."},
+    runs deterministic DrawingParserV2 + VisionBlueprintInspector enrichment,
+    computes verification_gate status, and returns payload.
     """
-    if "file" not in request.files:
-        return jsonify({"error": "No file part in request. Expected multipart field 'file'."}), 400
+    saved_path = None
+    filename = None
 
-    file = request.files["file"]
-    if file.filename == "":
-        return jsonify({"error": "Empty filename."}), 400
+    if "file" in request.files and request.files["file"].filename:
+        file = request.files["file"]
+        filename = file.filename
+        session_id = str(uuid.uuid4())
+        uploads_dir = os.path.join(BASE_DIR, "uploads")
+        os.makedirs(uploads_dir, exist_ok=True)
+        saved_path = os.path.join(uploads_dir, f"{session_id}_{filename}")
+        file.save(saved_path)
+    else:
+        body = request.get_json(silent=True) or {}
+        target_name = body.get("drawing_name") or body.get("file_path") or body.get("filename") or "plan part 1.pdf"
+        filename = os.path.basename(target_name)
+        session_id = str(uuid.uuid4())
+
+        # Candidate paths to locate target file
+        candidates = [
+            os.path.join(BASE_DIR, "uploads", filename),
+            os.path.join(BASE_DIR, "backend", "reference_data", "sample_inputs", filename),
+            os.path.join(BASE_DIR, "backend", "reference_data", "pdf_plans", filename),
+            os.path.join(BASE_DIR, filename),
+        ]
+        for c in candidates:
+            if os.path.exists(c):
+                saved_path = c
+                break
+
+        if not saved_path:
+            # Fallback search for filename anywhere in reference_data
+            for root, _, files in os.walk(os.path.join(BASE_DIR, "backend", "reference_data")):
+                if filename in files:
+                    saved_path = os.path.join(root, filename)
+                    break
+
+        if not saved_path or not os.path.exists(saved_path):
+            return jsonify({"error": f"Drawing file '{filename}' not found on server."}), 404
 
     allowed_exts = {"pdf", "dxf", "dwg"}
-    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else ""
+    ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
     if ext not in allowed_exts:
         return jsonify({"error": f"Unsupported file type. Allowed: {sorted(allowed_exts)}"}), 400
-
-    session_id = str(uuid.uuid4())
-    uploads_dir = os.path.join(BASE_DIR, "uploads")
-    os.makedirs(uploads_dir, exist_ok=True)
-    saved_path = os.path.join(uploads_dir, f"{session_id}_{file.filename}")
-    file.save(saved_path)
 
     if ext == "dwg":
         return jsonify({
@@ -180,14 +207,14 @@ def parser_ingest():
         }), 422
 
     try:
-        parser = DrawingParserV2(filepath=saved_path, filename=file.filename)
+        parser = DrawingParserV2(filepath=saved_path, filename=filename)
         payload = parser.parse()
 
         if ext == "pdf":
             inspector = VisionBlueprintInspector(filepath=saved_path)
             payload = inspector.enrich(payload)
     except Exception as exc:
-        app.logger.exception("Parsing failed for %s", file.filename)
+        app.logger.exception("Parsing failed for %s", filename)
         return jsonify({"error": f"Parsing failed: {exc}"}), 422
 
     _PARSER_SESSIONS[session_id] = {"payload": payload, "saved_path": saved_path}

@@ -109,6 +109,7 @@ export default function App() {
 
   useEffect(() => {
     loadSavedSessions();
+    fetchTakeoff(null, 'plan part 1.pdf');
   }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
@@ -157,11 +158,19 @@ export default function App() {
       }
 
       // Parser ingest (PDF only) — feeds the Parser & Signoff tab
-      if (uploadedFile && uploadedFile.name?.toLowerCase().endsWith('.pdf')) {
+      const currentFileName = uploadedFile ? uploadedFile.name : (selectedDrawingName || drawing || 'plan part 1.pdf');
+      if (currentFileName.toLowerCase().endsWith('.pdf')) {
         try {
-          const pFormData = new FormData();
-          pFormData.append('file', uploadedFile);
-          const pRes  = await fetch('/api/v1/parser/ingest', { method: 'POST', body: pFormData });
+          let pReqOptions = { method: 'POST' };
+          if (uploadedFile) {
+            const pFormData = new FormData();
+            pFormData.append('file', uploadedFile);
+            pReqOptions.body = pFormData;
+          } else {
+            pReqOptions.headers = { 'Content-Type': 'application/json' };
+            pReqOptions.body = JSON.stringify({ drawing_name: currentFileName });
+          }
+          const pRes  = await fetch('/api/v1/parser/ingest', pReqOptions);
           const pJson = await pRes.json();
           if (pRes.ok) setParserData(pJson);
         } catch { /* parser ingest is non-blocking */ }
