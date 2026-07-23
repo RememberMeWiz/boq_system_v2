@@ -712,27 +712,34 @@ def process_drawing():
     Per tech_spec_parser_v2.md §2.1 & §4, enforces Verification Gate Guardrail:
     Hard-rejects with HTTP 409 Conflict if verification_gate.status == 'BLOCKED'.
     """
-    req_data = request.get_json(silent=True) or {}
-    session_id = req_data.get("session_id")
+    file = request.files.get("file")
+    drawing_name = file.filename if file else req_data.get("drawing_name") or "plan part 1.pdf"
 
     payload = None
 
-    # Verification Gate Check & session reuse
+    # Verification Gate Check & session reuse (with filename matching guard)
     if session_id and session_id in _PARSER_SESSIONS:
         sess_data = _PARSER_SESSIONS[session_id]
-        payload = sess_data.get("payload", {})
-        gate = payload.get("verification_gate", {})
-        if gate.get("status") == "BLOCKED":
-            unresolved = [i for i in gate.get("blocking_issues", []) if not i.get("resolved")]
-            return jsonify({
-                "error": "verification_gate_blocked",
-                "message": "Solver execution blocked by verification gate. Resolve blocking issues or provide itemized signoff.",
-                "verification_gate": gate,
-                "unresolved_blocking_issues": unresolved,
-            }), 409
+        sess_path = sess_data.get("saved_path", "")
+        sess_filename = os.path.basename(sess_path) if sess_path else ""
+        req_filename = os.path.basename(drawing_name)
 
-    file = request.files.get("file")
-    drawing_name = file.filename if file else req_data.get("drawing_name") or "plan part 1.pdf"
+        # Ensure session matches requested drawing file
+        if sess_filename and req_filename and not (req_filename.lower() in sess_filename.lower() or sess_filename.lower() in req_filename.lower()):
+            session_id = None
+            payload = None
+        else:
+            payload = sess_data.get("payload", {})
+            gate = payload.get("verification_gate", {})
+            if gate.get("status") == "BLOCKED":
+                unresolved = [i for i in gate.get("blocking_issues", []) if not i.get("resolved")]
+                return jsonify({
+                    "error": "verification_gate_blocked",
+                    "message": "Solver execution blocked by verification gate. Resolve blocking issues or provide itemized signoff.",
+                    "verification_gate": gate,
+                    "unresolved_blocking_issues": unresolved,
+                }), 409
+
     session_id = session_id or str(uuid.uuid4())
 
     uploads_dir = os.path.join(BASE_DIR, "uploads")

@@ -124,8 +124,8 @@ export default function App() {
     setDrawingsList(prev => prev.includes(targetName) ? prev : [targetName, ...prev]);
 
     try {
-      // Preserve session_id across navigation (dropdown, refresh, mount)
-      let currentSessionId = activeSessionId || drawingSessions[targetName] || (parserData?.session_id);
+      // Preserve session_id across navigation (dropdown, refresh, mount) strictly keyed by targetName
+      let currentSessionId = activeSessionId || drawingSessions[targetName] || null;
 
       const ext = targetName.split('.').pop().toLowerCase();
       const isParseable = ['pdf', 'dxf', 'dwg'].includes(ext);
