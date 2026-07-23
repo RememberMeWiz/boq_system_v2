@@ -283,14 +283,11 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 10:53:00 PST] — RUNTIME BUGFIXES IN BACKEND/APP.PY
+## [2026-07-23 11:00:00 PST] — RAW LINKS INDEX EXPANDED IN 00_INSTRUCTIONS_FOR_WEB_AI.MD
 
-### 1. Fixed `parse_res` Undefined Variable Bug in `process_drawing()`
-- Replaced stale `parse_res` references in `backend/app.py` (`process_drawing()`) with safe dictionary accessors on `payload` (`payload.get("width")`, `payload.get("elements")`, `payload.get("framing_plan")`, `payload.get("suggestions")`).
-- Prevents `NameError` runtime crash when invoking `POST /api/v1/process-drawing` or `POST /api/v1/solver/process`.
+### 1. Web AI Permanent Index Comprehensive Update
+Updated [`00_INSTRUCTIONS_FOR_WEB_AI.md`](file:///e:/Users/Louis/Documents/boq_system_v2/00_INSTRUCTIONS_FOR_WEB_AI.md) to explicitly categorize and list raw GitHub HTTPS URLs for all 12 backend engine, parser, and API modules (`app.py`, `fajardo.py`, `pdf_dxf_parser.py`, `vision_parser.py`, `reconstruction_module.py`, `rebar_optimizer.py`, `dupa_loader.py`, `vision_ocr.py`, `manifest.py`, `agent_sync.py`, `supabase_client.py`, `local_db.py`).
 
-### 2. Resolved Duplicate Route Registration
-- Removed duplicate `@app.route("/api/v1/sessions", methods=["GET"])` definition (`get_sessions_list`), consolidating session listing into the canonical `get_sessions()` handler.
 
 
 

@@ -40,16 +40,35 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 
 All project files are directly fetchable via your web browsing tool:
 
+### 📋 Specifications & Governance:
 - **GitHub Repository**       : `https://github.com/RememberMeWiz/boq_system_v2`
+- **Web AI Instructions**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/00_INSTRUCTIONS_FOR_WEB_AI.md`
 - **Parser Technical Spec v2.0**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_parser_v2.md`
 - **Parser Design Spec (Stage 2)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/parser_design_spec.md`
 - **Overall Technical Specs v2.0**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`
-- **Exhaustive Handbook (100%)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/formula_exhaustive_handbook.md`
+- **Exhaustive Formula Handbook**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/formula_exhaustive_handbook.md`
 - **Sample Solved Cases**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/sample_solved_cases.md`
-- **Web AI Instructions**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/00_INSTRUCTIONS_FOR_WEB_AI.md`
-- **Current Takeoff Engine**   : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/fajardo.py`
 - **Project Log**             : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/log.md`
 - **Database Schema**         : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/schema/boq_v2_schema.sql`
+
+### ⚙️ Core Backend & API App:
+- **Flask Backend API Server (`app.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/app.py`
+
+### 🧠 Civil Engineering & Parser Engines (`backend/engine/`):
+- **13-Trade Fajardo Takeoff Engine (`fajardo.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/fajardo.py`
+- **Deterministic PDF/DXF Parser (`pdf_dxf_parser.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/pdf_dxf_parser.py`
+- **AI Vision Blueprint Inspector (`vision_parser.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/vision_parser.py`
+- **Visual CAD Reconstruction Engine (`reconstruction_module.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/reconstruction_module.py`
+- **1D Bin-Packing Rebar Optimizer (`rebar_optimizer.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/rebar_optimizer.py`
+- **DUPA Unit Price QA Loader (`dupa_loader.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/dupa_loader.py`
+- **Vision Schedule Crop Engine (`vision_ocr.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/vision_ocr.py`
+
+### 🔌 API Services & Persistence (`backend/api/`):
+- **Project Manifest Generator (`api/manifest.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/manifest.py`
+- **Agent Sync Handler (`api/agent_sync.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/agent_sync.py`
+- **Supabase Cloud Sync Client (`api/supabase_client.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/supabase_client.py`
+- **SQLite Local DB Manager (`api/local_db.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/local_db.py`
+
 
 
 ---
