@@ -359,7 +359,7 @@ class DrawingParserV2:
                 "story_level": story_text.strip(),
                 "width_m": width_m,
                 "depth_m": depth_m,
-                "clear_height_m": 3.0,
+                "clear_height_m": None,  # not in tabular schedule; must be measured from elevation drawings
                 "main_bars": {
                     "size_mm": int(main_match.group(2)) if main_match else None,
                     "count": int(main_match.group(1)) if main_match else None,
@@ -385,7 +385,7 @@ class DrawingParserV2:
 
         for row in table[1:]:
             mark_text = str(row[col_mark] if col_mark is not None else row[0] or "").strip().upper().replace(" ", "")
-            mark_match = re.match(r"^([G?B]-?\d+)$", mark_text)
+            mark_match = re.match(r"^((?:\d{1,2}|G)?B-?\d+)$", mark_text)
             if not mark_match:
                 continue
 
@@ -408,20 +408,22 @@ class DrawingParserV2:
             top_match = re.search(r"(\d{1,2})\s*[-\u2013]\s*(\d{1,2})\s*mm", top_raw, re.IGNORECASE)
             bot_match = re.search(r"(\d{1,2})\s*[-\u2013]\s*(\d{1,2})\s*mm", bot_raw, re.IGNORECASE)
 
+            dims_parsed   = bool(width_m and depth_m)
+            rebars_parsed = bool(top_match and bot_match)
             results.append({
                 "mark": beam_mark,
-                "width_m": width_m or 0.25,
-                "depth_m": depth_m or 0.40,
-                "span_m": 5.0,
+                "width_m": width_m,    # None if not found in schedule text
+                "depth_m": depth_m,    # None if not found in schedule text
+                "span_m": None,        # span not in schedule tables; derive from grid-node spacing later
                 "top_bars": {
-                    "count": int(top_match.group(1)) if top_match else 2,
-                    "size_mm": int(top_match.group(2)) if top_match else 16,
+                    "count": int(top_match.group(1)) if top_match else None,
+                    "size_mm": int(top_match.group(2)) if top_match else None,
                 },
                 "bottom_bars": {
-                    "count": int(bot_match.group(1)) if bot_match else 3,
-                    "size_mm": int(bot_match.group(2)) if bot_match else 16,
+                    "count": int(bot_match.group(1)) if bot_match else None,
+                    "size_mm": int(bot_match.group(2)) if bot_match else None,
                 },
-                "provenance": "vector_text" if (width_m and depth_m) else "inferred",
+                "provenance": "vector_text" if (dims_parsed and rebars_parsed) else "inferred",
             })
         return results
 
@@ -447,8 +449,8 @@ class DrawingParserV2:
             results.append({
                 "mark": slab_mark,
                 "thickness_m": thickness_m,
-                "length_m": 4.0,
-                "width_m": 4.0,
+                "length_m": None,   # panel dimensions not in schedule; derive from grid-node spacing later
+                "width_m": None,    # panel dimensions not in schedule; derive from grid-node spacing later
                 "provenance": "vector_text" if thk_match else "inferred",
             })
         return results
