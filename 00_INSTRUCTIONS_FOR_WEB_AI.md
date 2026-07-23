@@ -20,7 +20,7 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 7. **Builder's Toolkit 6-Stage Framework**: The PM follows the 6-stage development framework (`Empathy` $\rightarrow$ `Design` $\rightarrow$ `Architecture` $\rightarrow$ `Implementation` $\rightarrow$ `Judgment` $\rightarrow$ `Shipping`).
 8. **Zero Hardcoding Policy**: The PM ensures that parser schemas, payload specifications, and engine logic contain zero hardcoded building sizes, grid counts, classroom numbers, or footing dimensions. Everything must be 100% parameter-driven and extracted dynamically.
 9. **Strict Parser vs. Solver Separation**: The parser executes ZERO math/calculations (volume, weight, or cost). It only extracts, classifies, structures, and identifies data payload. All mathematics and PNS 49 calculations belong strictly inside `fajardo.py`.
-10. **Programmatic Verification Gate & Audit Signoff**: The parser must enforce a programmatic `verification_gate` (`BLOCKED` vs `READY`). Missing load-bearing schedule sheets ($S-6, S-8$) generate `BLOCKING` issues. The solver endpoint (`POST /api/v1/process-drawing`) hard-rejects unverified payloads with `HTTP 409 Conflict`. Overriding blocking issues or proceeding with warning cards requires an auditable user signoff (`signed_off_by`, timestamp, `signoff_note`).
+10. **Programmatic Verification Gate & Audit Signoff**: The parser enforces a programmatic `verification_gate` (`BLOCKED` vs `READY`). Missing load-bearing schedule sheets ($S-6, S-7, S-8$) generate `BLOCKING` issues. The solver REST endpoint (`POST /api/v1/solver/process`) hard-rejects unverified payloads with `HTTP 409 Conflict`. Overriding blocking issues or proceeding with warning cards requires an itemized audit signoff (`POST /api/v1/parser/signoff`) passing a `resolutions[]` array, attaching `signed_off_by`, timestamp, and `note` directly to each target `issue_id` in `verification_gate.resolution_log[]`.
 11. **No Unrequested File Edits or Git Commits**: The PM strictly refrains from committing to Git or making unrequested file edits without explicit user approval.
 
 
@@ -39,13 +39,16 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 All project files are directly fetchable via your web browsing tool:
 
 - **GitHub Repository**       : `https://github.com/RememberMeWiz/boq_system_v2`
-- **Technical Specs v2.0**    : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`
+- **Parser Technical Spec v2.0**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_parser_v2.md`
+- **Parser Design Spec (Stage 2)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/parser_design_spec.md`
+- **Overall Technical Specs v2.0**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`
 - **Exhaustive Handbook (100%)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/formula_exhaustive_handbook.md`
 - **Sample Solved Cases**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/sample_solved_cases.md`
 - **Web AI Instructions**     : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/00_INSTRUCTIONS_FOR_WEB_AI.md`
 - **Current Takeoff Engine**   : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/engine/fajardo.py`
 - **Project Log**             : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/log.md`
 - **Database Schema**         : `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/schema/boq_v2_schema.sql`
+
 
 ---
 
