@@ -586,8 +586,10 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
             })
 
     # 2. Columns -> Section 3 (Concrete) & Section 5 (Rebar)
-    # Handle flat rows, nested mark dicts, and deterministic column rows
-    seen_cols = []
+    # Group multi-story rows by column mark (e.g., C-1 Foundation to 2nd, C-1 2nd to Roof)
+    # to sum story height for concrete volume without double-counting cross-sections,
+    # while accumulating main rebar for each story segment.
+    cols_by_mark = {}
     COL_MARK_RE = re.compile(r"^[A-Z]-?\d+$")
 
     for row in columns:
@@ -595,54 +597,66 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
         # Deterministic shape: {"mark": "C-1", "width_m": 0.4, ...}
         flat_mark = row.get("COLUMN") or row.get("mark")
         if flat_mark and COL_MARK_RE.match(str(flat_mark)):
-            seen_cols.append((str(flat_mark), row))
+            cols_by_mark.setdefault(str(flat_mark), []).append(row)
             continue
         # Vision level-grouped shape: {"C-1": {...}, "C-2": {...}}
         for key, val in row.items():
             if COL_MARK_RE.match(str(key)):
                 item_dict = val if isinstance(val, dict) else {"_raw": str(val)}
-                seen_cols.append((str(key), item_dict))
+                cols_by_mark.setdefault(str(key), []).append(item_dict)
 
-    for mark, val in seen_cols:
-        raw_dim = val.get("DIMENSION") or val.get("dimension") or ""
-        dim_w = val.get("width_m") or (val.get("width_mm", 0) / 1000.0 if val.get("width_mm") else None)
-        dim_d = val.get("depth_m") or (val.get("depth_mm", 0) / 1000.0 if val.get("depth_mm") else None)
+    for mark, story_rows in cols_by_mark.items():
+        # Representative dimensions from first row with dimensions
+        rep_val = story_rows[0]
+        dim_w = None
+        dim_d = None
+        for r in story_rows:
+            raw_dim = r.get("DIMENSION") or r.get("dimension") or ""
+            w = r.get("width_m") or (r.get("width_mm", 0) / 1000.0 if r.get("width_mm") else None)
+            d = r.get("depth_m") or (r.get("depth_mm", 0) / 1000.0 if r.get("depth_mm") else None)
 
-        if not (dim_w and dim_d) and raw_dim:
-            parts = [p.strip() for p in str(raw_dim).replace("x", " ").replace("X", " ").split() if p.strip().isdigit()]
-            if len(parts) >= 2:
-                dim_w = round(int(parts[0]) / 1000, 3)
-                dim_d = round(int(parts[1]) / 1000, 3)
-            elif len(parts) == 1:
-                dim_w = dim_d = round(int(parts[0]) / 1000, 3)
+            if not (w and d) and raw_dim:
+                parts = [p.strip() for p in str(raw_dim).replace("x", " ").replace("X", " ").split() if p.strip().isdigit()]
+                if len(parts) >= 2:
+                    w = round(int(parts[0]) / 1000, 3)
+                    d = round(int(parts[1]) / 1000, 3)
+                elif len(parts) == 1:
+                    w = d = round(int(parts[0]) / 1000, 3)
+            if w and d:
+                dim_w, dim_d = float(w), float(d)
+                break
 
-        dim_w = float(dim_w) if dim_w else 0.40
-        dim_d = float(dim_d) if dim_d else 0.40
-        clear_h = float(val.get("clear_height_m") or 3.20)
-        col_count = int(val.get("count") or 1)
+        dim_w = dim_w if dim_w else 0.40
+        dim_d = dim_d if dim_d else 0.40
+        col_count = int(rep_val.get("count") or 1)
+
+        # Total column height across stories (e.g. 2 stories * 3.20m = 6.40m total height)
+        total_height = sum(float(r.get("clear_height_m") or 3.20) for r in story_rows)
 
         concrete_elements.append({
             "type": "column", "class": "A", "count": col_count,
-            "width_m": dim_w, "depth_m": dim_d, "clear_height_m": clear_h
+            "width_m": dim_w, "depth_m": dim_d, "clear_height_m": total_height
         })
 
-        # Main bar rebar
-        main_bars = val.get("main_bars") if isinstance(val.get("main_bars"), dict) else {}
-        main_dia = main_bars.get("size_mm")
-        main_cnt = main_bars.get("count")
+        # Main bar rebar across each story level
+        for r in story_rows:
+            clear_h = float(r.get("clear_height_m") or 3.20)
+            main_bars = r.get("main_bars") if isinstance(r.get("main_bars"), dict) else {}
+            main_dia = main_bars.get("size_mm")
+            main_cnt = main_bars.get("count")
 
-        if not (main_dia and main_cnt):
-            raw_main = val.get("MAIN BAR") or val.get("main_bar") or val.get("_raw") or ""
-            if raw_main:
-                m = re.search(r"(\d+)\s*-\s*(\d+)mm", str(raw_main))
-                if m:
-                    main_cnt, main_dia = int(m.group(1)), int(m.group(2))
+            if not (main_dia and main_cnt):
+                raw_main = r.get("MAIN BAR") or r.get("main_bar") or r.get("_raw") or ""
+                if raw_main:
+                    m = re.search(r"(\d+)\s*-\s*(\d+)mm", str(raw_main))
+                    if m:
+                        main_cnt, main_dia = int(m.group(1)), int(m.group(2))
 
-        if main_dia and main_cnt:
-            rebar_elements.append({
-                "member": "column_main", "diameter_mm": int(main_dia), "count": int(main_cnt) * col_count,
-                "story_height_m": clear_h, "dowel_length_m": 0.40
-            })
+            if main_dia and main_cnt:
+                rebar_elements.append({
+                    "member": "column_main", "diameter_mm": int(main_dia), "count": int(main_cnt) * col_count,
+                    "story_height_m": clear_h, "dowel_length_m": 0.40
+                })
 
     # 3. Beams -> Section 3 (Concrete)
     for idx, b in enumerate(beams):
