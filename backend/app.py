@@ -13,7 +13,7 @@ import uuid
 import tempfile
 import time
 from datetime import datetime, timezone
-from flask import Flask, request, jsonify, send_from_directory, render_template_string, send_file
+from flask import Flask, request, jsonify, send_from_directory, render_template_string, send_file, make_response
 
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -64,17 +64,22 @@ init_local_db()
 
 app = Flask(__name__, static_folder=FRONTEND_DIST_DIR, static_url_path="")
 
-# CORS for Vite dev server
+# CORS preflight handler for Vite dev server & web clients
+@app.before_request
+def handle_options_preflight():
+    if request.method == "OPTIONS":
+        response = make_response("", 204)
+        response.headers["Access-Control-Allow-Origin"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Agent-Sync-Token"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS"
+        return response
+
 @app.after_request
 def add_cors(response):
     response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, X-Agent-Sync-Token"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE, OPTIONS"
     return response
-
-@app.route("/api/v1/<path:p>", methods=["OPTIONS"])
-def options_handler(p):
-    return "", 204
 
 
 # --------------------------------------------------------------------
