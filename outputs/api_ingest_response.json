@@ -44,16 +44,16 @@
       "beams": [],
       "columns": [
         {
-          "C-1": "MAIN BAR: 8-20mm\u00d8\nTIES : 10mm\u00d8 (2 SETS)",
-          "C-2": "MAIN BAR: 12-25mm\u00d8\nTIES : 10mm\u00d8 (3 SETS)",
-          "C-3": "MAIN BAR: 8-25mm\u00d8\nTIES : 10mm\u00d8 (2 SETS)",
+          "C-1": "MAIN BAR: 8-20mm\u00f8\nTIES : 10mm\u00f8 (2 SETS)",
+          "C-2": "MAIN BAR: 12-25mm\u00f8\nTIES : 10mm\u00f8 (3 SETS)",
+          "C-3": "MAIN BAR: 8-25mm\u00f8\nTIES : 10mm\u00f8 (2 SETS)",
           "LEVEL": "2ND FLOOR LEVEL TO ROOF LEVEL",
           "provenance": "vision_extracted"
         },
         {
-          "C-1": "MAIN BAR: 8-20mm\u00d8\nTIES : 10mm\u00d8 (2 SETS)",
-          "C-2": "MAIN BAR: 14-25mm\u00d8\nTIES : 10mm\u00d8 (3 SETS)",
-          "C-3": "MAIN BAR: 12-25mm\u00d8\nTIES : 10mm\u00d8 (3 SETS)",
+          "C-1": "MAIN BAR: 8-20mm\u00f8\nTIES : 10mm\u00f8 (2 SETS)",
+          "C-2": "MAIN BAR: 14-25mm\u00f8\nTIES : 10mm\u00f8 (3 SETS)",
+          "C-3": "MAIN BAR: 12-25mm\u00f8\nTIES : 10mm\u00f8 (3 SETS)",
           "LEVEL": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
           "provenance": "vision_extracted"
         }
@@ -70,7 +70,7 @@
     },
     "verification_gate": {
       "blocking_issues": [],
-      "computed_at": "2026-07-23T08:00:20.497161+00:00",
+      "computed_at": "2026-07-23T08:06:30.882528+00:00",
       "resolution_log": [],
       "status": "READY",
       "warning_issues": [
@@ -91,5 +91,5 @@
       ]
     }
   },
-  "session_id": "e7509695-909e-4dd7-9174-bcf51e8f7320"
+  "session_id": "23d9d864-8be9-4b61-819a-14b3b3777dd3"
 }
