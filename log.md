@@ -271,17 +271,29 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 09:22:00 PST] — BUILDER'S TOOLKIT STAGE 2: PARSER DESIGN SPECIFICATION COMPLETED
+---
 
-### 1. Builder's Toolkit Methodology Adoption
-- Adopted **The Builder's Toolkit** 6-stage development framework (`Empathy` $\rightarrow$ `Design` $\rightarrow$ `Architecture` $\rightarrow$ `Implementation` $\rightarrow$ `Judgment` $\rightarrow$ `Shipping`).
-- Completed **Stage 2: Design** for the AI Blueprint & CAD Parser Pipeline.
+---
 
-### 2. Stage 2 Deliverables & Specifications
-- Created [`parser_design_spec.md`](file:///C:/Users/louis/.gemini/antigravity/brain/fec2906c-fb81-47b4-a08e-b1ad1a62f2c5/parser_design_spec.md):
-  - **User Flow & Decision Points**: Defined the 4-step user journey (Upload $\rightarrow$ AI Multimodal Ingestion $\rightarrow$ Dual-Panel Visual Reconstruction Verification $\rightarrow$ Solver Execution).
-  - **Scoped MVP Feature List**: Defined exact MVP boundaries (PDF/DWG support, schedule extraction, simple rebar lines, provenance badges vs. cut out-of-scope features).
-  - **Definition of "This Works"**: Defined user success criteria (zero ambiguity side-by-side verification, complete data provenance transparency, under 60-second user confirmation).
+---
+
+---
+
+## [2026-07-23 10:16:00 PST] — REDLINED STAGE 3 ARCHITECTURE TECH SPEC COMPLETED
+
+### 1. Architectural Redlines Integrated
+Successfully synced all 3 redlines in [`tech_spec_parser_v2.md`](file:///e:/Users/Louis/Documents/boq_system_v2/tech_spec_parser_v2.md):
+1. **Endpoint Naming Standardization**: Explicitly defined `POST /api/v1/solver/process` under the `solver/*` namespace. Explicitly documented that solver execution is invoked by the frontend upon user action, NOT auto-invoked by `/signoff`.
+2. **Itemized Per-Issue `/signoff` Schema**: Added Section 3.2 itemized signoff schema (`POST /api/v1/parser/signoff`) accepting `resolutions[]`. Replaced single global `signoff` block with `resolution_log[]` in `verification_gate`.
+3. **Sheet S-7 Classification**: Added `missing_connection_details` for Sheet `S-7` (connection & weld details) as a **`BLOCKING`** severity issue (`sug_4`), requiring explicit signoff or standard DPWH 10% hardware allowance.
+4. **Internal Cross-Reference Numbering**: Fixed rule cross-reference numbers (4.3 & 4.5) in Section 4.
+
+
+
+
+
+
+
 
 
 

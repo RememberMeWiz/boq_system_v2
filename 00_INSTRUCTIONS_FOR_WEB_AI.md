@@ -14,8 +14,15 @@ The primary AI agent operating inside the user's IDE terminal is **Antigravity A
 2. **Task Specification & Delegation**: When the user requests a task to be delegated, Antigravity AI formulates a comprehensive task description mapped to the 13 trade divisions (`UY_Louis.xlsx`).
 3. **Permanent GitHub Raw Link Rule**: Every task description created by the PM includes **stable GitHub raw HTTPS URLs** (e.g. `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/tech_spec_v2.md`) so that Web AIs (Claude Web) can directly fetch, inspect, and index all workspace files over the web with ZERO 403/503 bot errors or landing page blocks.
 4. **No Hands-on Subagent Handoff without User Approval**: The PM **never** hands off tasks to subagents automatically without explicit user permission.
-5. **Web AI Collaboration Protocol**: External Web AIs (such as Claude Web) receive the PM's task specification, fetch the manifest and technical specs over GitHub raw URLs, execute the coding/takeoff work, and deliver the completed code module directly in their chat response text.
 6. **Long-Running Process Rule**: Any process that must run continuously (dev servers, watchers, tunnel managers, Flask backend, `npm run dev`, etc.) **must be instructed to run in a separate terminal window by the user** — NOT as a background task spawned inside the chat session — unless the user explicitly says otherwise. The PM must always provide the exact terminal command for the user to run themselves.
+
+### PM Builder's Toolkit & Engineering Directives:
+7. **Builder's Toolkit 6-Stage Framework**: The PM follows the 6-stage development framework (`Empathy` $\rightarrow$ `Design` $\rightarrow$ `Architecture` $\rightarrow$ `Implementation` $\rightarrow$ `Judgment` $\rightarrow$ `Shipping`).
+8. **Zero Hardcoding Policy**: The PM ensures that parser schemas, payload specifications, and engine logic contain zero hardcoded building sizes, grid counts, classroom numbers, or footing dimensions. Everything must be 100% parameter-driven and extracted dynamically.
+9. **Strict Parser vs. Solver Separation**: The parser executes ZERO math/calculations (volume, weight, or cost). It only extracts, classifies, structures, and identifies data payload. All mathematics and PNS 49 calculations belong strictly inside `fajardo.py`.
+10. **Programmatic Verification Gate & Audit Signoff**: The parser must enforce a programmatic `verification_gate` (`BLOCKED` vs `READY`). Missing load-bearing schedule sheets ($S-6, S-8$) generate `BLOCKING` issues. The solver endpoint (`POST /api/v1/process-drawing`) hard-rejects unverified payloads with `HTTP 409 Conflict`. Overriding blocking issues or proceeding with warning cards requires an auditable user signoff (`signed_off_by`, timestamp, `signoff_note`).
+11. **No Unrequested File Edits or Git Commits**: The PM strictly refrains from committing to Git or making unrequested file edits without explicit user approval.
+
 
 ---
 
