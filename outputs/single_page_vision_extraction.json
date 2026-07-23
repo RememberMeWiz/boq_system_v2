@@ -1,0 +1,89 @@
+[
+  {
+    "type": "footing",
+    "mark": "F-1",
+    "length_mm": 1400,
+    "width_mm": 1400,
+    "depth_mm": 1500,
+    "thickness_mm": 350,
+    "reinforcement_bar_x": "7 - 20mmØ",
+    "reinforcement_bar_y": "7 - 20mmØ",
+    "remarks": "SQUARE FOOTING"
+  },
+  {
+    "type": "footing",
+    "mark": "F-2",
+    "length_mm": 2300,
+    "width_mm": 2300,
+    "depth_mm": 1500,
+    "thickness_mm": 350,
+    "reinforcement_bar_x": "11 - 20mmØ",
+    "reinforcement_bar_y": "11 - 20mmØ",
+    "remarks": "SQUARE FOOTING"
+  },
+  {
+    "type": "footing",
+    "mark": "F-3",
+    "length_mm": 2100,
+    "width_mm": 2100,
+    "depth_mm": 1500,
+    "thickness_mm": 350,
+    "reinforcement_bar_x": "10 - 20mmØ",
+    "reinforcement_bar_y": "10 - 20mmØ",
+    "remarks": "SQUARE FOOTING"
+  },
+  {
+    "type": "column",
+    "mark": "C-1",
+    "level": "2ND FLOOR LEVEL TO ROOF LEVEL",
+    "width_mm": 400,
+    "depth_mm": 400,
+    "main_bar": "8-20mmØ",
+    "ties": "10mmØ (2 SETS)"
+  },
+  {
+    "type": "column",
+    "mark": "C-2",
+    "level": "2ND FLOOR LEVEL TO ROOF LEVEL",
+    "width_mm": 400,
+    "depth_mm": 400,
+    "main_bar": "12-25mmØ",
+    "ties": "10mmØ (3 SETS)"
+  },
+  {
+    "type": "column",
+    "mark": "C-3",
+    "level": "2ND FLOOR LEVEL TO ROOF LEVEL",
+    "width_mm": 400,
+    "depth_mm": 400,
+    "main_bar": "8-25mmØ",
+    "ties": "10mmØ (2 SETS)"
+  },
+  {
+    "type": "column",
+    "mark": "C-1",
+    "level": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
+    "width_mm": 400,
+    "depth_mm": 400,
+    "main_bar": "8-20mmØ",
+    "ties": "10mmØ (2 SETS)"
+  },
+  {
+    "type": "column",
+    "mark": "C-2",
+    "level": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
+    "width_mm": 400,
+    "depth_mm": 400,
+    "main_bar": "14-25mmØ",
+    "ties": "10mmØ (3 SETS)"
+  },
+  {
+    "type": "column",
+    "mark": "C-3",
+    "level": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
+    "width_mm": 400,
+    "depth_mm": 400,
+    "main_bar": "12-25mmØ",
+    "ties": "10mmØ (3 SETS)"
+  }
+]

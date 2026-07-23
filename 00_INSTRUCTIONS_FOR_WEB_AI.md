@@ -69,6 +69,13 @@ All project files are directly fetchable via your web browsing tool:
 - **Supabase Cloud Sync Client (`api/supabase_client.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/supabase_client.py`
 - **SQLite Local DB Manager (`api/local_db.py`)**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/backend/api/local_db.py`
 
+### 📊 Empirical Benchmark Data & Verified Extraction JSON Outputs:
+- **Raw Local Cropped OCR Benchmark JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/local_ocr_benchmark_results.json`
+- **Raw Surgical Live Gemini Vision Payload JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/surgical_live_extraction_payload.json`
+- **Raw Single-Page Vision OCR Output JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/single_page_vision_extraction.json`
+- **Raw Plan Part 1 Benchmark JSON**: `https://raw.githubusercontent.com/RememberMeWiz/boq_system_v2/main/outputs/benchmark_plan%20part%201.json`
+
+
 
 
 ---

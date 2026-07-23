@@ -1,0 +1,77 @@
+{
+  "project_meta": {
+    "filename": "plan part 1.pdf",
+    "detected_variant": null,
+    "grid_scope": {
+      "bays": null,
+      "total_length_mm": null
+    },
+    "toc_missing_sheets": [],
+    "_sheet_classifications": {
+      "page_0": "section_detail",
+      "page_1": "section_detail",
+      "page_2": "unknown",
+      "G-1": "unknown",
+      "G-2": "unknown",
+      "G-3": "unknown",
+      "G-4": "unknown",
+      "G-5": "unknown",
+      "G-6": "unknown",
+      "page_9": "unknown",
+      "PC-1": "table_of_contents",
+      "A-2": "unknown",
+      "A-3": "unknown",
+      "A-4": "elevation",
+      "A-5": "section_detail",
+      "A-6": "unknown",
+      "W-2": "elevation",
+      "A-8": "table_of_contents",
+      "A-9": "section_detail",
+      "A-11": "section_detail",
+      "A-12": "section_detail",
+      "A-13": "elevation",
+      "page_22": "unknown",
+      "S-1": "general_notes",
+      "S-2": "general_notes",
+      "S-3": "foundation_plan",
+      "S-4": "footing_column_schedule",
+      "S-5": "framing_plan"
+    }
+  },
+  "grid_nodes": [],
+  "schedules": {
+    "footings": [],
+    "columns": [],
+    "beams": [],
+    "slabs": [],
+    "walls": []
+  },
+  "structural_notes": {
+    "concrete_cover_earth_mm": null,
+    "concrete_cover_col_beam_mm": null,
+    "lap_splice_multiplier": null,
+    "seismic_hook_deg": null
+  },
+  "verification_gate": {
+    "status": "READY",
+    "computed_at": "2026-07-23T04:51:23.646508+00:00",
+    "blocking_issues": [],
+    "warning_issues": [
+      {
+        "id": "sug_1",
+        "severity": "WARNING",
+        "category": "low_confidence_ocr",
+        "message": "No footing schedule table detected via pdfplumber border detection. Vision OCR fallback will be attempted if configured.",
+        "affected_elements": [
+          "*footings*"
+        ],
+        "resolution_required": [
+          "manual_confirm",
+          "upload_sheet"
+        ],
+        "resolved": false
+      }
+    ],
+    "resolution_log": []
+  }
+}
