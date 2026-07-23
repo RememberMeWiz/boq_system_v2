@@ -152,7 +152,7 @@ def get_cmpd_rates():
 def parser_ingest():
     """
     Accepts a multipart file upload (field 'file') OR JSON body {"drawing_name": "..."},
-    runs deterministic DrawingParserV2 + VisionBlueprintInspector enrichment,
+    runs deterministic DrawingParserV2 offline extraction engine,
     computes verification_gate status, and returns payload.
     """
     saved_path = None
@@ -786,7 +786,7 @@ def process_drawing():
     if not active_path:
         active_path = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
 
-    # If payload not already loaded from session, run DrawingParserV2 + VisionBlueprintInspector
+    # If payload not already loaded from session, run DrawingParserV2 offline engine
     if not payload:
         try:
             parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
