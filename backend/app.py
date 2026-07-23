@@ -507,6 +507,110 @@ def _sample_elements_json():
     ]
 
 
+def _schedules_to_project_inputs(schedules: dict) -> dict:
+    """
+    Adapter converting vision/vector extracted `schedules` payload
+    (footings, columns, beams, slabs, walls) into trade-keyed `project_inputs` dict
+    for `run_full_takeoff()`.
+
+    Falls back to `SAMPLE_PROJECT_INPUTS` for missing or empty sections.
+    """
+    import copy
+    inputs = copy.deepcopy(SAMPLE_PROJECT_INPUTS)
+    if not isinstance(schedules, dict):
+        return inputs
+
+    footings = schedules.get("footings", [])
+    columns  = schedules.get("columns", [])
+    beams    = schedules.get("beams", [])
+    slabs    = schedules.get("slabs", [])
+    walls    = schedules.get("walls", [])
+
+    # 1. Footings -> Section 2 (Earthworks) & Section 3 (Concrete) & Section 5 (Rebar)
+    footing_specs = []
+    concrete_elements = []
+    rebar_elements = []
+
+    for idx, f in enumerate(footings):
+        if not isinstance(f, dict): continue
+        mark = f.get("FOOTING MARK") or f.get("mark") or f.get("label") or f"F-{idx+1}"
+        raw_l = f.get("LENGTH (L)") or f.get("length_m") or 1.5
+        raw_w = f.get("WIDTH (W)") or f.get("width_m") or 1.5
+        raw_t = f.get("Thickness (t)") or f.get("thickness_m") or f.get("depth_m") or 0.4
+
+        try:
+            length_m = float(str(raw_l).replace(",", "").strip())
+            if length_m > 20: length_m = round(length_m / 1000, 3)
+        except (ValueError, TypeError): length_m = 1.5
+
+        try:
+            width_m = float(str(raw_w).replace(",", "").strip())
+            if width_m > 20: width_m = round(width_m / 1000, 3)
+        except (ValueError, TypeError): width_m = length_m
+
+        try:
+            depth_m = float(str(raw_t).replace(",", "").strip())
+            if depth_m > 20: depth_m = round(depth_m / 1000, 3)
+        except (ValueError, TypeError): depth_m = 0.4
+
+        footing_specs.append({
+            "length_m": length_m, "width_m": width_m, "depth_m": depth_m, "count": 1
+        })
+        concrete_elements.append({
+            "type": "footing", "class": "A", "count": 1,
+            "length_m": length_m, "width_m": width_m, "height_m": depth_m
+        })
+
+        raw_bar = f.get("BAR X") or f.get("BAR Y") or ""
+        if raw_bar:
+            import re
+            m = re.search(r"(\d+)\s*-\s*(\d+)mm", str(raw_bar))
+            if m:
+                cnt, dia = int(m.group(1)), int(m.group(2))
+                rebar_elements.append({
+                    "member": "footing_mat", "diameter_mm": dia, "count": cnt, "member_length_m": length_m
+                })
+
+    # 2. Columns
+    seen_cols = {}
+    import re
+    COL_MARK_RE = re.compile(r"^[A-Z]-?\d+$")
+    for row in columns:
+        if not isinstance(row, dict): continue
+        flat_mark = row.get("COLUMN") or row.get("mark")
+        if flat_mark and COL_MARK_RE.match(str(flat_mark)) and flat_mark not in seen_cols:
+            seen_cols[flat_mark] = row
+            continue
+        for key, val in row.items():
+            if COL_MARK_RE.match(str(key)) and key not in seen_cols:
+                seen_cols[key] = val if isinstance(val, dict) else {"_raw": str(val)}
+
+    for mark, val in seen_cols.items():
+        raw_dim = val.get("DIMENSION") or ""
+        dim_w = dim_d = 0.4
+        if raw_dim:
+            parts = [p.strip() for p in str(raw_dim).replace("x", " ").replace("X", " ").split() if p.strip().isdigit()]
+            if len(parts) >= 2:
+                dim_w = round(int(parts[0]) / 1000, 3)
+                dim_d = round(int(parts[1]) / 1000, 3)
+            elif len(parts) == 1:
+                dim_w = dim_d = round(int(parts[0]) / 1000, 3)
+
+        concrete_elements.append({
+            "type": "column", "class": "A", "count": 2,
+            "width_m": dim_w, "depth_m": dim_d, "clear_height_m": 3.20
+        })
+
+    if footing_specs:
+        inputs[2]["footing_specs"] = footing_specs
+    if concrete_elements:
+        inputs[3]["elements"] = concrete_elements
+    if rebar_elements:
+        inputs[5]["rebar_elements"] = rebar_elements
+
+    return inputs
+
+
 @app.route("/api/v1/solver/process", methods=["POST"])
 @app.route("/api/v1/process-drawing", methods=["POST"])
 def process_drawing():
@@ -518,9 +622,12 @@ def process_drawing():
     req_data = request.get_json(silent=True) or {}
     session_id = req_data.get("session_id")
 
-    # Verification Gate Check
+    payload = None
+
+    # Verification Gate Check & session reuse
     if session_id and session_id in _PARSER_SESSIONS:
-        payload = _PARSER_SESSIONS[session_id].get("payload", {})
+        sess_data = _PARSER_SESSIONS[session_id]
+        payload = sess_data.get("payload", {})
         gate = payload.get("verification_gate", {})
         if gate.get("status") == "BLOCKED":
             unresolved = [i for i in gate.get("blocking_issues", []) if not i.get("resolved")]
@@ -535,26 +642,57 @@ def process_drawing():
     drawing_name = file.filename if file else req_data.get("drawing_name") or "plan part 1.pdf"
     session_id = session_id or str(uuid.uuid4())
 
-
-    target_path = None
-    user_downloads = r"E:\Users\Louis\Downloads"
     uploads_dir = os.path.join(BASE_DIR, "uploads")
 
-    active_path = target_path or os.path.join(BASE_DIR, "sample_structural_plan.pdf")
+    # Resolve target file path
+    active_path = None
     if file:
         os.makedirs(uploads_dir, exist_ok=True)
         active_path = os.path.join(uploads_dir, file.filename)
         file.save(active_path)
+    else:
+        filename = os.path.basename(drawing_name)
+        candidates = [
+            os.path.join(BASE_DIR, "uploads", filename),
+            os.path.join(BASE_DIR, "backend", "reference_data", "sample_inputs", filename),
+            os.path.join(BASE_DIR, "backend", "reference_data", "pdf_plans", filename),
+            os.path.join(BASE_DIR, filename),
+        ]
+        for c in candidates:
+            if os.path.exists(c):
+                active_path = c
+                break
 
-    try:
-        parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
-        payload = parser.parse()
-        project_inputs = payload.get("schedules", {})
-    except Exception as exc:
-        project_inputs = {}
+    if not active_path:
+        active_path = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
 
-    source = "pdf_parsed" if project_inputs else "sample_defaults"
+    # If payload not already loaded from session, run DrawingParserV2 + VisionBlueprintInspector
+    if not payload:
+        try:
+            parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
+            payload = parser.parse()
 
+            ext = drawing_name.rsplit(".", 1)[-1].lower() if "." in drawing_name else ""
+            if ext == "pdf":
+                inspector = VisionBlueprintInspector(filepath=active_path)
+                payload = inspector.enrich(payload)
+        except Exception as exc:
+            app.logger.exception("Parsing/enrichment failed in process_drawing for %s", drawing_name)
+            payload = {"schedules": {}}
+
+    schedules = payload.get("schedules", {}) if isinstance(payload, dict) else {}
+    has_footings = bool(schedules.get("footings"))
+    has_columns  = bool(schedules.get("columns"))
+
+    if has_footings or has_columns:
+        source = "pdf_vision_enriched"
+    elif schedules:
+        source = "pdf_vector_parsed"
+    else:
+        source = "sample_defaults"
+
+    # Map extracted schedules into Fajardo 13-trade project_inputs schema
+    project_inputs = _schedules_to_project_inputs(schedules)
 
     # Run full 13-trade engine
     takeoff = run_full_takeoff(project_inputs)
@@ -575,7 +713,7 @@ def process_drawing():
                                                 takeoff["sections_2_to_13_subtotal"])
 
     # Extract parsed vector entities/elements from payload
-    parsed_elements = payload.get("elements", [])
+    parsed_elements = payload.get("elements", []) if isinstance(payload, dict) else []
     elements_list = parsed_elements if parsed_elements else _sample_elements_json()
 
     return jsonify({

@@ -300,7 +300,7 @@ class DrawingParserV2:
                     "count": int(bar_count_match.group(1)) if bar_count_match else None,
                     "type": "grid_mat",
                 },
-                "provenance": "parsed" if complete else "inferred",
+                "provenance": "vector_text" if complete else "inferred",
             })
         return results
 
@@ -349,7 +349,7 @@ class DrawingParserV2:
                     "size_mm": None,
                     "spacing_mm": ties_raw.strip() or None,
                 },
-                "provenance": "parsed" if main_match else "inferred",
+                "provenance": "vector_text" if main_match else "inferred",
             })
         return results
 
