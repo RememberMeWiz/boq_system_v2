@@ -9,10 +9,11 @@
       500
     ],
     "engine": "rapidocr_onnxruntime",
-    "crop_ocr_execution_time_sec": 11.69,
+    "matching_mode": "normalized_compact_text_matching",
+    "crop_ocr_execution_time_sec": 10.92,
     "total_cropped_tokens_count": 114,
-    "overall_precision_pct": 70.83,
-    "verified_fields_count": "17/24"
+    "overall_precision_pct": 75.0,
+    "verified_fields_count": "18/24"
   },
   "raw_cropped_region_tokens": [
     {
@@ -2529,13 +2530,15 @@
       "item_mark": "F-1",
       "field_name": "mark",
       "ground_truth_value": "F-1",
-      "found_in_crop_ocr": false,
-      "status": "MISSING"
+      "normalized_target": "F1",
+      "found_in_crop_ocr": true,
+      "status": "MATCH"
     },
     {
       "item_mark": "F-1",
       "field_name": "length",
       "ground_truth_value": "1400",
+      "normalized_target": "1400",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2543,6 +2546,7 @@
       "item_mark": "F-1",
       "field_name": "width",
       "ground_truth_value": "1400",
+      "normalized_target": "1400",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2550,6 +2554,7 @@
       "item_mark": "F-1",
       "field_name": "depth",
       "ground_truth_value": "1500",
+      "normalized_target": "1500",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2557,6 +2562,7 @@
       "item_mark": "F-1",
       "field_name": "thickness",
       "ground_truth_value": "350",
+      "normalized_target": "350",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2564,6 +2570,7 @@
       "item_mark": "F-2",
       "field_name": "mark",
       "ground_truth_value": "F-2",
+      "normalized_target": "F2",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2571,6 +2578,7 @@
       "item_mark": "F-2",
       "field_name": "length",
       "ground_truth_value": "2300",
+      "normalized_target": "2300",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2578,6 +2586,7 @@
       "item_mark": "F-2",
       "field_name": "width",
       "ground_truth_value": "2300",
+      "normalized_target": "2300",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2585,6 +2594,7 @@
       "item_mark": "F-2",
       "field_name": "depth",
       "ground_truth_value": "1500",
+      "normalized_target": "1500",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2592,6 +2602,7 @@
       "item_mark": "F-2",
       "field_name": "thickness",
       "ground_truth_value": "350",
+      "normalized_target": "350",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2599,6 +2610,7 @@
       "item_mark": "F-3",
       "field_name": "mark",
       "ground_truth_value": "F-3",
+      "normalized_target": "F3",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2606,6 +2618,7 @@
       "item_mark": "F-3",
       "field_name": "length",
       "ground_truth_value": "2100",
+      "normalized_target": "2100",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2613,6 +2626,7 @@
       "item_mark": "F-3",
       "field_name": "width",
       "ground_truth_value": "2100",
+      "normalized_target": "2100",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2620,6 +2634,7 @@
       "item_mark": "F-3",
       "field_name": "depth",
       "ground_truth_value": "1500",
+      "normalized_target": "1500",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2627,6 +2642,7 @@
       "item_mark": "F-3",
       "field_name": "thickness",
       "ground_truth_value": "350",
+      "normalized_target": "350",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2634,6 +2650,7 @@
       "item_mark": "C-1",
       "field_name": "mark",
       "ground_truth_value": "C-1",
+      "normalized_target": "C1",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2641,6 +2658,7 @@
       "item_mark": "C-1",
       "field_name": "dimension",
       "ground_truth_value": "400x400",
+      "normalized_target": "400X400",
       "found_in_crop_ocr": false,
       "status": "MISSING"
     },
@@ -2648,6 +2666,7 @@
       "item_mark": "C-1",
       "field_name": "main_bar",
       "ground_truth_value": "8-20mm",
+      "normalized_target": "820MM",
       "found_in_crop_ocr": false,
       "status": "MISSING"
     },
@@ -2655,6 +2674,7 @@
       "item_mark": "C-2",
       "field_name": "mark",
       "ground_truth_value": "C-2",
+      "normalized_target": "C2",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2662,6 +2682,7 @@
       "item_mark": "C-2",
       "field_name": "dimension",
       "ground_truth_value": "400x400",
+      "normalized_target": "400X400",
       "found_in_crop_ocr": false,
       "status": "MISSING"
     },
@@ -2669,6 +2690,7 @@
       "item_mark": "C-2",
       "field_name": "main_bar",
       "ground_truth_value": "14-25mm",
+      "normalized_target": "1425MM",
       "found_in_crop_ocr": false,
       "status": "MISSING"
     },
@@ -2676,6 +2698,7 @@
       "item_mark": "C-3",
       "field_name": "mark",
       "ground_truth_value": "C-3",
+      "normalized_target": "C3",
       "found_in_crop_ocr": true,
       "status": "MATCH"
     },
@@ -2683,6 +2706,7 @@
       "item_mark": "C-3",
       "field_name": "dimension",
       "ground_truth_value": "400x400",
+      "normalized_target": "400X400",
       "found_in_crop_ocr": false,
       "status": "MISSING"
     },
@@ -2690,6 +2714,7 @@
       "item_mark": "C-3",
       "field_name": "main_bar",
       "ground_truth_value": "12-25mm",
+      "normalized_target": "1225MM",
       "found_in_crop_ocr": false,
       "status": "MISSING"
     }
