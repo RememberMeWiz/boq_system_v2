@@ -113,7 +113,7 @@ export default function App() {
 
   useEffect(() => {
     loadSavedSessions();
-    fetchTakeoff(null, 'plan part 1.pdf');
+    // Do NOT auto-trigger fetchTakeoff on mount — user must explicitly select/import a drawing
   }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
