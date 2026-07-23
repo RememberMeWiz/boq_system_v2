@@ -1,3 +1,15 @@
+## [2026-07-23 17:00 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash - Antigravity Orchestrator)
+Task: Stage 6 Frontend Integration, Visual Reconstruction Adapter Fix & Server Governance Update
+Notes:
+- Built and integrated [`ParserDashboard.jsx`](file:///e:/Users/Louis/Documents/boq_system_v2/frontend/src/components/ParserDashboard.jsx) into `App.jsx` with a new `🔬 Parser & Signoff` tab.
+- Unified the global import pipeline so importing any drawing via top header `📥 Import PDF/DXF` button populates both the takeoff solver and the multimodal vision parser.
+- Implemented `ProvenanceBadge` system (Vector, Vision, Offline OCR, Assumed), per-field high-risk amber callouts (👁 icon for `MAIN BAR`/`TIES`), verification gate card (`READY`/`BLOCKED`), and Directive 10 audit signoff modal (`signed_off_by`, `timestamp`, `note`).
+- Fixed `VisualReconstructionEngine` adapter field mappings for all 3 column schema variants (`FOOTING MARK`, `LENGTH (L)`, `WIDTH (W)`, `COLUMN`, `DIMENSION`, `?` verification flag).
+- Updated Rule 6 in [`00_INSTRUCTIONS_FOR_WEB_AI.md`](file:///e:/Users/Louis/Documents/boq_system_v2/00_INSTRUCTIONS_FOR_WEB_AI.md) and [`start_plan2takeoff.bat`](file:///e:/Users/Louis/Documents/boq_system_v2/start_plan2takeoff.bat) mandating external terminal execution for long-running servers.
+- Committed and pushed to GitHub main branch (`0d13d29`, `af72a1e`).
+
+---
+
 ## [2026-07-22 13:40 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash - Antigravity Orchestrator)
 Task: 1-Click Desktop Launcher & Shutdown Scripts (`start_plan2takeoff.bat`, `stop_plan2takeoff.bat`)
 Notes:
