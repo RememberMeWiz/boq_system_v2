@@ -27,7 +27,11 @@ class VisualReconstructionEngine:
             self.data = json_payload
         elif isinstance(json_payload, list):
             self.data = {"elements": json_payload}
+        else:
+            self.data = {"elements": []}
+
         self.width = self.data.get("width", 800)
+
         self.height = self.data.get("height", 600)
         self.elements = self._adapt_payload_to_elements(self.data)
 
