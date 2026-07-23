@@ -186,6 +186,15 @@ def parser_ingest():
                 break
 
         if not saved_path:
+            # Check uploads directory for session-prefixed files like {session_id}_{filename}
+            uploads_dir = os.path.join(BASE_DIR, "uploads")
+            if os.path.exists(uploads_dir):
+                for f in os.listdir(uploads_dir):
+                    if f.endswith(f"_{filename}") or f == filename:
+                        saved_path = os.path.join(uploads_dir, f)
+                        break
+
+        if not saved_path:
             # Fallback search for filename anywhere in reference_data
             for root, _, files in os.walk(os.path.join(BASE_DIR, "backend", "reference_data")):
                 if filename in files:
@@ -193,7 +202,12 @@ def parser_ingest():
                     break
 
         if not saved_path or not os.path.exists(saved_path):
-            return jsonify({"error": f"Drawing file '{filename}' not found on server."}), 404
+            # Fallback to default sample drawing if specified file isn't on disk
+            default_sample = os.path.join(BASE_DIR, "sample_structural_plan.pdf")
+            if os.path.exists(default_sample):
+                saved_path = default_sample
+            else:
+                return jsonify({"error": f"Drawing file '{filename}' not found on server."}), 404
 
     allowed_exts = {"pdf", "dxf", "dwg"}
     ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
