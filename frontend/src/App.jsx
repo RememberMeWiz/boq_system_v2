@@ -80,6 +80,7 @@ function DrawingDropdownMenu({ drawing, drawingsList, onSelect, onDelete }) {
 export default function App() {
   const [data, setData]               = useState(null);
   const [rebarData, setRebarData]     = useState(null);
+  const [parserData, setParserData]   = useState(null); // /api/v1/parser/ingest result
   const [loading, setLoading]         = useState(false);
   const [banner, setBanner]           = useState(null);
   const [drawingsList, setDrawingsList] = useState([]);
@@ -154,6 +155,17 @@ export default function App() {
       if (rJson.status === 'success') {
         setRebarData(rJson.optimizations);
       }
+
+      // Parser ingest (PDF only) — feeds the Parser & Signoff tab
+      if (uploadedFile && uploadedFile.name?.toLowerCase().endsWith('.pdf')) {
+        try {
+          const pFormData = new FormData();
+          pFormData.append('file', uploadedFile);
+          const pRes  = await fetch('/api/v1/parser/ingest', { method: 'POST', body: pFormData });
+          const pJson = await pRes.json();
+          if (pRes.ok) setParserData(pJson);
+        } catch { /* parser ingest is non-blocking */ }
+      }
     } catch (err) {
       setBanner({
         type: 'info',
@@ -208,6 +220,7 @@ export default function App() {
   const handleReset = () => {
     setData(null);
     setRebarData(null);
+    setParserData(null);
     setSelectedElement(null);
     setTradeTotals({});
     setDrawing('');
@@ -466,7 +479,7 @@ export default function App() {
           )}
 
           {boqView === 'parser' && (
-            <ParserDashboard />
+            <ParserDashboard parserData={parserData} setParserData={setParserData} />
           )}
         </div>
 
