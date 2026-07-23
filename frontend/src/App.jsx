@@ -5,6 +5,7 @@ import TradeAccordion from './components/TradeAccordion';
 import RebarOptimizerView from './components/RebarOptimizerView';
 import RightPanel from './components/RightPanel';
 import UploadModal from './components/UploadModal';
+import ParserDashboard from './components/ParserDashboard';
 
 // ── Custom Drawing Dropdown with Delete Button ────────────────────────────────
 function DrawingDropdownMenu({ drawing, drawingsList, onSelect, onDelete }) {
@@ -411,6 +412,7 @@ export default function App() {
             { id: 'accordion',  label: '📊 Trade Accordion' },
             { id: 'blueprint',  label: '🗺️ Blueprint Viewer' },
             { id: 'rebar',      label: '⚙️ Rebar Optimizer' },
+            { id: 'parser',     label: '🔬 Parser & Signoff' },
           ].map(({ id, label }) => (
             <button
               key={id}
@@ -461,6 +463,10 @@ export default function App() {
 
           {boqView === 'rebar' && (
             <RebarOptimizerView optimizations={rebarData || []} />
+          )}
+
+          {boqView === 'parser' && (
+            <ParserDashboard />
           )}
         </div>
 
