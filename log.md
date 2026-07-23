@@ -283,12 +283,15 @@ Copied **337 CAD drawings (.dwg / .dxf)** across 49 categories into the project 
 
 ---
 
-## [2026-07-23 10:50:00 PST] — PM GOVERNANCE & WEB AI INSTRUCTIONS UPDATED WITH CDN CACHE-BUSTING RULE
+## [2026-07-23 10:53:00 PST] — RUNTIME BUGFIXES IN BACKEND/APP.PY
 
-### 1. PM Rule 12 Added (`00_INSTRUCTIONS_FOR_WEB_AI.md`)
-Added **Rule 12 (GitHub Edge CDN Cache-Busting Rule)** to [`00_INSTRUCTIONS_FOR_WEB_AI.md`](file:///e:/Users/Louis/Documents/boq_system_v2/00_INSTRUCTIONS_FOR_WEB_AI.md):
-- Documents Fastly Edge CDN 5-minute cache TTL (`Cache-Control: max-age=300`) on `raw.githubusercontent.com`.
-- Mandates appending `?cb=<short-commit-sha>` or using immutable commit SHA paths whenever handing raw GitHub URLs to Web AIs (Claude Web) to guarantee instant, un-cached live content retrieval.
+### 1. Fixed `parse_res` Undefined Variable Bug in `process_drawing()`
+- Replaced stale `parse_res` references in `backend/app.py` (`process_drawing()`) with safe dictionary accessors on `payload` (`payload.get("width")`, `payload.get("elements")`, `payload.get("framing_plan")`, `payload.get("suggestions")`).
+- Prevents `NameError` runtime crash when invoking `POST /api/v1/process-drawing` or `POST /api/v1/solver/process`.
+
+### 2. Resolved Duplicate Route Registration
+- Removed duplicate `@app.route("/api/v1/sessions", methods=["GET"])` definition (`get_sessions_list`), consolidating session listing into the canonical `get_sessions()` handler.
+
 
 
 

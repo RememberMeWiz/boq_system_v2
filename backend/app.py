@@ -547,27 +547,8 @@ def process_drawing():
         supabase_result = supabase_save_session(session_id, drawing_name, boq_rows, grand_total,
                                                 takeoff["sections_2_to_13_subtotal"])
 
-    # Convert parsed vector entities into JSON elements
-    parsed_elements = []
-    if hasattr(parse_res, 'entities') and parse_res.entities:
-        for idx, ent in enumerate(parse_res.entities):
-            etype = 'unclassified'
-            lbl = ent.label or 'ELEMENT'
-            if 'FOOTING' in ent.layer or 'F-' in lbl: etype = 'footing'
-            elif 'COLUMN' in ent.layer or 'C-' in lbl: etype = 'column'
-            elif 'BEAM' in ent.layer or 'B-' in lbl:   etype = 'beam'
-            elif 'SLAB' in ent.layer or 'S-' in lbl:   etype = 'slab'
-            elif 'WALL' in ent.layer or 'W-' in lbl:   etype = 'chb_wall'
-
-            parsed_elements.append({
-                "element_id": f"{lbl}_{idx+1}",
-                "element_type": etype,
-                "label": lbl[:30],
-                "bounding_box": ent.bounding_box,
-                "location": f"Layer {ent.layer}",
-                "count": 1,
-            })
-
+    # Extract parsed vector entities/elements from payload
+    parsed_elements = payload.get("elements", [])
     elements_list = parsed_elements if parsed_elements else _sample_elements_json()
 
     return jsonify({
@@ -576,13 +557,13 @@ def process_drawing():
         "input_source": source,
         "drawing": {
             "filename": drawing_name,
-            "width":    getattr(parse_res, 'width', 842.0),
-            "height":   getattr(parse_res, 'height', 595.0),
-            "page_image": getattr(parse_res, 'page_image', None),
-            "comparison_image": getattr(parse_res, 'comparison_image', None),
+            "width":    payload.get("width", 842.0),
+            "height":   payload.get("height", 595.0),
+            "page_image": payload.get("page_image", None),
+            "comparison_image": payload.get("comparison_image", None),
         },
-        "framing_plan": getattr(parse_res, 'framing_plan', []),
-        "suggestions": getattr(parse_res, 'suggestions', []),
+        "framing_plan": payload.get("framing_plan", []),
+        "suggestions": payload.get("suggestions", []),
         "elements": elements_list,
         "boq":     boq_rows,
         "summary": {
@@ -591,6 +572,7 @@ def process_drawing():
         },
         "supabase": supabase_result,
     })
+
 
 
 # --------------------------------------------------------------------
@@ -686,15 +668,9 @@ def export_json_full():
     )
 
 
-@app.route("/api/v1/sessions", methods=["GET"])
-def get_sessions_list():
-    """Lists saved drawing sessions from local SQLite DB."""
-    sessions = local_list_sessions(limit=50)
-    return jsonify({"status": "success", "sessions": sessions})
-
-
 @app.route("/api/v1/sessions/<path:drawing_name>", methods=["DELETE", "OPTIONS"])
 def delete_drawing_session(drawing_name):
+
     if request.method == "OPTIONS":
         return "", 204
     """Deletes drawing session and file from database and uploads directory."""
