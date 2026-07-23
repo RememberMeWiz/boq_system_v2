@@ -1,0 +1,48 @@
+{
+  "verification_gate": {
+    "blocking_issues": [],
+    "computed_at": "2026-07-23T07:51:31.788260+00:00",
+    "resolution_log": [
+      {
+        "action": "manual_confirm",
+        "issue_id": "sug_test_column",
+        "note": "Verified column tie spacing against Sheet S-4 structural schedule table.",
+        "resolved": true,
+        "signed_off_at": "2026-07-23T07:51:31.788260+00:00",
+        "signed_off_by": "Engr. Louis Fajardo"
+      }
+    ],
+    "status": "BLOCKED",
+    "warning_issues": [
+      {
+        "affected_elements": [
+          "*footings*"
+        ],
+        "category": "low_confidence_ocr",
+        "id": "sug_1",
+        "message": "No footing schedule table detected via pdfplumber border detection. Vision OCR fallback will be attempted if configured.",
+        "resolution_required": [
+          "manual_confirm",
+          "upload_sheet"
+        ],
+        "resolved": false,
+        "severity": "WARNING"
+      },
+      {
+        "affected_elements": [
+          "C-1",
+          "C-2",
+          "C-3"
+        ],
+        "category": "column_reinforcement_check",
+        "id": "sug_test_column",
+        "message": "Column reinforcement tie callouts require manual audit against drawing detail.",
+        "resolution_required": [
+          "manual_confirm"
+        ],
+        "resolved": true,
+        "severity": "WARNING"
+      }
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "payload": {
+    "grid_nodes": [],
+    "project_meta": {
+      "_sheet_classifications": {
+        "A-11": "section_detail",
+        "A-12": "section_detail",
+        "A-13": "elevation",
+        "A-2": "unknown",
+        "A-3": "unknown",
+        "A-4": "elevation",
+        "A-5": "section_detail",
+        "A-6": "unknown",
+        "A-8": "table_of_contents",
+        "A-9": "section_detail",
+        "G-1": "unknown",
+        "G-2": "unknown",
+        "G-3": "unknown",
+        "G-4": "unknown",
+        "G-5": "unknown",
+        "G-6": "unknown",
+        "PC-1": "table_of_contents",
+        "S-1": "general_notes",
+        "S-2": "general_notes",
+        "S-3": "foundation_plan",
+        "S-4": "footing_column_schedule",
+        "S-5": "framing_plan",
+        "W-2": "elevation",
+        "page_0": "section_detail",
+        "page_1": "section_detail",
+        "page_2": "unknown",
+        "page_22": "unknown",
+        "page_9": "unknown"
+      },
+      "detected_variant": null,
+      "filename": "plan part 1.pdf",
+      "grid_scope": {
+        "bays": null,
+        "total_length_mm": null
+      },
+      "toc_missing_sheets": []
+    },
+    "schedules": {
+      "beams": [],
+      "columns": [
+        {
+          "C-1": {
+            "MAIN BAR": "8-20mm\u00f8",
+            "SIZE": "400 x 400",
+            "TIES": "10mm\u00f8 (2 SETS)"
+          },
+          "C-2": {
+            "MAIN BAR": "12-25mm\u00f8",
+            "SIZE": "400 x 400",
+            "TIES": "10mm\u00f8 (3 SETS)"
+          },
+          "C-3": {
+            "MAIN BAR": "8-25mm\u00f8",
+            "SIZE": "400 x 400",
+            "TIES": "10mm\u00f8 (2 SETS)"
+          },
+          "LEVEL": "2ND FLOOR LEVEL TO ROOF LEVEL",
+          "provenance": "vision_extracted"
+        },
+        {
+          "C-1": {
+            "MAIN BAR": "8-20mm\u00f8",
+            "SIZE": "400 x 400",
+            "TIES": "10mm\u00f8 (2 SETS)"
+          },
+          "C-2": {
+            "MAIN BAR": "14-25mm\u00f8",
+            "SIZE": "400 x 400",
+            "TIES": "10mm\u00f8 (3 SETS)"
+          },
+          "C-3": {
+            "MAIN BAR": "12-25mm\u00f8",
+            "SIZE": "400 x 400",
+            "TIES": "10mm\u00f8 (3 SETS)"
+          },
+          "LEVEL": "FOUNDATION LEVEL TO 2ND FLOOR LEVEL",
+          "provenance": "vision_extracted"
+        }
+      ],
+      "footings": [
+        {
+          "BAR X": "7 - 20mm\u00d8",
+          "BAR Y": "7 - 20mm\u00d8",
+          "DEPTH (D)": "1500",
+          "FOOTING MARK": "F-1",
+          "LENGTH (L)": "1400",
+          "REMARKS": "SQUARE FOOTING",
+          "Thickness (t)": "350",
+          "WIDTH (W)": "1400",
+          "provenance": "vision_extracted"
+        },
+        {
+          "BAR X": "11 - 20mm\u00d8",
+          "BAR Y": "11 - 20mm\u00d8",
+          "DEPTH (D)": "1500",
+          "FOOTING MARK": "F-2",
+          "LENGTH (L)": "2300",
+          "REMARKS": "SQUARE FOOTING",
+          "Thickness (t)": "350",
+          "WIDTH (W)": "2300",
+          "provenance": "vision_extracted"
+        },
+        {
+          "BAR X": "10 - 20mm\u00d8",
+          "BAR Y": "10 - 20mm\u00d8",
+          "DEPTH (D)": "1500",
+          "FOOTING MARK": "F-3",
+          "LENGTH (L)": "2100",
+          "REMARKS": "SQUARE FOOTING",
+          "Thickness (t)": "350",
+          "WIDTH (W)": "2100",
+          "provenance": "vision_extracted"
+        }
+      ],
+      "slabs": [],
+      "walls": []
+    },
+    "structural_notes": {
+      "concrete_cover_col_beam_mm": null,
+      "concrete_cover_earth_mm": null,
+      "lap_splice_multiplier": null,
+      "seismic_hook_deg": null
+    },
+    "verification_gate": {
+      "blocking_issues": [],
+      "computed_at": "2026-07-23T07:51:02.939322+00:00",
+      "resolution_log": [],
+      "status": "READY",
+      "warning_issues": [
+        {
+          "affected_elements": [
+            "*footings*"
+          ],
+          "category": "low_confidence_ocr",
+          "id": "sug_1",
+          "message": "No footing schedule table detected via pdfplumber border detection. Vision OCR fallback will be attempted if configured.",
+          "resolution_required": [
+            "manual_confirm",
+            "upload_sheet"
+          ],
+          "resolved": false,
+          "severity": "WARNING"
+        }
+      ]
+    }
+  },
+  "session_id": "79de24f6-4b14-45fb-b140-595e601dd6d7"
+}
