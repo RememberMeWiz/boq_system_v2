@@ -85,6 +85,7 @@ export default function App() {
   const [rebarData, setRebarData]     = useState(null);
   const [parserData, setParserData]   = useState(null); // /api/v1/parser/ingest result
   const [loading, setLoading]         = useState(false);
+  const [showParsingOverlay, setShowParsingOverlay] = useState(false);
   const [banner, setBanner]           = useState(null);
   const [drawingsList, setDrawingsList] = useState([]);
   const [drawing, setDrawing]         = useState('');
@@ -118,8 +119,9 @@ export default function App() {
   }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
-  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null, activeSessionId = null, forceRefresh = false) => {
+  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null, activeSessionId = null, forceRefresh = false, showOverlay = true) => {
     setLoading(true);
+    if (showOverlay) setShowParsingOverlay(true);
     setBanner(null);
 
     const targetName = uploadedFile ? uploadedFile.name : (selectedDrawingName || drawing || 'plan part 1.pdf');
@@ -208,6 +210,7 @@ export default function App() {
       setBanner({ type: 'error', msg: `⚠ Engine offline: ${err.message}` });
     } finally {
       setLoading(false);
+      setShowParsingOverlay(false);
     }
   };
 
@@ -239,13 +242,13 @@ export default function App() {
   };
 
   const handleModalUpload = (file) => {
-    fetchTakeoff(file);
+    fetchTakeoff(file, null, null, true, true);
   };
 
   // ── Refresh Action ──────────────────────────────────────────────────────
   const handleRefresh = () => {
     if (drawing || data) {
-      fetchTakeoff(null, drawing);
+      fetchTakeoff(null, drawing, null, true, false);
     } else {
       setBanner({ type: 'info', msg: 'ℹ Select a drawing or click "Import PDF/DXF" to compute takeoff data.' });
     }
@@ -525,7 +528,7 @@ export default function App() {
       </main>
 
       {/* Staged Parsing Progress Overlay */}
-      <ImportProgressOverlay visible={loading} />
+      <ImportProgressOverlay visible={showParsingOverlay} />
     </div>
   );
 }
