@@ -248,7 +248,7 @@ export default function App() {
   // ── Refresh Action ──────────────────────────────────────────────────────
   const handleRefresh = () => {
     if (drawing || data) {
-      fetchTakeoff(null, drawing, null, true, false);
+      fetchTakeoff(null, drawing, null, true, true);
     } else {
       setBanner({ type: 'info', msg: 'ℹ Select a drawing or click "Import PDF/DXF" to compute takeoff data.' });
     }
