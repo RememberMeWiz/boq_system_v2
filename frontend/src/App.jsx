@@ -465,7 +465,6 @@ export default function App() {
           {[
             { id: 'checklist',  label: '📋 BOQ Checklist' },
             { id: 'accordion',  label: '📊 Trade Accordion' },
-            { id: 'blueprint',  label: '🗺️ Blueprint Viewer' },
             { id: 'rebar',      label: '⚙️ Rebar Optimizer' },
             { id: 'parser',     label: '🔬 Parser & Signoff' },
           ].map(({ id, label }) => (
@@ -492,18 +491,6 @@ export default function App() {
 
         {/* Left Column */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0' }}>
-          {boqView === 'blueprint' && (
-            <BlueprintViewer
-              elements={data?.elements}
-              drawingName={drawing}
-              pageImage={data?.drawing?.page_image}
-              comparisonImage={data?.drawing?.comparison_image}
-              framingPlan={data?.framing_plan}
-              suggestions={data?.suggestions}
-              onElementSelect={onElementSelect}
-            />
-          )}
-
           {boqView === 'checklist' && (
             <CostedBOQChecklist
               boqData={data?.boq}
@@ -534,7 +521,7 @@ export default function App() {
         </div>
 
         {/* Right Column */}
-        {(boqView === 'checklist' || boqView === 'blueprint') && (
+        {boqView === 'checklist' && (
           <div style={{ width: '300px', flexShrink: 0, position: 'sticky', top: '130px' }}>
             <RightPanel
               tradeTotals={tradeTotals}

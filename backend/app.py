@@ -547,6 +547,12 @@ def _schedules_to_project_inputs(schedules: dict) -> dict:
     if not isinstance(schedules, dict):
         return inputs
 
+    # Clear mock elements so we only charge for what was actually parsed
+    inputs[2]["footing_specs"] = []
+    inputs[3]["elements"] = []
+    inputs[4]["wall_elements"] = []
+    inputs[5]["rebar_elements"] = []
+
     footings = schedules.get("footings", [])
     columns  = schedules.get("columns", [])
     beams    = schedules.get("beams", [])
