@@ -58,7 +58,44 @@
 │ STEP 6: HANDOFF CLEAN PAYLOAD TO FAJARDO SOLVER ENGINE                      │
 │ ZERO math/calculations in parser — clean structural payload passed to Solver │
 └─────────────────────────────────────────────────────────────────────────────┘
+
+---
+
+## 2.1. Robust Element & Sheet Identification System
+
+To guarantee 100% extraction accuracy across complex multi-page DPWH and commercial CAD/PDF drawings, the parser implements a multi-tiered **Robust Identification System**:
+
 ```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 1. SHEET CLASSIFIER & TITLE BLOCK IDENTIFIER                                │
+│ - Reads Sheet Codes (S-1 to S-7, A-1 to A-10) and Title Box Content         │
+│ - Classifies page layout: Schedule Sheet | Framing Plan | Detail Elevation  │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 2. DUAL-PASS HYBRID TEXT & VECTOR OCR IDENTIFICATION                        │
+│ - Pass A (Vector Text): Direct extraction of embedded PDF/DXF text fonts    │
+│ - Pass B (RapidOCR Fallback): Local ONNX rasterization for exploded CAD      │
+│   polylines, stroked glyphs, and non-selectable drawing graphics             │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 3. STRUCTURAL MARK & ENTITY PATTERN MATCHING                                │
+│ - Footing Marks: F-1, F-2, CF-1 (Mat/Continuous), WF-1 (Wall Footings)       │
+│ - Column Marks: Story-grouped C-1, C-2 (Foundation → 2nd Floor → Roof Deck) │
+│ - Beam Marks: 2B-1, RB-1, FTB-1 (Spans, Stirrups, Top/Bottom Rebar)         │
+│ - Slab Marks: S-1, S-2, SL-1 (Thickness, Temperature Bars, Main Bar Grid)   │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 4. CROSS-REFERENCE & PROVENANCE TRACKING                                    │
+│ - Maps schedule table specs (L × W × D) to framing grid node coordinates    │
+│ - Tags every extracted attribute with explicit provenance:                  │
+│   [vector_parsed | rapidocr | vision_enriched | assumed_default]            │
+└─────────────────────────────────────────────────────────────────────────────┘
 
 ---
 
@@ -67,6 +104,7 @@
 | Component | IN MVP Scope (Must Have) | OUT of Scope (Cut for Later) |
 | :--- | :--- | :--- |
 | **Input Ingestion** | PDF Blueprint Sheets, AutoCAD DXF/DWG Vector Files | 3D IFC / Revit BIM files |
+| **Robust Identification System** | **Multi-tier Identification**: Title block sheet codes (S-1 to S-7), dual-pass vector + RapidOCR fallback for exploded CAD text, story-grouped column marks, and explicit provenance tagging | Manual manual key-in of schedule tables |
 | **Building Scope Detection** | Auto-detects building scope, variants, and grid spans via Key Plans & Title Sheets | Arbitrary non-standard residential custom variants without key plan |
 | **Grid Node Tallying** | Dynamically tallies grid node intersections, member pairs, beam spans, purlin spacings | Non-grid freeform curve geometry |
 | **Schedule Table Extraction** | **Footing specs** ($L, W, H$), **Column details split by story level** (*Lower Level* vs *Upper Level*), Beam & Slab specs | Complex curved bridge schedules |
