@@ -1,3 +1,18 @@
+## [2026-07-25 07:20 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash - Antigravity Orchestrator)
+Task: Stage 2 Design Specification Sync, Local RapidOCR Page Rasterization & Blueprint Outliner Element Wiring
+Notes:
+- Synced updated Stage 2 Design Specification ([`parser_design_spec.md`](file:///e:/Users/Louis/Documents/boq_system_v2/parser_design_spec.md)) from `E:\Users\Louis\Downloads\parser_design_spec.md`.
+- Expanded Design Spec with Section 2.1 (Robust Element & Sheet Identification System: Sheet Classifier 2.1.A, Element Taxonomy 2.1.B, Unified Record Schema 2.1.C, Confidence & Provenance 2.1.D) and Section 5 (13-Trade Solver Required Input Reference).
+- Integrated local `RapidOCR` ONNX page rasterization into [`backend/engine/vision_ocr.py`](file:///e:/Users/Louis/Documents/boq_system_v2/backend/engine/vision_ocr.py) for zero-quota extraction of exploded CAD vector PDF schedule tables.
+- Added 2D spatial bounding box sorting (row-by-row, left-to-right) to `extract_ocr_text_from_page()` in `vision_ocr.py`.
+- Updated `_apply_offline_ocr_fallback()` in [`backend/app.py`](file:///e:/Users/Louis/Documents/boq_system_v2/backend/app.py) to populate `payload["elements"]` with recovered RapidOCR footings, columns, and beams, resolving the Blueprint Outliner empty display issue.
+- Added Staged Parsing Progress Overlay ([`ImportProgressOverlay.jsx`](file:///e:/Users/Louis/Documents/boq_system_v2/frontend/src/components/ImportProgressOverlay.jsx)) and wired `forceRefresh` & `showParsingOverlay` into [`frontend/src/App.jsx`](file:///e:/Users/Louis/Documents/boq_system_v2/frontend/src/App.jsx).
+- Renamed `Parser & Signoff` tab to `📐 Blueprint Outliner` in `App.jsx` and `ParserDashboard.jsx`.
+- Added Side-by-Side comparison viewer toggle button (`Reconstructed Only` vs `🔄 Side-by-Side`) in [`frontend/src/components/ParserDashboard.jsx`](file:///e:/Users/Louis/Documents/boq_system_v2/frontend/src/components/ParserDashboard.jsx).
+- Committed and pushed to GitHub main branch.
+
+---
+
 ## [2026-07-24 02:35 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash - Antigravity Orchestrator)
 Task: Empty Schedule Fallback Fix, Blueprint Viewer Decommissioning & Vision OCR Pipeline Integration
 Notes:
