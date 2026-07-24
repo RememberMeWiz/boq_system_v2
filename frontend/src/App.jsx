@@ -118,7 +118,7 @@ export default function App() {
   }, []);
 
   // ── Core Takeoff Fetch ──────────────────────────────────────────────────
-  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null, activeSessionId = null) => {
+  const fetchTakeoff = async (uploadedFile = null, selectedDrawingName = null, activeSessionId = null, forceRefresh = false) => {
     setLoading(true);
     setBanner(null);
 
@@ -128,7 +128,7 @@ export default function App() {
 
     try {
       // Preserve session_id across navigation (dropdown, refresh, mount) strictly keyed by targetName
-      let currentSessionId = activeSessionId || drawingSessions[targetName] || null;
+      let currentSessionId = forceRefresh ? null : (activeSessionId || drawingSessions[targetName] || null);
 
       const ext = targetName.split('.').pop().toLowerCase();
       const isParseable = ['pdf', 'dxf', 'dwg'].includes(ext);
@@ -182,7 +182,7 @@ export default function App() {
         setData(null);
         setBanner({
           type: 'error',
-          msg: `🔒 Takeoff Calculation BLOCKED by Verification Gate: ${json.message || 'Resolve blocking issues or submit signoff in Parser & Signoff tab.'}`
+          msg: `🔒 Takeoff Calculation BLOCKED by Verification Gate: ${json.message || 'Resolve blocking issues or submit signoff in Blueprint Outliner tab.'}`
         });
       } else if (json.status === 'success') {
         setData(json);
@@ -199,21 +199,13 @@ export default function App() {
         // Fetch Rebar Optimization in background (non-blocking)
         fetch('/api/v1/optimize-rebar', { method: 'POST' })
           .then(r => r.json())
-          .then(rJson => {
-            if (rJson.status === 'success') {
-              setRebarData(rJson.optimizations);
-            }
-          })
-          .catch(() => { /* ignore non-critical rebar optimization errors */ });
-
+          .then(j => setRebarData(j.optimizations || []))
+          .catch(() => {});
       } else {
-        throw new Error(json.reason || json.message || 'Failed to process drawing');
+        setBanner({ type: 'error', msg: `⚠ Error: ${json.message || 'Failed to compute takeoff.'}` });
       }
     } catch (err) {
-      setBanner({
-        type: 'info',
-        msg: `⚠ Note: ${err.message || 'Error processing drawing.'}`
-      });
+      setBanner({ type: 'error', msg: `⚠ Engine offline: ${err.message}` });
     } finally {
       setLoading(false);
     }
@@ -467,7 +459,7 @@ export default function App() {
             { id: 'checklist',  label: '📋 BOQ Checklist' },
             { id: 'accordion',  label: '📊 Trade Accordion' },
             { id: 'rebar',      label: '⚙️ Rebar Optimizer' },
-            { id: 'parser',     label: '🔬 Parser & Signoff' },
+            { id: 'parser',     label: '📐 Blueprint Outliner' },
           ].map(({ id, label }) => (
             <button
               key={id}

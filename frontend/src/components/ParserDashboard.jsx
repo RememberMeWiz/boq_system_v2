@@ -419,7 +419,7 @@ export default function ParserDashboard({ parserData, setParserData, onSignoffCo
             📥 Import PDF/DXF
           </span>
           {' '}button above to upload a structural drawing.<br />
-          The Parser & Signoff tab will populate automatically.
+          The Blueprint Outliner tab will populate automatically.
         </div>
       </div>
     );

@@ -98,7 +98,7 @@ def serve_md_files(filename):
 def serve_outputs(path):
     d = os.path.join(BASE_DIR, "outputs")
     if os.path.exists(os.path.join(d, path)):
-        return send_from_directory(d, path, mimetype="text/plain; charset=utf-8")
+        return send_from_directory(d, path)
     return jsonify({"error": "Not found"}), 404
 
 @app.route("/schema/<path:path>")
