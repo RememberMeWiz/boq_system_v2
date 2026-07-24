@@ -319,9 +319,37 @@ def parse_schedule_text(text: str, schedule_type: str = "auto") -> Dict:
 # Full-page auto-scan
 # ---------------------------------------------------------------------------
 
+try:
+    from rapidocr_onnxruntime import RapidOCR
+    _rapid_engine = RapidOCR()
+except Exception:
+    _rapid_engine = None
+
+
+def extract_ocr_text_from_page(page, dpi: int = 150) -> str:
+    """
+    Rasterizes a PDF page and runs local RapidOCR to extract visual text
+    from CAD vector drawings where cell text is stored as polylines/strokes.
+    """
+    if not _rapid_engine:
+        return ""
+    try:
+        pix = page.get_pixmap(dpi=dpi)
+        img_bytes = pix.tobytes("png")
+        result, _ = _rapid_engine(img_bytes)
+        if not result:
+            return ""
+        lines = [line[1].encode('ascii', 'ignore').decode('ascii').strip() for line in result if line[1]]
+        return "\n".join(lines)
+    except Exception as e:
+        log.warning(f"RapidOCR page rasterization failed: {e}")
+        return ""
+
+
 def auto_scan_pdf_schedules(pdf_path: str) -> Dict:
     """
     Scans all pages of a PDF for schedule tables and extracts all structural data.
+    Uses vector text extraction with local RapidOCR rasterization fallback.
 
     Returns:
         {"rebar": [...], "columns": [...], "beams": [...], "footings": [...], "page_count": int}
@@ -334,11 +362,31 @@ def auto_scan_pdf_schedules(pdf_path: str) -> Dict:
     try:
         doc = fitz.open(pdf_path)
         for page_num in range(len(doc)):
-            text = doc[page_num].get_text("text")
-            all_rebar.extend(parse_rebar_schedule(text))
-            all_columns.extend(parse_column_schedule(text))
-            all_beams.extend(parse_beam_schedule(text))
-            all_footings.extend(parse_footing_schedule(text))
+            page = doc[page_num]
+            text = page.get_text("text")
+
+            p_rebar = parse_rebar_schedule(text)
+            p_cols  = parse_column_schedule(text)
+            p_beams = parse_beam_schedule(text)
+            p_ftgs  = parse_footing_schedule(text)
+
+            # Fallback to local RapidOCR page rasterization if text extraction returned 0 elements,
+            # but ONLY for structural/schedule pages (contains SCHEDULE, FOOTING, COLUMN, BEAM, S-1..S-7, etc.)
+            text_upper = text.upper()
+            is_schedule_page = any(k in text_upper for k in ["SCHEDULE", "FOOTING", "COLUMN", "BEAM", "REBAR", "FOUNDATION", "S-1", "S-2", "S-3", "S-4", "S-5", "S-6", "S-7"])
+            if not (p_rebar or p_cols or p_beams or p_ftgs) and is_schedule_page and _rapid_engine:
+                ocr_text = extract_ocr_text_from_page(page)
+                if ocr_text:
+                    p_rebar = parse_rebar_schedule(ocr_text)
+                    p_cols  = parse_column_schedule(ocr_text)
+                    p_beams = parse_beam_schedule(ocr_text)
+                    p_ftgs  = parse_footing_schedule(ocr_text)
+
+            all_rebar.extend(p_rebar)
+            all_columns.extend(p_cols)
+            all_beams.extend(p_beams)
+            all_footings.extend(p_ftgs)
+
         doc.close()
     except Exception as e:
         log.error(f"auto_scan_pdf_schedules failed: {e}")
