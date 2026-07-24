@@ -189,12 +189,54 @@ def parse_beam_schedule(text: str) -> List[Dict]:
 
 def parse_footing_schedule(text: str) -> List[Dict]:
     """
-    Parses footing schedule: label, LxWxH, rebar.
+    Parses footing schedule rows from text (supports space-separated numeric
+    columns L W D t or L x W x D format). Handles mm -> m conversion and optional bar spec.
 
     Returns list of dicts matching fajardo.py footing input format.
     """
     results = []
 
+    # 1. Try space-delimited columns pattern (F-1 1400 1400 1500 ...)
+    space_pattern = re.compile(
+        r'(F-\d+)\s+'
+        r'(\d{2,5}(?:\.\d+)?)\s+'       # length
+        r'(\d{2,5}(?:\.\d+)?)\s+'       # width
+        r'(\d{2,5}(?:\.\d+)?)'          # depth
+        r'(?:\s+(\d{2,5}(?:\.\d+)?))?'  # optional thickness column
+        r'(.{0,80})',                   # trailing text on the row
+        re.IGNORECASE
+    )
+    bar_pattern = re.compile(r'(\d{1,2})\s*[-\u2013]\s*(\d{1,2})\s*mm', re.IGNORECASE)
+
+    for m in space_pattern.finditer(text):
+        label = m.group(1)
+        l_raw, w_raw, d_raw = float(m.group(2)), float(m.group(3)), float(m.group(4))
+        trailing = m.group(6) or ""
+
+        l = round(l_raw / 1000, 3) if l_raw > 20 else l_raw
+        w = round(w_raw / 1000, 3) if w_raw > 20 else w_raw
+        d = round(d_raw / 1000, 3) if d_raw > 20 else d_raw
+
+        bar_match = bar_pattern.search(trailing)
+
+        results.append({
+            "label": label,
+            "type": "footing",
+            "class": "A",
+            "length_m": l,
+            "width_m": w,
+            "depth_m": d,
+            "count": 1,
+            "rebar": {
+                "size_mm": int(bar_match.group(2)) if bar_match else None,
+                "count": int(bar_match.group(1)) if bar_match else None,
+            } if bar_match else None,
+        })
+
+    if results:
+        return results
+
+    # 2. Fallback to explicit x/X/× pattern (F-1 1.4 x 1.4 x 0.4)
     ftg_pattern = re.compile(
         r'(F-\d+)\s+'
         r'(\d+\.?\d*)\s*[xX×]\s*(\d+\.?\d*)'
@@ -210,7 +252,6 @@ def parse_footing_schedule(text: str) -> List[Dict]:
         h = float(m.group(4)) if m.group(4) else 0.40
         cnt = int(m.group(5)) if m.group(5) else 1
 
-        # Convert mm → m where needed
         if l >= 100: l /= 1000.0
         if w >= 100: w /= 1000.0
         if h >= 100: h /= 1000.0
