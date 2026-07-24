@@ -309,6 +309,18 @@ class VisionBlueprintInspector:
                     if extracted:
                         schedules[category].extend(extracted)
                         empty_categories.remove(category)
+                        # Clear stale warnings from verification_gate for this category
+                        gate = payload.get("verification_gate", {})
+                        if "warning_issues" in gate:
+                            cat_singular = category.rstrip('s')
+                            gate["warning_issues"] = [
+                                w for w in gate.get("warning_issues", [])
+                                if not (
+                                    f"*{category}*" in w.get("affected_elements", []) or
+                                    category in w.get("message", "").lower() or
+                                    cat_singular in w.get("message", "").lower()
+                                )
+                            ]
 
 
 
