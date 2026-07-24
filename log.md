@@ -1,3 +1,14 @@
+## [2026-07-24 02:35 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash - Antigravity Orchestrator)
+Task: Empty Schedule Fallback Fix, Blueprint Viewer Decommissioning & Vision OCR Pipeline Integration
+Notes:
+- Fixed default mock fallback in `_schedules_to_project_inputs()` inside [`backend/app.py`](file:///e:/Users/Louis/Documents/boq_system_v2/backend/app.py) so unparsed/empty schedule tables output ₱0 structural costs rather than falling back to the ₱1,311,704.57 sample inputs.
+- Decommissioned the **Blueprint Viewer** tab button and component view from [`frontend/src/App.jsx`](file:///e:/Users/Louis/Documents/boq_system_v2/frontend/src/App.jsx) per user request.
+- Wired `VisionBlueprintInspector.enrich()` into `/api/v1/parser/ingest` and `/api/v1/process-drawing` in `app.py` to enable automatic Gemini Vision OCR table extraction for unbordered vector PDF schedules.
+- Added `uploads/` directory to `.gitignore` to prevent caching temporary uploaded drawing PDFs in Git history.
+- Committed and pushed to GitHub main branch (`8cf0c8e`, `0d3f1cc`, `471bb76`).
+
+---
+
 ## [2026-07-23 17:00 UTC] STATUS: COMPLETED (Model: Gemini 3.6 Flash - Antigravity Orchestrator)
 Task: Stage 6 Frontend Integration, Visual Reconstruction Adapter Fix & Server Governance Update
 Notes:
