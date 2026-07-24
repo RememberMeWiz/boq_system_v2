@@ -322,7 +322,9 @@ def parse_schedule_text(text: str, schedule_type: str = "auto") -> Dict:
 try:
     from rapidocr_onnxruntime import RapidOCR
     _rapid_engine = RapidOCR()
-except Exception:
+    log.info("RapidOCR ONNX engine initialized successfully.")
+except Exception as err:
+    log.error(f"RapidOCR ONNX engine initialization failed: {err}")
     _rapid_engine = None
 
 
@@ -330,8 +332,11 @@ def extract_ocr_text_from_page(page, dpi: int = 150) -> str:
     """
     Rasterizes a PDF page and runs local RapidOCR to extract visual text
     from CAD vector drawings where cell text is stored as polylines/strokes.
+    Sorts detected text elements spatially (row-by-row, left-to-right) to keep
+    table cell values aligned in reading order.
     """
     if not _rapid_engine:
+        log.warning("RapidOCR engine unavailable for page rasterization.")
         return ""
     try:
         pix = page.get_pixmap(dpi=dpi)
@@ -339,10 +344,19 @@ def extract_ocr_text_from_page(page, dpi: int = 150) -> str:
         result, _ = _rapid_engine(img_bytes)
         if not result:
             return ""
-        lines = [line[1].encode('ascii', 'ignore').decode('ascii').strip() for line in result if line[1]]
+
+        # Spatial sorting: sort by y-min (binned to 20px rows) then x-min
+        def sort_key(item):
+            bbox = item[0]
+            x_min = min(pt[0] for pt in bbox)
+            y_min = min(pt[1] for pt in bbox)
+            return (y_min // 20, x_min)
+
+        sorted_items = sorted(result, key=sort_key)
+        lines = [item[1].encode('ascii', 'ignore').decode('ascii').strip() for item in sorted_items if item[1]]
         return "\n".join(lines)
     except Exception as e:
-        log.warning(f"RapidOCR page rasterization failed: {e}")
+        log.error(f"RapidOCR page rasterization failed: {e}")
         return ""
 
 
