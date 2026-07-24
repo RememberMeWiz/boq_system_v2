@@ -222,22 +222,33 @@ class DrawingParserV2:
         """
         schedules = {"footings": [], "columns": [], "beams": [], "slabs": [], "walls": []}
 
-        with pdfplumber.open(self.filepath) as pdf:
-            for page in pdf.pages:
-                page_text_upper = (page.extract_text() or "").upper()
-                for table in page.extract_tables():
-                    if not table or len(table) < 2:
-                        continue
-                    header_row = " ".join(c or "" for c in table[0]).upper()
+        with fitz.open(self.filepath) as doc:
+            schedule_pages = []
+            for i, page in enumerate(doc):
+                text = page.get_text("text").upper()
+                if any(kw in text for kw in ["SCHEDULE", "SCHED.", "TABLE OF"]):
+                    schedule_pages.append(i)
 
-                    if "SCHEDULE OF FOOTING" in page_text_upper or "FOOTING" in header_row:
-                        schedules["footings"].extend(self._parse_footing_table(table))
-                    elif "COLUMN SCHEDULE" in page_text_upper or "COLUMN" in header_row:
-                        schedules["columns"].extend(self._parse_column_table(table))
-                    elif "BEAM SCHEDULE" in page_text_upper or "BEAM" in header_row:
-                        schedules["beams"].extend(self._parse_beam_table(table))
-                    elif "SLAB SCHEDULE" in page_text_upper or "SLAB" in header_row:
-                        schedules["slabs"].extend(self._parse_slab_table(table))
+        if schedule_pages:
+            with pdfplumber.open(self.filepath) as pdf:
+                for page_idx in schedule_pages:
+                    if page_idx >= len(pdf.pages):
+                        continue
+                    page = pdf.pages[page_idx]
+                    page_text_upper = (page.extract_text() or "").upper()
+                    for table in page.extract_tables():
+                        if not table or len(table) < 2:
+                            continue
+                        header_row = " ".join(c or "" for c in table[0]).upper()
+
+                        if "SCHEDULE OF FOOTING" in page_text_upper or "FOOTING" in header_row:
+                            schedules["footings"].extend(self._parse_footing_table(table))
+                        elif "COLUMN SCHEDULE" in page_text_upper or "COLUMN" in header_row:
+                            schedules["columns"].extend(self._parse_column_table(table))
+                        elif "BEAM SCHEDULE" in page_text_upper or "BEAM" in header_row:
+                            schedules["beams"].extend(self._parse_beam_table(table))
+                        elif "SLAB SCHEDULE" in page_text_upper or "SLAB" in header_row:
+                            schedules["slabs"].extend(self._parse_slab_table(table))
 
         if not schedules["footings"]:
             self._add_warning(
