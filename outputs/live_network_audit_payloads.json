@@ -1,87 +1,117 @@
 {
-  "session_id": "sess-audit-001",
+  "session_id": "f11cd759-d5d6-4499-9730-6f1800b9c09a",
+  "ingest_response": {
+    "status": null,
+    "session_id": "f11cd759-d5d6-4499-9730-6f1800b9c09a",
+    "verification_gate": {
+      "blocking_issues": [],
+      "computed_at": "2026-07-23T10:57:57.370102+00:00",
+      "resolution_log": [],
+      "status": "READY",
+      "warning_issues": [
+        {
+          "affected_elements": [
+            "*footings*"
+          ],
+          "category": "low_confidence_ocr",
+          "id": "sug_1",
+          "message": "No footing schedule table detected via pdfplumber border detection. Vision OCR fallback will be attempted if configured.",
+          "resolution_required": [
+            "manual_confirm",
+            "upload_sheet"
+          ],
+          "resolved": false,
+          "severity": "WARNING"
+        }
+      ]
+    },
+    "schedules_summary": {
+      "footings_count": 0,
+      "columns_count": 0
+    }
+  },
   "process_drawing_response": {
     "status": "success",
-    "input_source": "pdf_vision_enriched",
-    "grand_total_direct_cost": 1080693.19,
+    "input_source": "pdf_vector_parsed",
+    "grand_total_direct_cost": 1311705.29,
     "boq_sample_items": [
       {
-        "backup_qty": 1.1883,
+        "backup_qty": 9.1723,
         "description": "Excavation",
         "division": "Section II \u2014 Earthworks",
         "equipment_unit_cost": 0.0,
         "item_code": "EW-2.1",
-        "labor_unit_cost": 25.5499,
-        "material_unit_cost": 199.25,
-        "quantity": 1.225,
+        "labor_unit_cost": 30.0503,
+        "material_unit_cost": 197.8241,
+        "quantity": 9.456,
         "section_id": "2",
         "status": "Confirmed",
-        "total_amount": 275.38,
-        "total_unit_cost": 224.7999,
+        "total_amount": 2154.78,
+        "total_unit_cost": 227.8744,
         "trade": "Earthworks",
         "unit": "cu.m."
       },
       {
-        "backup_qty": 0.3725,
+        "backup_qty": 2.5821,
         "description": "Backfill",
         "division": "Section II \u2014 Earthworks",
         "equipment_unit_cost": 0.0,
         "item_code": "EW-2.2",
-        "labor_unit_cost": 25.5499,
-        "material_unit_cost": 199.25,
-        "quantity": 0.384,
+        "labor_unit_cost": 30.0503,
+        "material_unit_cost": 197.8241,
+        "quantity": 2.662,
         "section_id": "2",
         "status": "Confirmed",
-        "total_amount": 86.32,
-        "total_unit_cost": 224.7999,
+        "total_amount": 606.6,
+        "total_unit_cost": 227.8744,
         "trade": "Earthworks",
         "unit": "cu.m."
       },
       {
-        "backup_qty": 6.0382,
+        "backup_qty": 7.469,
         "description": "Gravel Bedding",
         "division": "Section II \u2014 Earthworks",
         "equipment_unit_cost": 0.0,
         "item_code": "EW-2.3",
-        "labor_unit_cost": 25.5499,
-        "material_unit_cost": 199.25,
-        "quantity": 6.225,
+        "labor_unit_cost": 30.0503,
+        "material_unit_cost": 197.8241,
+        "quantity": 7.7,
         "section_id": "2",
         "status": "Confirmed",
-        "total_amount": 1399.38,
-        "total_unit_cost": 224.7999,
+        "total_amount": 1754.63,
+        "total_unit_cost": 227.8744,
         "trade": "Earthworks",
         "unit": "cu.m."
       },
       {
-        "backup_qty": 592.9125,
+        "backup_qty": 664.45,
         "description": "Soil Poisoning L",
         "division": "Section II \u2014 Earthworks",
         "equipment_unit_cost": 0.0,
         "item_code": "EW-2.4",
-        "labor_unit_cost": 25.5499,
-        "material_unit_cost": 199.25,
-        "quantity": 611.25,
+        "labor_unit_cost": 30.0503,
+        "material_unit_cost": 197.8241,
+        "quantity": 685.0,
         "section_id": "2",
         "status": "Confirmed",
-        "total_amount": 137408.94,
-        "total_unit_cost": 224.7999,
+        "total_amount": 156093.95,
+        "total_unit_cost": 227.8744,
         "trade": "Earthworks",
         "unit": "ltr"
       },
       {
-        "backup_qty": 1.4385,
+        "backup_qty": 23.1481,
         "description": "Concrete Volume",
         "division": "Section III \u2014 Concrete Works",
-        "equipment_unit_cost": 41.1807,
+        "equipment_unit_cost": 72.2241,
         "item_code": "CON-3.1",
-        "labor_unit_cost": 280.1544,
-        "material_unit_cost": 1221.1918,
-        "quantity": 1.483,
+        "labor_unit_cost": 348.5129,
+        "material_unit_cost": 1531.8598,
+        "quantity": 23.864,
         "section_id": "3",
         "status": "Confirmed",
-        "total_amount": 2287.57,
-        "total_unit_cost": 1542.5269,
+        "total_amount": 46596.77,
+        "total_unit_cost": 1952.5968,
         "trade": "Concrete Works",
         "unit": "cu.m."
       }
@@ -91,5 +121,37 @@
     "status": "success",
     "elements_count": 0
   },
-  "signoff_response": null
+  "signoff_response": {
+    "verification_gate": {
+      "blocking_issues": [],
+      "computed_at": "2026-07-23T10:58:27.333117+00:00",
+      "resolution_log": [
+        {
+          "action": "manual_confirm",
+          "issue_id": "sug_1",
+          "note": "Verified column tie spacing against Sheet S-4 structural schedule table.",
+          "resolved": true,
+          "signed_off_at": "2026-07-23T10:58:27.333117+00:00",
+          "signed_off_by": "Engr. Juan Dela Cruz"
+        }
+      ],
+      "status": "READY",
+      "warning_issues": [
+        {
+          "affected_elements": [
+            "*footings*"
+          ],
+          "category": "low_confidence_ocr",
+          "id": "sug_1",
+          "message": "No footing schedule table detected via pdfplumber border detection. Vision OCR fallback will be attempted if configured.",
+          "resolution_required": [
+            "manual_confirm",
+            "upload_sheet"
+          ],
+          "resolved": true,
+          "severity": "WARNING"
+        }
+      ]
+    }
+  }
 }
