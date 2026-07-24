@@ -44,6 +44,7 @@ from engine.fajardo import (
 )
 from engine.rebar_optimizer import RebarStockOptimizer, RebarCutDemand
 from engine.pdf_dxf_parser import DrawingParserV2
+from engine.vision_parser import VisionBlueprintInspector
 from engine.reconstruction_module import VisualReconstructionEngine, generate_comparison
 from engine.dupa_loader import get_dupa_qa_summary
 from engine.vision_ocr import crop_schedule_region, parse_schedule_text, auto_scan_pdf_schedules
@@ -229,6 +230,13 @@ def parser_ingest():
     try:
         parser = DrawingParserV2(filepath=saved_path, filename=filename)
         payload = parser.parse()
+
+        # Vision OCR fallback & sheet classification enrichment pass
+        try:
+            inspector = VisionBlueprintInspector(filepath=saved_path)
+            payload = inspector.enrich(payload)
+        except Exception as v_exc:
+            app.logger.warning("Vision Blueprint enrichment skipped/failed for %s: %s", saved_path, v_exc)
 
         if is_fallback:
             payload["input_source"] = "sample_fallback"
@@ -802,6 +810,11 @@ def process_drawing():
         try:
             parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
             payload = parser.parse()
+            try:
+                inspector = VisionBlueprintInspector(filepath=active_path)
+                payload = inspector.enrich(payload)
+            except Exception as v_exc:
+                app.logger.warning("Vision Blueprint enrichment skipped/failed in process_drawing for %s: %s", active_path, v_exc)
         except Exception as exc:
             app.logger.exception("Parsing failed in process_drawing for %s", drawing_name)
             payload = {"schedules": {}}
