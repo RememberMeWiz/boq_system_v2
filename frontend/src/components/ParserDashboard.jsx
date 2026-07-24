@@ -314,22 +314,53 @@ function ScheduleTable({ title, rows, icon }) {
 }
 
 // ── SVG Reconstruction Panel ──────────────────────────────────────────────────
-function ReconstructionPanel({ svgCode }) {
+function ReconstructionPanel({ svgCode, viewMode, setViewMode, comparisonUrl }) {
   if (!svgCode) return null;
   return (
     <div style={{
       background: '#0a0f1e', border: '1px solid #1e293b',
       borderRadius: '10px', padding: '16px', marginBottom: '20px',
     }}>
-      <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-        🗺️ Reconstructed Structural Drawing
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px' }}>
+          🗺️ Structural Drawing
+        </div>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {[
+            { id: 'reconstructed', label: 'Reconstructed Only' },
+            { id: 'sideBySide',    label: '🔄 Side-by-Side' },
+          ].map(({ id, label }) => (
+            <button
+              key={id}
+              onClick={() => setViewMode(id)}
+              disabled={id === 'sideBySide' && !comparisonUrl}
+              style={{
+                background: viewMode === id ? 'rgba(99,102,241,0.2)' : 'transparent',
+                border: viewMode === id ? '1px solid rgba(99,102,241,0.5)' : '1px solid #1e293b',
+                borderRadius: '6px', color: viewMode === id ? '#a5b4fc' : '#64748b',
+                fontSize: '11px', fontWeight: 600, padding: '4px 10px', cursor: 'pointer',
+                opacity: (id === 'sideBySide' && !comparisonUrl) ? 0.4 : 1,
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
-      <div style={{
-        borderRadius: '8px', overflow: 'hidden', border: '1px solid #1e293b',
-        background: '#020617',
-      }}
-        dangerouslySetInnerHTML={{ __html: svgCode }}
-      />
+
+      {viewMode === 'sideBySide' && comparisonUrl ? (
+        <div style={{ borderRadius: '8px', overflow: 'hidden', border: '1px solid #1e293b', background: '#020617' }}>
+          <img src={comparisonUrl} alt="Side-by-side comparison" style={{ width: '100%', display: 'block' }} />
+        </div>
+      ) : (
+        <div style={{
+          borderRadius: '8px', overflow: 'hidden', border: '1px solid #1e293b',
+          background: '#020617',
+        }}
+          dangerouslySetInnerHTML={{ __html: svgCode }}
+        />
+      )}
+
       <div style={{ fontSize: '10px', color: '#475569', marginTop: '8px', fontFamily: 'JetBrains Mono, monospace' }}>
         ⚠ Rendered from extracted schedule data only — not a copy of the original drawing.
         Fields labeled <span style={{ color: '#fbbf24' }}>400x400mm?</span> require manual dimension verification.
@@ -344,6 +375,8 @@ export default function ParserDashboard({ parserData, setParserData, onSignoffCo
   const [svgCode, setSvgCode]           = useState(null);
   const [loadingSvg, setLoadingSvg]     = useState(false);
   const [error, setError]               = useState(null);
+  const [viewMode, setViewMode]         = useState('reconstructed'); // 'reconstructed' | 'sideBySide'
+  const [comparisonUrl, setComparisonUrl] = useState(null);
 
   const sessionId = parserData?.session_id;
   const payload   = parserData?.payload;
@@ -360,7 +393,10 @@ export default function ParserDashboard({ parserData, setParserData, onSignoffCo
       body: JSON.stringify({ session_id: sessionId }),
     })
       .then(r => r.json())
-      .then(j => { if (j.svg_code) setSvgCode(j.svg_code); })
+      .then(j => {
+        if (j.svg_code) setSvgCode(j.svg_code);
+        if (j.comparison_dashboard_url) setComparisonUrl(j.comparison_dashboard_url);
+      })
       .catch(() => {})
       .finally(() => setLoadingSvg(false));
   }, [sessionId]);
@@ -461,7 +497,12 @@ export default function ParserDashboard({ parserData, setParserData, onSignoffCo
 
         {/* Left: SVG + Schedule Tables */}
         <div>
-          <ReconstructionPanel svgCode={svgCode} />
+          <ReconstructionPanel
+            svgCode={svgCode}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            comparisonUrl={comparisonUrl}
+          />
 
           <ScheduleTable title="Footing Schedule"  icon="🏗️" rows={schedules.footings} />
           <ScheduleTable title="Column Schedule"   icon="🏛️" rows={schedules.columns}  />

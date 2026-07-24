@@ -283,6 +283,7 @@ def parser_reconstruct():
             "status": "success",
             "svg_code": svg_code,
             "comparison_dashboard_path": comp_path,
+            "comparison_dashboard_url": f"/outputs/dashboard_{session_id or 'latest'}.png",
         }), 200
     except Exception as exc:
         app.logger.exception("Reconstruction rendering failed")
@@ -554,7 +555,7 @@ def _apply_offline_ocr_fallback(payload: dict, filepath: str):
         if not rows:
             continue
         for row in rows:
-            row["provenance"] = "offline_ocr"
+            row["provenance"] = "rapidocr"
         schedules[category] = rows
         filled.append(category)
 
