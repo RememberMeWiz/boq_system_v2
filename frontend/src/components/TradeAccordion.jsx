@@ -422,7 +422,7 @@ export default function TradeAccordion({ boqItems }) {
   return (
     <div style={{ fontFamily: 'Inter, system-ui, sans-serif', padding: '4px 0' }}>
       {/* Cost Summary Card */}
-      <CostSummaryCard rows={rows} allSectionIds={allIds} />
+      <CostSummaryCard rows={rows} allSectionIds={ALL_IDS} />
 
       {/* Toolbar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
