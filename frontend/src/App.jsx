@@ -6,6 +6,7 @@ import RebarOptimizerView from './components/RebarOptimizerView';
 import RightPanel from './components/RightPanel';
 import UploadModal from './components/UploadModal';
 import ParserDashboard from './components/ParserDashboard';
+import ImportProgressOverlay from './components/ImportProgressOverlay';
 
 const EMPTY_BOQ = [];
 
@@ -530,6 +531,9 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* Staged Parsing Progress Overlay */}
+      <ImportProgressOverlay visible={loading} />
     </div>
   );
 }

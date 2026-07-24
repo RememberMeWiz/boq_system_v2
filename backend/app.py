@@ -231,12 +231,8 @@ def parser_ingest():
         parser = DrawingParserV2(filepath=saved_path, filename=filename)
         payload = parser.parse()
 
-        # Vision OCR fallback & sheet classification enrichment pass
-        try:
-            inspector = VisionBlueprintInspector(filepath=saved_path)
-            payload = inspector.enrich(payload)
-        except Exception as v_exc:
-            app.logger.warning("Vision Blueprint enrichment skipped/failed for %s: %s", saved_path, v_exc)
+        # Offline local OCR fallback pass (pure PyMuPDF + regex, fast zero-quota)
+        _apply_offline_ocr_fallback(payload, saved_path)
 
         if is_fallback:
             payload["input_source"] = "sample_fallback"
@@ -528,13 +524,56 @@ def _sample_elements_json():
          "length": 4.5, "width": 0.25, "height": 0.40, "count": 1, "bounding_box": [80, 100, 145, 115]},
         {"element_id": "2B-2", "element_type": "beam", "label": "2B-2", "location": "Grid B-1 to C-1",
          "length": 4.5, "width": 0.25, "height": 0.40, "count": 1, "bounding_box": [170, 100, 235, 115]},
-        {"element_id": "SL-1", "element_type": "slab", "label": "SL-1", "location": "Ground Floor",
-         "length": 14.0, "width": 8.0, "height": 0.10, "count": 1, "bounding_box": [40, 130, 280, 210]},
         {"element_id": "W-1a", "element_type": "chb_wall", "label": "W-1", "location": "N Exterior",
          "length": 14.0, "width": 0.15, "height": 3.2, "count": 1, "bounding_box": [40, 215, 280, 230]},
         {"element_id": "W-1b", "element_type": "chb_wall", "label": "W-2", "location": "S Exterior",
          "length": 8.0, "width": 0.15, "height": 3.2, "count": 1, "bounding_box": [40, 215, 40, 130]},
     ]
+
+
+def _apply_offline_ocr_fallback(payload: dict, filepath: str):
+    """
+    Fills empty schedule categories using free, local regex/text-based OCR
+    (engine.vision_ocr.auto_scan_pdf_schedules) instead of the paid Gemini
+    Vision pipeline. Fast zero-quota local parsing.
+    """
+    schedules = payload.get("schedules", {})
+    empty_categories = [c for c in ("footings", "columns", "beams") if not schedules.get(c)]
+    if not empty_categories:
+        return
+
+    try:
+        offline = auto_scan_pdf_schedules(filepath)
+    except Exception as exc:
+        app.logger.warning("Offline OCR fallback failed for %s: %s", filepath, exc)
+        return
+
+    filled = []
+    for category in empty_categories:
+        rows = offline.get(category, [])
+        if not rows:
+            continue
+        for row in rows:
+            row["provenance"] = "offline_ocr"
+        schedules[category] = rows
+        filled.append(category)
+
+    if not filled:
+        return
+
+    # Update stale warnings for categories filled by offline OCR pass
+    gate = payload.get("verification_gate", {})
+    if "warning_issues" in gate:
+        for issue in gate.get("warning_issues", []):
+            affected = issue.get("affected_elements", [])
+            matched = next((c for c in filled if f"*{c}*" in affected), None)
+            if matched:
+                issue["message"] = (
+                    f"{matched.capitalize()} schedule not detected by vector parsing "
+                    f"-- recovered via offline OCR (regex/text-based, no external API). "
+                    f"Verify against drawing, especially rebar and story-level details."
+                )
+                issue["category"] = "offline_ocr_recovered"
 
 
 def _schedules_to_project_inputs(schedules: dict) -> dict:
@@ -810,11 +849,7 @@ def process_drawing():
         try:
             parser = DrawingParserV2(filepath=active_path, filename=drawing_name)
             payload = parser.parse()
-            try:
-                inspector = VisionBlueprintInspector(filepath=active_path)
-                payload = inspector.enrich(payload)
-            except Exception as v_exc:
-                app.logger.warning("Vision Blueprint enrichment skipped/failed in process_drawing for %s: %s", active_path, v_exc)
+            _apply_offline_ocr_fallback(payload, active_path)
         except Exception as exc:
             app.logger.exception("Parsing failed in process_drawing for %s", drawing_name)
             payload = {"schedules": {}}
