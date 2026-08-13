@@ -1,8 +1,8 @@
 # S0-001-R2 Solver Baseline Portable Restoration Report
 
-**Task:** S0-001-R2  
-**Worker status:** READY_FOR_TEAM_LEADER_REVIEW  
-**Artifact class:** Portable provenance-restoration package  
+**Task:** S0-001-R2
+**Worker status:** READY_FOR_TEAM_LEADER_REVIEW
+**Artifact class:** Portable provenance-restoration package
 **Remote Git provenance established by Worker A:** NO
 
 ## Purpose
