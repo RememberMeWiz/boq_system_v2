@@ -1,0 +1,590 @@
+{
+  "schema_version": "0.1.0",
+  "case_id": "RC-BEAM-001",
+  "case_title": "Single-span monolithic reinforced-concrete beam golden reference case",
+  "purpose": "Source facts and explicit project policies only. No calculated answer belongs in this file.",
+  "currency": "PHP",
+  "unit_system": {
+    "length": "m",
+    "bar_diameter": "mm",
+    "area": "m^2",
+    "volume": "m^3",
+    "mass": "kg",
+    "time": "crew-day or unit-day",
+    "money": "PHP"
+  },
+  "geometry": {
+    "beam_count": {
+      "value": 1,
+      "unit": "beam"
+    },
+    "beam_width": {
+      "value": 0.3,
+      "unit": "m"
+    },
+    "overall_depth": {
+      "value": 0.6,
+      "unit": "m"
+    },
+    "net_beam_below_slab_depth": {
+      "value": 0.45,
+      "unit": "m"
+    },
+    "clear_span_between_support_faces": {
+      "value": 5.4,
+      "unit": "m"
+    },
+    "left_support": {
+      "type": "rectangular_monolithic_support",
+      "dimension_along_beam": {
+        "value": 0.4,
+        "unit": "m"
+      },
+      "fully_overlaps_beam_cross_section": true
+    },
+    "right_support": {
+      "type": "rectangular_monolithic_support",
+      "dimension_along_beam": {
+        "value": 0.5,
+        "unit": "m"
+      },
+      "fully_overlaps_beam_cross_section": true
+    },
+    "slab": {
+      "relationship": "Beam and slab are cast monolithically. The slab is measured separately at full slab thickness across the clear-span beam strip, so the beam quantity retains only the beam portion below the slab.",
+      "thickness": {
+        "value": 0.15,
+        "unit": "m"
+      },
+      "measured_separately_across_clear_span_beam_strip": true
+    },
+    "coordinate_policy": {
+      "clear_span_origin": "x = 0.000 m at the inner face of the left support",
+      "clear_span_end": "x = 5.400 m at the inner face of the right support",
+      "positive_direction": "left to right"
+    }
+  },
+  "concrete_policy": {
+    "gross_measurement_basis": "Full rectangular beam prism from the outer face of the left support to the outer face of the right support, before support and slab deductions.",
+    "support_intersection_policy": "Deduct the complete beam cross-section over each support dimension because support concrete owns those monolithic intersections.",
+    "slab_intersection_policy": "After support deductions, deduct beam width multiplied by slab thickness over the clear span because slab concrete is measured separately.",
+    "waste_rate": {
+      "value": 0.03,
+      "unit": "decimal_fraction"
+    },
+    "waste_basis": "net_measured_volume",
+    "procurement_increment": {
+      "value": 0.1,
+      "unit": "m^3"
+    },
+    "procurement_rounding": "ceiling_to_increment"
+  },
+  "formwork_policy": {
+    "length_basis": "clear_span_only",
+    "soffit_included": true,
+    "left_side_included": true,
+    "right_side_included": true,
+    "side_depth_basis": "net_beam_below_slab_depth",
+    "left_end_form_included": false,
+    "right_end_form_included": false,
+    "end_form_exclusion_reason": "Both beam ends are cast monolithically into supports.",
+    "top_surface_included": false,
+    "top_surface_exclusion_reason": "The top is the monolithic slab interface, not a form-contact surface.",
+    "support_intersection_surfaces_included": false,
+    "resource_factors": {
+      "plywood_sheet_equivalent_per_contact_area": {
+        "value": 0.25,
+        "unit": "sheet/m^2"
+      },
+      "form_lumber_per_contact_area": {
+        "value": 5.0,
+        "unit": "board_foot/m^2"
+      },
+      "release_oil_per_contact_area": {
+        "value": 0.1,
+        "unit": "L/m^2"
+      }
+    },
+    "resource_procurement_rounding": {
+      "plywood_sheet": {
+        "increment": {
+          "value": 1,
+          "unit": "sheet"
+        },
+        "mode": "ceiling"
+      },
+      "form_lumber": {
+        "increment": {
+          "value": 1,
+          "unit": "board_foot"
+        },
+        "mode": "ceiling"
+      },
+      "release_oil": {
+        "increment": {
+          "value": 1,
+          "unit": "L"
+        },
+        "mode": "ceiling"
+      }
+    }
+  },
+  "reinforcement_policy": {
+    "structural_design_inference_allowed": false,
+    "unit_weight_rule": {
+      "description": "Project test rule for theoretical rebar mass per metre.",
+      "divisor": {
+        "value": 162.2,
+        "unit": "mm^2/(kg/m)"
+      }
+    },
+    "longitudinal_bar_groups": [
+      {
+        "group_id": "L1_BOTTOM_20",
+        "location": "bottom longitudinal",
+        "diameter": {
+          "value": 20,
+          "unit": "mm"
+        },
+        "bar_count": {
+          "value": 3,
+          "unit": "bar"
+        },
+        "base_length": {
+          "value": 5.4,
+          "unit": "m"
+        },
+        "left_anchorage_addition": {
+          "value": 0.25,
+          "unit": "m/bar"
+        },
+        "right_anchorage_addition": {
+          "value": 0.35,
+          "unit": "m/bar"
+        },
+        "hook_addition": {
+          "value": 0,
+          "unit": "m/bar"
+        },
+        "lap": {
+          "type": "none",
+          "count_per_bar": {
+            "value": 0,
+            "unit": "lap/bar"
+          },
+          "length_each": {
+            "value": 0,
+            "unit": "m/lap"
+          }
+        },
+        "fabrication": {
+          "pieces_per_assembled_bar": {
+            "value": 1,
+            "unit": "piece/bar"
+          },
+          "piece_length_policy": "single_piece_equal_to_physical_steel_length"
+        }
+      },
+      {
+        "group_id": "L2_TOP_16_LAPPED",
+        "location": "top longitudinal",
+        "diameter": {
+          "value": 16,
+          "unit": "mm"
+        },
+        "bar_count": {
+          "value": 2,
+          "unit": "bar"
+        },
+        "base_length": {
+          "value": 5.4,
+          "unit": "m"
+        },
+        "left_anchorage_addition": {
+          "value": 0.35,
+          "unit": "m/bar"
+        },
+        "right_anchorage_addition": {
+          "value": 0.45,
+          "unit": "m/bar"
+        },
+        "hook_addition": {
+          "value": 0,
+          "unit": "m/bar"
+        },
+        "lap": {
+          "type": "single_lap",
+          "count_per_bar": {
+            "value": 1,
+            "unit": "lap/bar"
+          },
+          "length_each": {
+            "value": 0.8,
+            "unit": "m/lap"
+          }
+        },
+        "fabrication": {
+          "pieces_per_assembled_bar": {
+            "value": 2,
+            "unit": "piece/bar"
+          },
+          "piece_length_policy": "equal_physical_pieces; assembled effective length equals sum of pieces minus lap overlap"
+        }
+      }
+    ],
+    "stirrups": {
+      "group_id": "S1_10",
+      "diameter": {
+        "value": 10,
+        "unit": "mm"
+      },
+      "cover_to_outside_of_stirrup": {
+        "value": 0.04,
+        "unit": "m"
+      },
+      "section_depth_basis": "overall_depth",
+      "hook_rule": {
+        "hook_count": {
+          "value": 2,
+          "unit": "hook/stirrup"
+        },
+        "extension_multiplier": {
+          "value": 10,
+          "unit": "bar_diameter/hook"
+        }
+      },
+      "bend_deduction_rule": {
+        "total_multiplier": {
+          "value": 12,
+          "unit": "bar_diameter/stirrup"
+        }
+      },
+      "cutting_length_policy": {
+        "section_dimension_rule": "b_st = beam_width - 2*cover and D_st = overall_depth - 2*cover",
+        "formula": "L_st = 2*(b_st + D_st) + total_hook_extension - aggregate_bend_deduction",
+        "additional_centerline_or_bend_radius_adjustment": "none beyond the explicitly supplied aggregate bend deduction"
+      },
+      "spacing_zones": [
+        {
+          "zone_id": "Z1_LEFT_END",
+          "start": {
+            "value": 0.0,
+            "unit": "m"
+          },
+          "end": {
+            "value": 1.2,
+            "unit": "m"
+          },
+          "spacing": {
+            "value": 0.1,
+            "unit": "m"
+          },
+          "include_start_boundary": true,
+          "include_end_boundary": true
+        },
+        {
+          "zone_id": "Z2_MIDDLE",
+          "start": {
+            "value": 1.2,
+            "unit": "m"
+          },
+          "end": {
+            "value": 4.2,
+            "unit": "m"
+          },
+          "spacing": {
+            "value": 0.2,
+            "unit": "m"
+          },
+          "include_start_boundary": false,
+          "include_end_boundary": false
+        },
+        {
+          "zone_id": "Z3_RIGHT_END",
+          "start": {
+            "value": 4.2,
+            "unit": "m"
+          },
+          "end": {
+            "value": 5.4,
+            "unit": "m"
+          },
+          "spacing": {
+            "value": 0.1,
+            "unit": "m"
+          },
+          "include_start_boundary": true,
+          "include_end_boundary": true
+        }
+      ],
+      "boundary_counting_policy": "A coordinate may belong to only one zone. Z1 owns x = 1.200 m, Z3 owns x = 4.200 m, and Z2 excludes both transition boundaries. The union of generated coordinates is deduplicated and must retain the same total count.",
+      "position_tolerance": {
+        "value": 1e-06,
+        "unit": "m"
+      }
+    },
+    "tie_wire": {
+      "factor": {
+        "value": 0.015,
+        "unit": "kg/kg_installed_rebar"
+      },
+      "procurement_increment": {
+        "value": 1,
+        "unit": "kg"
+      },
+      "procurement_rounding": "ceiling"
+    }
+  },
+  "rebar_procurement_policy": {
+    "available_stock_lengths_by_diameter": {
+      "10_mm": [
+        {
+          "value": 6,
+          "unit": "m"
+        },
+        {
+          "value": 9,
+          "unit": "m"
+        },
+        {
+          "value": 12,
+          "unit": "m"
+        }
+      ],
+      "16_mm": [
+        {
+          "value": 6,
+          "unit": "m"
+        },
+        {
+          "value": 9,
+          "unit": "m"
+        },
+        {
+          "value": 12,
+          "unit": "m"
+        }
+      ],
+      "20_mm": [
+        {
+          "value": 6,
+          "unit": "m"
+        },
+        {
+          "value": 9,
+          "unit": "m"
+        },
+        {
+          "value": 12,
+          "unit": "m"
+        }
+      ]
+    },
+    "cut_kerf": {
+      "value": 0,
+      "unit": "m/cut"
+    },
+    "cut_kerf_application_rule": "Apply one kerf allowance per produced cut piece. The current case value is explicitly zero, so kerf contributes zero length and zero weight.",
+    "reusable_offcut_threshold": {
+      "value": 1,
+      "unit": "m"
+    },
+    "optimization_objective_order": [
+      "minimum total purchased stock length",
+      "minimum stock-bar count",
+      "minimum non-reusable scrap length",
+      "minimum largest individual offcut",
+      "deterministic lexicographic pattern order"
+    ],
+    "reusable_offcut_cost_credit_in_current_case": false,
+    "unresolved_demand_policy": "must_equal_zero"
+  },
+  "resources_and_pricing": {
+    "rate_basis": "Illustrative project-specific test rates only; no overhead, tax, or profit is included.",
+    "material_rates": [
+      {
+        "resource_id": "MAT-CON-RM",
+        "description": "Ready-mix concrete",
+        "quantity_basis": "concrete_procurement_volume",
+        "rate": {
+          "value": 5500,
+          "unit": "PHP/m^3"
+        }
+      },
+      {
+        "resource_id": "MAT-FRM-PLY",
+        "description": "12 mm plywood sheet equivalent",
+        "quantity_basis": "plywood_procurement_quantity",
+        "rate": {
+          "value": 850,
+          "unit": "PHP/sheet"
+        }
+      },
+      {
+        "resource_id": "MAT-FRM-LBR",
+        "description": "Form lumber",
+        "quantity_basis": "form_lumber_procurement_quantity",
+        "rate": {
+          "value": 55,
+          "unit": "PHP/board_foot"
+        }
+      },
+      {
+        "resource_id": "MAT-FRM-OIL",
+        "description": "Form release oil",
+        "quantity_basis": "release_oil_procurement_quantity",
+        "rate": {
+          "value": 180,
+          "unit": "PHP/L"
+        }
+      },
+      {
+        "resource_id": "MAT-RB-20",
+        "description": "20 mm reinforcing steel",
+        "quantity_basis": "20_mm_purchased_weight",
+        "rate": {
+          "value": 62,
+          "unit": "PHP/kg"
+        }
+      },
+      {
+        "resource_id": "MAT-RB-16",
+        "description": "16 mm reinforcing steel",
+        "quantity_basis": "16_mm_purchased_weight",
+        "rate": {
+          "value": 60,
+          "unit": "PHP/kg"
+        }
+      },
+      {
+        "resource_id": "MAT-RB-10",
+        "description": "10 mm reinforcing steel",
+        "quantity_basis": "10_mm_purchased_weight",
+        "rate": {
+          "value": 64,
+          "unit": "PHP/kg"
+        }
+      },
+      {
+        "resource_id": "MAT-TIE-WIRE",
+        "description": "Tie wire",
+        "quantity_basis": "tie_wire_procurement_quantity",
+        "rate": {
+          "value": 90,
+          "unit": "PHP/kg"
+        }
+      }
+    ],
+    "labor_resources": [
+      {
+        "resource_id": "LAB-CON-PLACE",
+        "description": "Concrete placing crew",
+        "quantity_basis": "concrete_required_volume",
+        "productivity": {
+          "value": 4,
+          "unit": "m^3/crew-day"
+        },
+        "rate": {
+          "value": 4800,
+          "unit": "PHP/crew-day"
+        }
+      },
+      {
+        "resource_id": "LAB-FRM",
+        "description": "Formwork carpentry crew",
+        "quantity_basis": "formwork_contact_area",
+        "productivity": {
+          "value": 10,
+          "unit": "m^2/crew-day"
+        },
+        "rate": {
+          "value": 3600,
+          "unit": "PHP/crew-day"
+        }
+      },
+      {
+        "resource_id": "LAB-RB",
+        "description": "Rebar fabrication and installation crew",
+        "quantity_basis": "theoretical_installed_rebar_weight",
+        "productivity": {
+          "value": 250,
+          "unit": "kg/crew-day"
+        },
+        "rate": {
+          "value": 4200,
+          "unit": "PHP/crew-day"
+        }
+      }
+    ],
+    "equipment_resources": [
+      {
+        "resource_id": "EQ-CON-VIB",
+        "description": "Concrete vibrator",
+        "quantity_basis": "concrete_required_volume",
+        "productivity": {
+          "value": 5,
+          "unit": "m^3/unit-day"
+        },
+        "minimum_charge": {
+          "value": 0.25,
+          "unit": "unit-day"
+        },
+        "rate": {
+          "value": 1200,
+          "unit": "PHP/unit-day"
+        }
+      },
+      {
+        "resource_id": "EQ-RB-CUT",
+        "description": "Rebar cutter and bender",
+        "quantity_basis": "theoretical_installed_rebar_weight",
+        "productivity": {
+          "value": 500,
+          "unit": "kg/unit-day"
+        },
+        "minimum_charge": {
+          "value": 0.25,
+          "unit": "unit-day"
+        },
+        "rate": {
+          "value": 900,
+          "unit": "PHP/unit-day"
+        }
+      }
+    ],
+    "cost_rounding_policy": {
+      "line_amount_increment": {
+        "value": 0.01,
+        "unit": "PHP"
+      },
+      "mode": "round_half_up_each_line_before_subtotal",
+      "category_subtotal_policy": "sum_reported_line_amounts",
+      "grand_total_policy": "sum_reported_category_subtotals"
+    }
+  },
+  "reporting_policy": {
+    "calculation_decimal_precision": {
+      "value": 36,
+      "unit": "decimal_digits"
+    },
+    "reported_quantity_decimal_places": {
+      "value": 6,
+      "unit": "decimal_places"
+    },
+    "reported_cost_decimal_places": {
+      "value": 2,
+      "unit": "decimal_places"
+    },
+    "quantity_rounding_mode": "round_half_up",
+    "cost_rounding_mode": "round_half_up"
+  },
+  "exclusions": {
+    "structural_analysis": true,
+    "reinforcement_design": true,
+    "slab_quantity": true,
+    "support_concrete_quantity": true,
+    "overhead": true,
+    "tax": true,
+    "profit": true
+  }
+}

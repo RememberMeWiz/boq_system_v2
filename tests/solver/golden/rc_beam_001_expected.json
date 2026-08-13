@@ -1,0 +1,3030 @@
+{
+  "schema_version": "0.1.0",
+  "case_id": "RC-BEAM-001",
+  "case_title": "Single-span monolithic reinforced-concrete beam golden reference case",
+  "status": "PASS",
+  "calculation_scope": {
+    "structural_analysis_performed": false,
+    "reinforcement_design_performed": false,
+    "quantities_and_direct_cost_only": true
+  },
+  "rounding_policy": {
+    "calculation_decimal_precision": {
+      "value": 36,
+      "unit": "decimal_digits"
+    },
+    "reported_quantity_decimal_places": {
+      "value": 6,
+      "unit": "decimal_places"
+    },
+    "reported_cost_decimal_places": {
+      "value": 2,
+      "unit": "decimal_places"
+    },
+    "quantity_rounding_mode": "round_half_up",
+    "cost_rounding_mode": "round_half_up"
+  },
+  "geometry": {
+    "net_depth_check": {
+      "formula_id": "RCB-GEO-001",
+      "description": "Compute the beam drop below the monolithic slab and compare it with the explicitly supplied net depth.",
+      "symbolic_formula": "D_net,calc = D_overall - t_slab",
+      "substitution": "0.6 - 0.15",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.45",
+      "reported_value": 0.45,
+      "display": "0.450000",
+      "unit": "m"
+    },
+    "outer_face_to_outer_face_length": {
+      "formula_id": "RCB-GEO-002",
+      "description": "Overall beam prism length before support deductions.",
+      "symbolic_formula": "L_outer = L_clear + w_support,left + w_support,right",
+      "substitution": "5.4 + 0.4 + 0.5",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "6.3",
+      "reported_value": 6.3,
+      "display": "6.300000",
+      "unit": "m"
+    },
+    "support_centerline_span": {
+      "formula_id": "RCB-GEO-003",
+      "description": "Centerline-to-centerline span derived transparently from the supplied clear span and support widths.",
+      "symbolic_formula": "L_c/c = L_clear + w_left/2 + w_right/2",
+      "substitution": "5.4 + 0.4/2 + 0.5/2",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "5.85",
+      "reported_value": 5.85,
+      "display": "5.850000",
+      "unit": "m"
+    },
+    "explicit_net_depth": {
+      "unrounded_value": "0.45",
+      "reported_value": 0.45,
+      "display": "0.450000",
+      "unit": "m"
+    },
+    "net_depth_difference": {
+      "formula_id": "RCB-GEO-004",
+      "description": "Difference between computed and explicitly supplied net depth.",
+      "symbolic_formula": "Delta_D = D_net,calc - D_net,input",
+      "substitution": "0.45 - 0.45",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.00",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "m"
+    }
+  },
+  "concrete": {
+    "gross_volume": {
+      "formula_id": "RCB-CON-001",
+      "description": "Gross full-prism beam volume before any intersection deductions.",
+      "symbolic_formula": "V_gross = b * D_overall * L_outer",
+      "substitution": "0.3 * 0.6 * 6.3",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "1.134",
+      "reported_value": 1.134,
+      "display": "1.134000",
+      "unit": "m^3"
+    },
+    "left_support_intersection": {
+      "formula_id": "RCB-CON-002",
+      "description": "Beam prism volume inside the left support.",
+      "symbolic_formula": "V_left = b * D_overall * w_left",
+      "substitution": "0.3 * 0.6 * 0.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.072",
+      "reported_value": 0.072,
+      "display": "0.072000",
+      "unit": "m^3"
+    },
+    "right_support_intersection": {
+      "formula_id": "RCB-CON-003",
+      "description": "Beam prism volume inside the right support.",
+      "symbolic_formula": "V_right = b * D_overall * w_right",
+      "substitution": "0.3 * 0.6 * 0.5",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.090",
+      "reported_value": 0.09,
+      "display": "0.090000",
+      "unit": "m^3"
+    },
+    "support_intersection_deduction": {
+      "formula_id": "RCB-CON-004",
+      "description": "Combined support-intersection deduction.",
+      "symbolic_formula": "V_support = V_left + V_right",
+      "substitution": "0.072 + 0.090",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.162",
+      "reported_value": 0.162,
+      "display": "0.162000",
+      "unit": "m^3"
+    },
+    "clear_span_overall_depth_volume": {
+      "formula_id": "RCB-CON-005",
+      "description": "Clear-span beam prism at overall depth after support deductions.",
+      "symbolic_formula": "V_clear,overall = V_gross - V_support",
+      "substitution": "1.134 - 0.162",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.972",
+      "reported_value": 0.972,
+      "display": "0.972000",
+      "unit": "m^3"
+    },
+    "slab_intersection_deduction": {
+      "formula_id": "RCB-CON-006",
+      "description": "Slab-owned volume across the clear-span beam strip.",
+      "symbolic_formula": "V_slab = b * t_slab * L_clear",
+      "substitution": "0.3 * 0.15 * 5.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.2430",
+      "reported_value": 0.243,
+      "display": "0.243000",
+      "unit": "m^3"
+    },
+    "net_measured_volume": {
+      "formula_id": "RCB-CON-007",
+      "description": "Net measured beam concrete after support and slab deductions.",
+      "symbolic_formula": "V_net = V_gross - V_support - V_slab",
+      "substitution": "1.134 - 0.162 - 0.2430",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.7290",
+      "reported_value": 0.729,
+      "display": "0.729000",
+      "unit": "m^3"
+    },
+    "independent_direct_net_volume": {
+      "formula_id": "RCB-CON-008",
+      "description": "Independent direct calculation using clear span and the explicit beam-below-slab depth.",
+      "symbolic_formula": "V_net,check = b * D_net * L_clear",
+      "substitution": "0.3 * 0.45 * 5.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.7290",
+      "reported_value": 0.729,
+      "display": "0.729000",
+      "unit": "m^3"
+    },
+    "waste_quantity": {
+      "formula_id": "RCB-CON-009",
+      "description": "Concrete waste allowance kept separate from net measured volume.",
+      "symbolic_formula": "V_waste = V_net * r_waste",
+      "substitution": "0.7290 * 0.03",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.021870",
+      "reported_value": 0.02187,
+      "display": "0.021870",
+      "unit": "m^3"
+    },
+    "required_quantity": {
+      "formula_id": "RCB-CON-010",
+      "description": "Concrete required before commercial procurement rounding.",
+      "symbolic_formula": "V_required = V_net + V_waste",
+      "substitution": "0.7290 + 0.021870",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.750870",
+      "reported_value": 0.75087,
+      "display": "0.750870",
+      "unit": "m^3"
+    },
+    "procurement_quantity": {
+      "formula_id": "RCB-CON-011",
+      "description": "Concrete ordered after ceiling to the declared batch increment.",
+      "symbolic_formula": "V_proc = ceil(V_required / increment) * increment",
+      "substitution": "ceil(0.750870 / 0.1) * 0.1",
+      "rounding_stage": "procurement_ceiling_to_0.100000_m^3",
+      "unrounded_value": "0.8",
+      "reported_value": 0.8,
+      "display": "0.800000",
+      "unit": "m^3"
+    },
+    "procurement_rounding_excess": {
+      "formula_id": "RCB-CON-012",
+      "description": "Quantity caused only by commercial batch rounding.",
+      "symbolic_formula": "V_rounding = V_proc - V_required",
+      "substitution": "0.8 - 0.750870",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.049130",
+      "reported_value": 0.04913,
+      "display": "0.049130",
+      "unit": "m^3"
+    }
+  },
+  "formwork": {
+    "soffit_area": {
+      "formula_id": "RCB-FRM-001",
+      "description": "Soffit contact area over the clear span.",
+      "symbolic_formula": "A_soffit = b * L_clear",
+      "substitution": "0.3 * 5.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "1.62",
+      "reported_value": 1.62,
+      "display": "1.620000",
+      "unit": "m^2"
+    },
+    "left_side_area": {
+      "formula_id": "RCB-FRM-002",
+      "description": "Left beam-side contact area using only the beam drop below the slab.",
+      "symbolic_formula": "A_left = D_net * L_clear",
+      "substitution": "0.45 * 5.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "2.430",
+      "reported_value": 2.43,
+      "display": "2.430000",
+      "unit": "m^2"
+    },
+    "right_side_area": {
+      "formula_id": "RCB-FRM-003",
+      "description": "Right beam-side contact area using only the beam drop below the slab.",
+      "symbolic_formula": "A_right = D_net * L_clear",
+      "substitution": "0.45 * 5.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "2.430",
+      "reported_value": 2.43,
+      "display": "2.430000",
+      "unit": "m^2"
+    },
+    "end_form_area": {
+      "formula_id": "RCB-FRM-004",
+      "description": "End form area. Both ends are excluded because they are monolithic support interfaces.",
+      "symbolic_formula": "A_ends = 0",
+      "substitution": "0",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "m^2"
+    },
+    "total_contact_area": {
+      "formula_id": "RCB-FRM-005",
+      "description": "Total form-contact area. This remains an area and is never merged into concrete volume.",
+      "symbolic_formula": "A_form = A_soffit + A_left + A_right + A_ends",
+      "substitution": "1.62 + 2.430 + 2.430 + 0",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "6.480",
+      "reported_value": 6.48,
+      "display": "6.480000",
+      "unit": "m^2"
+    },
+    "independent_contact_area": {
+      "formula_id": "RCB-FRM-006",
+      "description": "Independent beam-form perimeter method.",
+      "symbolic_formula": "A_form,check = (b + 2*D_net) * L_clear",
+      "substitution": "(0.3 + 2*0.45) * 5.4",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "6.480",
+      "reported_value": 6.48,
+      "display": "6.480000",
+      "unit": "m^2"
+    },
+    "resources": {
+      "plywood_theoretical": {
+        "formula_id": "RCB-FRM-007",
+        "description": "Theoretical plywood sheet-equivalent consumption.",
+        "symbolic_formula": "Q_ply,theory = A_form * f_ply",
+        "substitution": "6.480 * 0.25",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "1.62000",
+        "reported_value": 1.62,
+        "display": "1.620000",
+        "unit": "sheet"
+      },
+      "plywood_procurement": {
+        "formula_id": "RCB-FRM-008",
+        "description": "Whole-sheet plywood procurement.",
+        "symbolic_formula": "Q_ply,proc = ceil(Q_ply,theory / 1 sheet) * 1 sheet",
+        "substitution": "ceil(1.62000 / 1) * 1",
+        "rounding_stage": "procurement_ceiling_to_whole_sheet",
+        "unrounded_value": "2",
+        "reported_value": 2,
+        "display": "2",
+        "unit": "sheet"
+      },
+      "form_lumber_theoretical": {
+        "formula_id": "RCB-FRM-009",
+        "description": "Theoretical form-lumber consumption.",
+        "symbolic_formula": "Q_lumber,theory = A_form * f_lumber",
+        "substitution": "6.480 * 5.0",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "32.4000",
+        "reported_value": 32.4,
+        "display": "32.400000",
+        "unit": "board_foot"
+      },
+      "form_lumber_procurement": {
+        "formula_id": "RCB-FRM-010",
+        "description": "Form-lumber procurement rounded upward to a whole board foot.",
+        "symbolic_formula": "Q_lumber,proc = ceil(Q_lumber,theory / 1 bdft) * 1 bdft",
+        "substitution": "ceil(32.4000 / 1) * 1",
+        "rounding_stage": "procurement_ceiling_to_whole_board_foot",
+        "unrounded_value": "33",
+        "reported_value": 33,
+        "display": "33",
+        "unit": "board_foot"
+      },
+      "release_oil_theoretical": {
+        "formula_id": "RCB-FRM-011",
+        "description": "Theoretical form release oil.",
+        "symbolic_formula": "Q_oil,theory = A_form * f_oil",
+        "substitution": "6.480 * 0.1",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.6480",
+        "reported_value": 0.648,
+        "display": "0.648000",
+        "unit": "L"
+      },
+      "release_oil_procurement": {
+        "formula_id": "RCB-FRM-012",
+        "description": "Release oil procurement rounded upward to a whole litre.",
+        "symbolic_formula": "Q_oil,proc = ceil(Q_oil,theory / 1 L) * 1 L",
+        "substitution": "ceil(0.6480 / 1) * 1",
+        "rounding_stage": "procurement_ceiling_to_whole_litre",
+        "unrounded_value": "1",
+        "reported_value": 1,
+        "display": "1",
+        "unit": "L"
+      }
+    },
+    "excluded_surfaces": [
+      "Top face at the monolithic slab interface",
+      "Left support intersection",
+      "Right support intersection",
+      "Both beam end faces at monolithic supports"
+    ]
+  },
+  "reinforcement": {
+    "longitudinal_groups": {
+      "L1_BOTTOM_20": {
+        "diameter": {
+          "unrounded_value": "20",
+          "reported_value": 20,
+          "display": "20",
+          "unit": "mm"
+        },
+        "bar_count": {
+          "unrounded_value": "3",
+          "reported_value": 3,
+          "display": "3",
+          "unit": "bar"
+        },
+        "effective_assembled_length_per_bar": {
+          "formula_id": "RCB-LON-001-01",
+          "description": "Effective assembled bar length before lap overlap is added as physical steel.",
+          "symbolic_formula": "L_effective = L_base + L_anchor,left + L_anchor,right + L_hook",
+          "substitution": "5.4 + 0.25 + 0.35 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.00",
+          "reported_value": 6,
+          "display": "6.000000",
+          "unit": "m/bar"
+        },
+        "lap_addition_per_bar": {
+          "formula_id": "RCB-LON-001-02",
+          "description": "Physical steel added for the explicitly specified lap.",
+          "symbolic_formula": "L_lap,add = n_lap * L_lap,each",
+          "substitution": "0 * 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m/bar"
+        },
+        "physical_steel_length_per_bar": {
+          "formula_id": "RCB-LON-001-03",
+          "description": "Physical steel length required for one assembled longitudinal bar.",
+          "symbolic_formula": "L_steel,bar = L_effective + L_lap,add",
+          "substitution": "6.00 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.00",
+          "reported_value": 6,
+          "display": "6.000000",
+          "unit": "m/bar"
+        },
+        "fabrication_piece_length": {
+          "formula_id": "RCB-LON-001-04",
+          "description": "Equal fabrication piece length under the declared group policy.",
+          "symbolic_formula": "L_piece = L_steel,bar / n_piece,bar",
+          "substitution": "6.00 / 1",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.00",
+          "reported_value": 6,
+          "display": "6.000000",
+          "unit": "m/piece"
+        },
+        "fabrication_piece_count": {
+          "formula_id": "RCB-LON-001-05",
+          "description": "Total fabrication-piece demand for the group.",
+          "symbolic_formula": "N_piece = N_bar * n_piece,bar",
+          "substitution": "3 * 1",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "3",
+          "reported_value": 3,
+          "display": "3",
+          "unit": "piece"
+        },
+        "assembly_length_check": {
+          "formula_id": "RCB-LON-001-06",
+          "description": "Independent assembly check. Sum of pieces less lap overlap must recover the effective bar length.",
+          "symbolic_formula": "L_effective,check = n_piece,bar * L_piece - L_lap,add",
+          "substitution": "1 * 6.00 - 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.00",
+          "reported_value": 6,
+          "display": "6.000000",
+          "unit": "m/bar"
+        },
+        "theoretical_total_length": {
+          "formula_id": "RCB-LON-001-07",
+          "description": "Theoretical physical steel length for the complete group.",
+          "symbolic_formula": "L_group = N_bar * L_steel,bar",
+          "substitution": "3 * 6.00",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "18.00",
+          "reported_value": 18,
+          "display": "18.000000",
+          "unit": "m"
+        },
+        "unit_weight": {
+          "formula_id": "RCB-LON-001-08",
+          "description": "Theoretical unit weight under the declared project test rule.",
+          "symbolic_formula": "w_d = d_mm^2 / 162.2",
+          "substitution": "20^2 / 162.2",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "2.46609124537607891491985203452527744",
+          "reported_value": 2.466091,
+          "display": "2.466091",
+          "unit": "kg/m"
+        },
+        "theoretical_total_weight": {
+          "formula_id": "RCB-LON-001-09",
+          "description": "Theoretical physical steel weight for the group.",
+          "symbolic_formula": "W_group = L_group * w_d",
+          "substitution": "18.00 * 2.46609124537607891491985203452527744",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "44.3896424167694204685573366214549939",
+          "reported_value": 44.389642,
+          "display": "44.389642",
+          "unit": "kg"
+        },
+        "lap_or_coupler_case": {
+          "type": "none",
+          "lap_count_per_bar": {
+            "unrounded_value": "0",
+            "reported_value": 0,
+            "display": "0",
+            "unit": "lap/bar"
+          },
+          "lap_length_each": {
+            "unrounded_value": "0",
+            "reported_value": 0,
+            "display": "0.000000",
+            "unit": "m/lap"
+          },
+          "coupler_count": {
+            "unrounded_value": "0",
+            "reported_value": 0,
+            "display": "0",
+            "unit": "coupler"
+          }
+        }
+      },
+      "L2_TOP_16_LAPPED": {
+        "diameter": {
+          "unrounded_value": "16",
+          "reported_value": 16,
+          "display": "16",
+          "unit": "mm"
+        },
+        "bar_count": {
+          "unrounded_value": "2",
+          "reported_value": 2,
+          "display": "2",
+          "unit": "bar"
+        },
+        "effective_assembled_length_per_bar": {
+          "formula_id": "RCB-LON-002-01",
+          "description": "Effective assembled bar length before lap overlap is added as physical steel.",
+          "symbolic_formula": "L_effective = L_base + L_anchor,left + L_anchor,right + L_hook",
+          "substitution": "5.4 + 0.35 + 0.45 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.20",
+          "reported_value": 6.2,
+          "display": "6.200000",
+          "unit": "m/bar"
+        },
+        "lap_addition_per_bar": {
+          "formula_id": "RCB-LON-002-02",
+          "description": "Physical steel added for the explicitly specified lap.",
+          "symbolic_formula": "L_lap,add = n_lap * L_lap,each",
+          "substitution": "1 * 0.8",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.8",
+          "reported_value": 0.8,
+          "display": "0.800000",
+          "unit": "m/bar"
+        },
+        "physical_steel_length_per_bar": {
+          "formula_id": "RCB-LON-002-03",
+          "description": "Physical steel length required for one assembled longitudinal bar.",
+          "symbolic_formula": "L_steel,bar = L_effective + L_lap,add",
+          "substitution": "6.20 + 0.8",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "7.00",
+          "reported_value": 7,
+          "display": "7.000000",
+          "unit": "m/bar"
+        },
+        "fabrication_piece_length": {
+          "formula_id": "RCB-LON-002-04",
+          "description": "Equal fabrication piece length under the declared group policy.",
+          "symbolic_formula": "L_piece = L_steel,bar / n_piece,bar",
+          "substitution": "7.00 / 2",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "3.50",
+          "reported_value": 3.5,
+          "display": "3.500000",
+          "unit": "m/piece"
+        },
+        "fabrication_piece_count": {
+          "formula_id": "RCB-LON-002-05",
+          "description": "Total fabrication-piece demand for the group.",
+          "symbolic_formula": "N_piece = N_bar * n_piece,bar",
+          "substitution": "2 * 2",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "4",
+          "reported_value": 4,
+          "display": "4",
+          "unit": "piece"
+        },
+        "assembly_length_check": {
+          "formula_id": "RCB-LON-002-06",
+          "description": "Independent assembly check. Sum of pieces less lap overlap must recover the effective bar length.",
+          "symbolic_formula": "L_effective,check = n_piece,bar * L_piece - L_lap,add",
+          "substitution": "2 * 3.50 - 0.8",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.20",
+          "reported_value": 6.2,
+          "display": "6.200000",
+          "unit": "m/bar"
+        },
+        "theoretical_total_length": {
+          "formula_id": "RCB-LON-002-07",
+          "description": "Theoretical physical steel length for the complete group.",
+          "symbolic_formula": "L_group = N_bar * L_steel,bar",
+          "substitution": "2 * 7.00",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "14.00",
+          "reported_value": 14,
+          "display": "14.000000",
+          "unit": "m"
+        },
+        "unit_weight": {
+          "formula_id": "RCB-LON-002-08",
+          "description": "Theoretical unit weight under the declared project test rule.",
+          "symbolic_formula": "w_d = d_mm^2 / 162.2",
+          "substitution": "16^2 / 162.2",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "1.57829839704069050554870530209617756",
+          "reported_value": 1.578298,
+          "display": "1.578298",
+          "unit": "kg/m"
+        },
+        "theoretical_total_weight": {
+          "formula_id": "RCB-LON-002-09",
+          "description": "Theoretical physical steel weight for the group.",
+          "symbolic_formula": "W_group = L_group * w_d",
+          "substitution": "14.00 * 1.57829839704069050554870530209617756",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "22.0961775585696670776818742293464858",
+          "reported_value": 22.096178,
+          "display": "22.096178",
+          "unit": "kg"
+        },
+        "lap_or_coupler_case": {
+          "type": "single_lap",
+          "lap_count_per_bar": {
+            "unrounded_value": "1",
+            "reported_value": 1,
+            "display": "1",
+            "unit": "lap/bar"
+          },
+          "lap_length_each": {
+            "unrounded_value": "0.8",
+            "reported_value": 0.8,
+            "display": "0.800000",
+            "unit": "m/lap"
+          },
+          "coupler_count": {
+            "unrounded_value": "0",
+            "reported_value": 0,
+            "display": "0",
+            "unit": "coupler"
+          }
+        }
+      }
+    },
+    "stirrups": {
+      "clear_width": {
+        "formula_id": "RCB-STI-001",
+        "description": "Stirrup width inside the specified cover lines.",
+        "symbolic_formula": "b_st = b_beam - 2*c",
+        "substitution": "0.3 - 2*0.04",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.22",
+        "reported_value": 0.22,
+        "display": "0.220000",
+        "unit": "m"
+      },
+      "clear_depth": {
+        "formula_id": "RCB-STI-002",
+        "description": "Stirrup depth inside the specified cover lines, using overall beam depth.",
+        "symbolic_formula": "D_st = D_overall - 2*c",
+        "substitution": "0.6 - 2*0.04",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.52",
+        "reported_value": 0.52,
+        "display": "0.520000",
+        "unit": "m"
+      },
+      "hook_extension_each": {
+        "formula_id": "RCB-STI-003",
+        "description": "Project-specific hook extension per hook.",
+        "symbolic_formula": "L_hook,each = m_hook * d_b",
+        "substitution": "10 * 0.01",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.10",
+        "reported_value": 0.1,
+        "display": "0.100000",
+        "unit": "m/hook"
+      },
+      "hook_extension_total": {
+        "formula_id": "RCB-STI-004",
+        "description": "Total hook extension for one stirrup.",
+        "symbolic_formula": "L_hook,total = n_hook * L_hook,each",
+        "substitution": "2 * 0.10",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.20",
+        "reported_value": 0.2,
+        "display": "0.200000",
+        "unit": "m/stirrup"
+      },
+      "bend_deduction": {
+        "formula_id": "RCB-STI-005",
+        "description": "Project-specific aggregate bend deduction for one stirrup.",
+        "symbolic_formula": "Delta_bend = m_bend * d_b",
+        "substitution": "12 * 0.01",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.12",
+        "reported_value": 0.12,
+        "display": "0.120000",
+        "unit": "m/stirrup"
+      },
+      "cutting_length": {
+        "formula_id": "RCB-STI-006",
+        "description": "Cutting length for one rectangular stirrup under the declared hook and bend rule.",
+        "symbolic_formula": "L_st = 2*(b_st + D_st) + L_hook,total - Delta_bend",
+        "substitution": "2*(0.22 + 0.52) + 0.20 - 0.12",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "1.56",
+        "reported_value": 1.56,
+        "display": "1.560000",
+        "unit": "m/stirrup"
+      },
+      "zones": [
+        {
+          "zone_id": "Z1_LEFT_END",
+          "formula_id": "RCB-STI-Z01",
+          "description": "Generate stirrup coordinates for spacing zone Z1_LEFT_END.",
+          "symbolic_formula": "Generate x = x_start + k*s subject to the zone's explicit boundary inclusions.",
+          "substitution": "start=0.0, end=1.2, s=0.1, include_start=True, include_end=True",
+          "rounding_stage": "none_integer_coordinate_generation",
+          "count": {
+            "unrounded_value": "13",
+            "reported_value": 13,
+            "display": "13",
+            "unit": "stirrup"
+          },
+          "positions": {
+            "values": [
+              0,
+              0.1,
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6,
+              0.7,
+              0.8,
+              0.9,
+              1,
+              1.1,
+              1.2
+            ],
+            "display_values": [
+              "0.000",
+              "0.100",
+              "0.200",
+              "0.300",
+              "0.400",
+              "0.500",
+              "0.600",
+              "0.700",
+              "0.800",
+              "0.900",
+              "1.000",
+              "1.100",
+              "1.200"
+            ],
+            "unit": "m"
+          },
+          "include_start_boundary": true,
+          "include_end_boundary": true
+        },
+        {
+          "zone_id": "Z2_MIDDLE",
+          "formula_id": "RCB-STI-Z02",
+          "description": "Generate stirrup coordinates for spacing zone Z2_MIDDLE.",
+          "symbolic_formula": "Generate x = x_start + k*s subject to the zone's explicit boundary inclusions.",
+          "substitution": "start=1.2, end=4.2, s=0.2, include_start=False, include_end=False",
+          "rounding_stage": "none_integer_coordinate_generation",
+          "count": {
+            "unrounded_value": "14",
+            "reported_value": 14,
+            "display": "14",
+            "unit": "stirrup"
+          },
+          "positions": {
+            "values": [
+              1.4,
+              1.6,
+              1.8,
+              2,
+              2.2,
+              2.4,
+              2.6,
+              2.8,
+              3,
+              3.2,
+              3.4,
+              3.6,
+              3.8,
+              4
+            ],
+            "display_values": [
+              "1.400",
+              "1.600",
+              "1.800",
+              "2.000",
+              "2.200",
+              "2.400",
+              "2.600",
+              "2.800",
+              "3.000",
+              "3.200",
+              "3.400",
+              "3.600",
+              "3.800",
+              "4.000"
+            ],
+            "unit": "m"
+          },
+          "include_start_boundary": false,
+          "include_end_boundary": false
+        },
+        {
+          "zone_id": "Z3_RIGHT_END",
+          "formula_id": "RCB-STI-Z03",
+          "description": "Generate stirrup coordinates for spacing zone Z3_RIGHT_END.",
+          "symbolic_formula": "Generate x = x_start + k*s subject to the zone's explicit boundary inclusions.",
+          "substitution": "start=4.2, end=5.4, s=0.1, include_start=True, include_end=True",
+          "rounding_stage": "none_integer_coordinate_generation",
+          "count": {
+            "unrounded_value": "13",
+            "reported_value": 13,
+            "display": "13",
+            "unit": "stirrup"
+          },
+          "positions": {
+            "values": [
+              4.2,
+              4.3,
+              4.4,
+              4.5,
+              4.6,
+              4.7,
+              4.8,
+              4.9,
+              5,
+              5.1,
+              5.2,
+              5.3,
+              5.4
+            ],
+            "display_values": [
+              "4.200",
+              "4.300",
+              "4.400",
+              "4.500",
+              "4.600",
+              "4.700",
+              "4.800",
+              "4.900",
+              "5.000",
+              "5.100",
+              "5.200",
+              "5.300",
+              "5.400"
+            ],
+            "unit": "m"
+          },
+          "include_start_boundary": true,
+          "include_end_boundary": true
+        }
+      ],
+      "sum_of_zone_counts_before_deduplication": {
+        "formula_id": "RCB-STI-007",
+        "description": "Sum of all zone-generated stirrup positions before deduplication.",
+        "symbolic_formula": "N_zone,sum = sum(N_zone,i)",
+        "substitution": "13 + 14 + 13",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "40",
+        "reported_value": 40,
+        "display": "40",
+        "unit": "stirrup"
+      },
+      "duplicate_boundary_count": {
+        "formula_id": "RCB-STI-008",
+        "description": "Duplicate transition coordinates removed by the boundary policy.",
+        "symbolic_formula": "N_duplicate = N_zone,sum - size(unique(position_union))",
+        "substitution": "40 - 40",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0",
+        "reported_value": 0,
+        "display": "0",
+        "unit": "stirrup"
+      },
+      "theoretical_count": {
+        "formula_id": "RCB-STI-009",
+        "description": "Unique stirrup count after applying explicit transition-boundary ownership.",
+        "symbolic_formula": "N_st = size(unique(position_union))",
+        "substitution": "size(unique(40 generated coordinates))",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "40",
+        "reported_value": 40,
+        "display": "40",
+        "unit": "stirrup"
+      },
+      "unique_positions": {
+        "values": [
+          0,
+          0.1,
+          0.2,
+          0.3,
+          0.4,
+          0.5,
+          0.6,
+          0.7,
+          0.8,
+          0.9,
+          1,
+          1.1,
+          1.2,
+          1.4,
+          1.6,
+          1.8,
+          2,
+          2.2,
+          2.4,
+          2.6,
+          2.8,
+          3,
+          3.2,
+          3.4,
+          3.6,
+          3.8,
+          4,
+          4.2,
+          4.3,
+          4.4,
+          4.5,
+          4.6,
+          4.7,
+          4.8,
+          4.9,
+          5,
+          5.1,
+          5.2,
+          5.3,
+          5.4
+        ],
+        "display_values": [
+          "0.000",
+          "0.100",
+          "0.200",
+          "0.300",
+          "0.400",
+          "0.500",
+          "0.600",
+          "0.700",
+          "0.800",
+          "0.900",
+          "1.000",
+          "1.100",
+          "1.200",
+          "1.400",
+          "1.600",
+          "1.800",
+          "2.000",
+          "2.200",
+          "2.400",
+          "2.600",
+          "2.800",
+          "3.000",
+          "3.200",
+          "3.400",
+          "3.600",
+          "3.800",
+          "4.000",
+          "4.200",
+          "4.300",
+          "4.400",
+          "4.500",
+          "4.600",
+          "4.700",
+          "4.800",
+          "4.900",
+          "5.000",
+          "5.100",
+          "5.200",
+          "5.300",
+          "5.400"
+        ],
+        "unit": "m"
+      },
+      "theoretical_total_length": {
+        "formula_id": "RCB-STI-010",
+        "description": "Total theoretical stirrup steel length.",
+        "symbolic_formula": "L_st,total = N_st * L_st",
+        "substitution": "40 * 1.56",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "62.40",
+        "reported_value": 62.4,
+        "display": "62.400000",
+        "unit": "m"
+      },
+      "unit_weight": {
+        "formula_id": "RCB-STI-011",
+        "description": "Theoretical 10 mm unit weight under the declared project test rule.",
+        "symbolic_formula": "w_10 = 10^2 / 162.2",
+        "substitution": "10^2 / 162.2",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "0.616522811344019728729963008631319359",
+        "reported_value": 0.616523,
+        "display": "0.616523",
+        "unit": "kg/m"
+      },
+      "theoretical_total_weight": {
+        "formula_id": "RCB-STI-012",
+        "description": "Total theoretical stirrup weight.",
+        "symbolic_formula": "W_st = L_st,total * w_10",
+        "substitution": "62.40 * 0.616522811344019728729963008631319359",
+        "rounding_stage": "reporting_only",
+        "unrounded_value": "38.4710234278668310727496917385943280",
+        "reported_value": 38.471023,
+        "display": "38.471023",
+        "unit": "kg"
+      },
+      "boundary_policy": "A coordinate may belong to only one zone. Z1 owns x = 1.200 m, Z3 owns x = 4.200 m, and Z2 excludes both transition boundaries. The union of generated coordinates is deduplicated and must retain the same total count."
+    },
+    "theoretical_installed_length": {
+      "formula_id": "RCB-REB-001",
+      "description": "Total physical reinforcing-steel length, including the explicit lap overlap and all stirrups.",
+      "symbolic_formula": "L_rebar,total = sum(L_longitudinal groups) + L_stirrups",
+      "substitution": "62.40 + 14.00 + 18.00",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "94.40",
+      "reported_value": 94.4,
+      "display": "94.400000",
+      "unit": "m"
+    },
+    "theoretical_installed_weight": {
+      "formula_id": "RCB-REB-002",
+      "description": "Total theoretical installed reinforcing-steel weight.",
+      "symbolic_formula": "W_rebar,total = sum(W_by_diameter)",
+      "substitution": "38.4710234278668310727496917385943280 + 22.0961775585696670776818742293464858 + 44.3896424167694204685573366214549939",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "104.956843403205918618988902589395808",
+      "reported_value": 104.956843,
+      "display": "104.956843",
+      "unit": "kg"
+    },
+    "tie_wire_theoretical": {
+      "formula_id": "RCB-REB-003",
+      "description": "Theoretical tie-wire quantity based on installed rebar weight.",
+      "symbolic_formula": "W_tie,theory = W_rebar,total * f_tie",
+      "substitution": "104.956843403205918618988902589395808 * 0.015",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "1.57435265104808877928483353884093712",
+      "reported_value": 1.574353,
+      "display": "1.574353",
+      "unit": "kg"
+    },
+    "tie_wire_procurement": {
+      "formula_id": "RCB-REB-004",
+      "description": "Tie wire rounded upward to the declared procurement increment.",
+      "symbolic_formula": "W_tie,proc = ceil(W_tie,theory / increment) * increment",
+      "substitution": "ceil(1.57435265104808877928483353884093712 / 1) * 1",
+      "rounding_stage": "procurement_ceiling_to_whole_kg",
+      "unrounded_value": "2",
+      "reported_value": 2,
+      "display": "2",
+      "unit": "kg"
+    }
+  },
+  "procurement": {
+    "by_diameter": {
+      "20_mm": {
+        "source_groups": [
+          "L1_BOTTOM_20"
+        ],
+        "available_stock_lengths": {
+          "values": [
+            6,
+            9,
+            12
+          ],
+          "unit": "m"
+        },
+        "piece_length": {
+          "formula_id": "RCB-PRC-001-01",
+          "description": "Uniform cut length used by the diameter-specific cutting plan.",
+          "symbolic_formula": "L_piece = source demand cut length",
+          "substitution": "6.00",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.00",
+          "reported_value": 6,
+          "display": "6.000000",
+          "unit": "m/piece"
+        },
+        "required_piece_count": {
+          "formula_id": "RCB-PRC-001-02",
+          "description": "Required cut-piece count for this diameter.",
+          "symbolic_formula": "N_required = sum(source piece counts)",
+          "substitution": "3",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "3",
+          "reported_value": 3,
+          "display": "3",
+          "unit": "piece"
+        },
+        "required_cut_length": {
+          "formula_id": "RCB-PRC-001-03",
+          "description": "Total physical cut length required for this diameter.",
+          "symbolic_formula": "L_required = N_required * L_piece",
+          "substitution": "3 * 6.00",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "18.00",
+          "reported_value": 18,
+          "display": "18.000000",
+          "unit": "m"
+        },
+        "optimizer_result": {
+          "formula_id": "RCB-PRC-001-04",
+          "description": "Exact-piece cutting plan selected by the declared lexicographic procurement objective.",
+          "symbolic_formula": "arg min_plan (L_purchased, N_stock, L_scrap, max(L_offcut), signature) subject to exact piece demand",
+          "substitution": "piece_length=6.00 m, piece_count=3, stock_lengths=[6, 9, 12] m, kerf=0 m/cut, reusable_threshold=1 m",
+          "rounding_stage": "none_discrete_selection",
+          "objective_order": [
+            "minimum total purchased stock length",
+            "minimum stock-bar count",
+            "minimum non-reusable scrap length",
+            "minimum largest individual offcut",
+            "deterministic lexicographic pattern order"
+          ],
+          "stock_bars": [
+            {
+              "stock_bar_id": "D20-S01",
+              "formula_id": "RCB-PRC-001-04-01",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "12 = (2 * 6.00) + (2 * 0) + 0 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "12",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "2",
+                "reported_value": 2,
+                "display": "2",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  6,
+                  6
+                ],
+                "display_values": [
+                  "6.000",
+                  "6.000"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "12.00",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D20-S02",
+              "formula_id": "RCB-PRC-001-04-02",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "6 = (1 * 6.00) + (1 * 0) + 0 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "6",
+                "reported_value": 6,
+                "display": "6.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "1",
+                "reported_value": 1,
+                "display": "1",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  6
+                ],
+                "display_values": [
+                  "6.000"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "6.00",
+                "reported_value": 6,
+                "display": "6.000000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            }
+          ]
+        },
+        "stock_bar_count": {
+          "formula_id": "RCB-PRC-001-05",
+          "description": "Count of purchased commercial stock bars in the selected plan.",
+          "symbolic_formula": "N_stock = count(selected stock bars)",
+          "substitution": "2",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "2",
+          "reported_value": 2,
+          "display": "2",
+          "unit": "stock_bar"
+        },
+        "purchased_length": {
+          "formula_id": "RCB-PRC-001-06",
+          "description": "Total purchased commercial stock length for this diameter.",
+          "symbolic_formula": "L_purchased = sum(L_stock bars)",
+          "substitution": "12 + 6",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "18",
+          "reported_value": 18,
+          "display": "18.000000",
+          "unit": "m"
+        },
+        "purchased_weight": {
+          "formula_id": "RCB-PRC-001-07",
+          "description": "Purchased weight for this diameter.",
+          "symbolic_formula": "W_purchased = L_purchased * w_d",
+          "substitution": "18 * 2.46609124537607891491985203452527744",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "44.3896424167694204685573366214549939",
+          "reported_value": 44.389642,
+          "display": "44.389642",
+          "unit": "kg"
+        },
+        "reusable_offcut_length": {
+          "formula_id": "RCB-PRC-001-08",
+          "description": "Offcut length at or above the declared reusable threshold.",
+          "symbolic_formula": "L_reusable = sum(offcut where offcut >= threshold)",
+          "substitution": "0 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "reusable_offcut_weight": {
+          "formula_id": "RCB-PRC-001-09",
+          "description": "Reusable offcut weight for this diameter.",
+          "symbolic_formula": "W_reusable = L_reusable * w_d",
+          "substitution": "0 * 2.46609124537607891491985203452527744",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00000000000000000000000000000000000",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        },
+        "scrap_length": {
+          "formula_id": "RCB-PRC-001-10",
+          "description": "Non-reusable offcut length below the declared threshold.",
+          "symbolic_formula": "L_scrap = sum(offcut where 0 < offcut < threshold)",
+          "substitution": "0 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "scrap_weight": {
+          "formula_id": "RCB-PRC-001-11",
+          "description": "Non-reusable scrap weight for this diameter.",
+          "symbolic_formula": "W_scrap = L_scrap * w_d",
+          "substitution": "0 * 2.46609124537607891491985203452527744",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00000000000000000000000000000000000",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        },
+        "unresolved_demand": {
+          "formula_id": "RCB-PRC-001-12",
+          "description": "Cut pieces not satisfied by the selected plan.",
+          "symbolic_formula": "N_unresolved = N_required - N_produced",
+          "substitution": "3 - 3",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0",
+          "unit": "piece"
+        },
+        "length_reconciliation_difference": {
+          "formula_id": "RCB-PRC-001-13",
+          "description": "Purchased length less required cut length, reusable offcut, and scrap.",
+          "symbolic_formula": "Delta_L = L_purchased - L_required - L_reusable - L_scrap",
+          "substitution": "18 - 18.00 - 0 - 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "weight_reconciliation_difference": {
+          "formula_id": "RCB-PRC-001-14",
+          "description": "Purchased weight less installed, reusable offcut, and scrap weight.",
+          "symbolic_formula": "Delta_W = W_purchased - W_installed - W_reusable - W_scrap",
+          "substitution": "44.3896424167694204685573366214549939 - 44.3896424167694204685573366214549939 - 0.00000000000000000000000000000000000 - 0.00000000000000000000000000000000000",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00000000000000000000000000000000000",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        }
+      },
+      "16_mm": {
+        "source_groups": [
+          "L2_TOP_16_LAPPED"
+        ],
+        "available_stock_lengths": {
+          "values": [
+            6,
+            9,
+            12
+          ],
+          "unit": "m"
+        },
+        "piece_length": {
+          "formula_id": "RCB-PRC-002-01",
+          "description": "Uniform cut length used by the diameter-specific cutting plan.",
+          "symbolic_formula": "L_piece = source demand cut length",
+          "substitution": "3.50",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "3.50",
+          "reported_value": 3.5,
+          "display": "3.500000",
+          "unit": "m/piece"
+        },
+        "required_piece_count": {
+          "formula_id": "RCB-PRC-002-02",
+          "description": "Required cut-piece count for this diameter.",
+          "symbolic_formula": "N_required = sum(source piece counts)",
+          "substitution": "4",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "4",
+          "reported_value": 4,
+          "display": "4",
+          "unit": "piece"
+        },
+        "required_cut_length": {
+          "formula_id": "RCB-PRC-002-03",
+          "description": "Total physical cut length required for this diameter.",
+          "symbolic_formula": "L_required = N_required * L_piece",
+          "substitution": "4 * 3.50",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "14.00",
+          "reported_value": 14,
+          "display": "14.000000",
+          "unit": "m"
+        },
+        "optimizer_result": {
+          "formula_id": "RCB-PRC-002-04",
+          "description": "Exact-piece cutting plan selected by the declared lexicographic procurement objective.",
+          "symbolic_formula": "arg min_plan (L_purchased, N_stock, L_scrap, max(L_offcut), signature) subject to exact piece demand",
+          "substitution": "piece_length=3.50 m, piece_count=4, stock_lengths=[6, 9, 12] m, kerf=0 m/cut, reusable_threshold=1 m",
+          "rounding_stage": "none_discrete_selection",
+          "objective_order": [
+            "minimum total purchased stock length",
+            "minimum stock-bar count",
+            "minimum non-reusable scrap length",
+            "minimum largest individual offcut",
+            "deterministic lexicographic pattern order"
+          ],
+          "stock_bars": [
+            {
+              "stock_bar_id": "D16-S01",
+              "formula_id": "RCB-PRC-002-04-01",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "9 = (2 * 3.50) + (2 * 0) + 2.00 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "9",
+                "reported_value": 9,
+                "display": "9.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "2",
+                "reported_value": 2,
+                "display": "2",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  3.5,
+                  3.5
+                ],
+                "display_values": [
+                  "3.500",
+                  "3.500"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "7.00",
+                "reported_value": 7,
+                "display": "7.000000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "2.00",
+                "reported_value": 2,
+                "display": "2.000000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D16-S02",
+              "formula_id": "RCB-PRC-002-04-02",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "9 = (2 * 3.50) + (2 * 0) + 2.00 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "9",
+                "reported_value": 9,
+                "display": "9.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "2",
+                "reported_value": 2,
+                "display": "2",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  3.5,
+                  3.5
+                ],
+                "display_values": [
+                  "3.500",
+                  "3.500"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "7.00",
+                "reported_value": 7,
+                "display": "7.000000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "2.00",
+                "reported_value": 2,
+                "display": "2.000000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            }
+          ]
+        },
+        "stock_bar_count": {
+          "formula_id": "RCB-PRC-002-05",
+          "description": "Count of purchased commercial stock bars in the selected plan.",
+          "symbolic_formula": "N_stock = count(selected stock bars)",
+          "substitution": "2",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "2",
+          "reported_value": 2,
+          "display": "2",
+          "unit": "stock_bar"
+        },
+        "purchased_length": {
+          "formula_id": "RCB-PRC-002-06",
+          "description": "Total purchased commercial stock length for this diameter.",
+          "symbolic_formula": "L_purchased = sum(L_stock bars)",
+          "substitution": "9 + 9",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "18",
+          "reported_value": 18,
+          "display": "18.000000",
+          "unit": "m"
+        },
+        "purchased_weight": {
+          "formula_id": "RCB-PRC-002-07",
+          "description": "Purchased weight for this diameter.",
+          "symbolic_formula": "W_purchased = L_purchased * w_d",
+          "substitution": "18 * 1.57829839704069050554870530209617756",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "28.4093711467324290998766954377311961",
+          "reported_value": 28.409371,
+          "display": "28.409371",
+          "unit": "kg"
+        },
+        "reusable_offcut_length": {
+          "formula_id": "RCB-PRC-002-08",
+          "description": "Offcut length at or above the declared reusable threshold.",
+          "symbolic_formula": "L_reusable = sum(offcut where offcut >= threshold)",
+          "substitution": "2.00 + 2.00",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "4.00",
+          "reported_value": 4,
+          "display": "4.000000",
+          "unit": "m"
+        },
+        "reusable_offcut_weight": {
+          "formula_id": "RCB-PRC-002-09",
+          "description": "Reusable offcut weight for this diameter.",
+          "symbolic_formula": "W_reusable = L_reusable * w_d",
+          "substitution": "4.00 * 1.57829839704069050554870530209617756",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.31319358816276202219482120838471024",
+          "reported_value": 6.313194,
+          "display": "6.313194",
+          "unit": "kg"
+        },
+        "scrap_length": {
+          "formula_id": "RCB-PRC-002-10",
+          "description": "Non-reusable offcut length below the declared threshold.",
+          "symbolic_formula": "L_scrap = sum(offcut where 0 < offcut < threshold)",
+          "substitution": "0 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "scrap_weight": {
+          "formula_id": "RCB-PRC-002-11",
+          "description": "Non-reusable scrap weight for this diameter.",
+          "symbolic_formula": "W_scrap = L_scrap * w_d",
+          "substitution": "0 * 1.57829839704069050554870530209617756",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00000000000000000000000000000000000",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        },
+        "unresolved_demand": {
+          "formula_id": "RCB-PRC-002-12",
+          "description": "Cut pieces not satisfied by the selected plan.",
+          "symbolic_formula": "N_unresolved = N_required - N_produced",
+          "substitution": "4 - 4",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0",
+          "unit": "piece"
+        },
+        "length_reconciliation_difference": {
+          "formula_id": "RCB-PRC-002-13",
+          "description": "Purchased length less required cut length, reusable offcut, and scrap.",
+          "symbolic_formula": "Delta_L = L_purchased - L_required - L_reusable - L_scrap",
+          "substitution": "18 - 14.00 - 4.00 - 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "weight_reconciliation_difference": {
+          "formula_id": "RCB-PRC-002-14",
+          "description": "Purchased weight less installed, reusable offcut, and scrap weight.",
+          "symbolic_formula": "Delta_W = W_purchased - W_installed - W_reusable - W_scrap",
+          "substitution": "28.4093711467324290998766954377311961 - 22.0961775585696670776818742293464858 - 6.31319358816276202219482120838471024 - 0.00000000000000000000000000000000000",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00000000000000000000000000000000006",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        }
+      },
+      "10_mm": {
+        "source_groups": [
+          "S1_10"
+        ],
+        "available_stock_lengths": {
+          "values": [
+            6,
+            9,
+            12
+          ],
+          "unit": "m"
+        },
+        "piece_length": {
+          "formula_id": "RCB-PRC-003-01",
+          "description": "Uniform cut length used by the diameter-specific cutting plan.",
+          "symbolic_formula": "L_piece = source demand cut length",
+          "substitution": "1.56",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "1.56",
+          "reported_value": 1.56,
+          "display": "1.560000",
+          "unit": "m/piece"
+        },
+        "required_piece_count": {
+          "formula_id": "RCB-PRC-003-02",
+          "description": "Required cut-piece count for this diameter.",
+          "symbolic_formula": "N_required = sum(source piece counts)",
+          "substitution": "40",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "40",
+          "reported_value": 40,
+          "display": "40",
+          "unit": "piece"
+        },
+        "required_cut_length": {
+          "formula_id": "RCB-PRC-003-03",
+          "description": "Total physical cut length required for this diameter.",
+          "symbolic_formula": "L_required = N_required * L_piece",
+          "substitution": "40 * 1.56",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "62.40",
+          "reported_value": 62.4,
+          "display": "62.400000",
+          "unit": "m"
+        },
+        "optimizer_result": {
+          "formula_id": "RCB-PRC-003-04",
+          "description": "Exact-piece cutting plan selected by the declared lexicographic procurement objective.",
+          "symbolic_formula": "arg min_plan (L_purchased, N_stock, L_scrap, max(L_offcut), signature) subject to exact piece demand",
+          "substitution": "piece_length=1.56 m, piece_count=40, stock_lengths=[6, 9, 12] m, kerf=0 m/cut, reusable_threshold=1 m",
+          "rounding_stage": "none_discrete_selection",
+          "objective_order": [
+            "minimum total purchased stock length",
+            "minimum stock-bar count",
+            "minimum non-reusable scrap length",
+            "minimum largest individual offcut",
+            "deterministic lexicographic pattern order"
+          ],
+          "stock_bars": [
+            {
+              "stock_bar_id": "D10-S01",
+              "formula_id": "RCB-PRC-003-04-01",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "12 = (7 * 1.56) + (7 * 0) + 1.08 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "12",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "7",
+                "reported_value": 7,
+                "display": "7",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56
+                ],
+                "display_values": [
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "10.92",
+                "reported_value": 10.92,
+                "display": "10.920000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "1.08",
+                "reported_value": 1.08,
+                "display": "1.080000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D10-S02",
+              "formula_id": "RCB-PRC-003-04-02",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "12 = (7 * 1.56) + (7 * 0) + 1.08 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "12",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "7",
+                "reported_value": 7,
+                "display": "7",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56
+                ],
+                "display_values": [
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "10.92",
+                "reported_value": 10.92,
+                "display": "10.920000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "1.08",
+                "reported_value": 1.08,
+                "display": "1.080000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D10-S03",
+              "formula_id": "RCB-PRC-003-04-03",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "12 = (7 * 1.56) + (7 * 0) + 1.08 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "12",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "7",
+                "reported_value": 7,
+                "display": "7",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56
+                ],
+                "display_values": [
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "10.92",
+                "reported_value": 10.92,
+                "display": "10.920000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "1.08",
+                "reported_value": 1.08,
+                "display": "1.080000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D10-S04",
+              "formula_id": "RCB-PRC-003-04-04",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "12 = (7 * 1.56) + (7 * 0) + 1.08 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "12",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "7",
+                "reported_value": 7,
+                "display": "7",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56
+                ],
+                "display_values": [
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "10.92",
+                "reported_value": 10.92,
+                "display": "10.920000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "1.08",
+                "reported_value": 1.08,
+                "display": "1.080000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D10-S05",
+              "formula_id": "RCB-PRC-003-04-05",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "12 = (7 * 1.56) + (7 * 0) + 1.08 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "12",
+                "reported_value": 12,
+                "display": "12.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "7",
+                "reported_value": 7,
+                "display": "7",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56
+                ],
+                "display_values": [
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "10.92",
+                "reported_value": 10.92,
+                "display": "10.920000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "1.08",
+                "reported_value": 1.08,
+                "display": "1.080000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            },
+            {
+              "stock_bar_id": "D10-S06",
+              "formula_id": "RCB-PRC-003-04-06",
+              "description": "Selected stock-bar pattern and its complete length balance.",
+              "symbolic_formula": "L_stock = sum(L_cut) + L_kerf + L_reusable + L_scrap",
+              "substitution": "9 = (5 * 1.56) + (5 * 0) + 1.20 + 0",
+              "rounding_stage": "reporting_only",
+              "stock_length": {
+                "unrounded_value": "9",
+                "reported_value": 9,
+                "display": "9.000000",
+                "unit": "m"
+              },
+              "cut_count": {
+                "unrounded_value": "5",
+                "reported_value": 5,
+                "display": "5",
+                "unit": "piece"
+              },
+              "cut_lengths": {
+                "values": [
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56,
+                  1.56
+                ],
+                "display_values": [
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560",
+                  "1.560"
+                ],
+                "unit": "m"
+              },
+              "used_length": {
+                "unrounded_value": "7.80",
+                "reported_value": 7.8,
+                "display": "7.800000",
+                "unit": "m"
+              },
+              "kerf_length": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "reusable_offcut": {
+                "unrounded_value": "1.20",
+                "reported_value": 1.2,
+                "display": "1.200000",
+                "unit": "m"
+              },
+              "scrap": {
+                "unrounded_value": "0",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              },
+              "length_balance_difference": {
+                "unrounded_value": "0.00",
+                "reported_value": 0,
+                "display": "0.000000",
+                "unit": "m"
+              }
+            }
+          ]
+        },
+        "stock_bar_count": {
+          "formula_id": "RCB-PRC-003-05",
+          "description": "Count of purchased commercial stock bars in the selected plan.",
+          "symbolic_formula": "N_stock = count(selected stock bars)",
+          "substitution": "6",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6",
+          "reported_value": 6,
+          "display": "6",
+          "unit": "stock_bar"
+        },
+        "purchased_length": {
+          "formula_id": "RCB-PRC-003-06",
+          "description": "Total purchased commercial stock length for this diameter.",
+          "symbolic_formula": "L_purchased = sum(L_stock bars)",
+          "substitution": "12 + 12 + 12 + 12 + 12 + 9",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "69",
+          "reported_value": 69,
+          "display": "69.000000",
+          "unit": "m"
+        },
+        "purchased_weight": {
+          "formula_id": "RCB-PRC-003-07",
+          "description": "Purchased weight for this diameter.",
+          "symbolic_formula": "W_purchased = L_purchased * w_d",
+          "substitution": "69 * 0.616522811344019728729963008631319359",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "42.5400739827373612823674475955610358",
+          "reported_value": 42.540074,
+          "display": "42.540074",
+          "unit": "kg"
+        },
+        "reusable_offcut_length": {
+          "formula_id": "RCB-PRC-003-08",
+          "description": "Offcut length at or above the declared reusable threshold.",
+          "symbolic_formula": "L_reusable = sum(offcut where offcut >= threshold)",
+          "substitution": "1.08 + 1.08 + 1.08 + 1.08 + 1.08 + 1.20",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "6.60",
+          "reported_value": 6.6,
+          "display": "6.600000",
+          "unit": "m"
+        },
+        "reusable_offcut_weight": {
+          "formula_id": "RCB-PRC-003-09",
+          "description": "Reusable offcut weight for this diameter.",
+          "symbolic_formula": "W_reusable = L_reusable * w_d",
+          "substitution": "6.60 * 0.616522811344019728729963008631319359",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "4.06905055487053020961775585696670777",
+          "reported_value": 4.069051,
+          "display": "4.069051",
+          "unit": "kg"
+        },
+        "scrap_length": {
+          "formula_id": "RCB-PRC-003-10",
+          "description": "Non-reusable offcut length below the declared threshold.",
+          "symbolic_formula": "L_scrap = sum(offcut where 0 < offcut < threshold)",
+          "substitution": "0 + 0 + 0 + 0 + 0 + 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "scrap_weight": {
+          "formula_id": "RCB-PRC-003-11",
+          "description": "Non-reusable scrap weight for this diameter.",
+          "symbolic_formula": "W_scrap = L_scrap * w_d",
+          "substitution": "0 * 0.616522811344019728729963008631319359",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.000000000000000000000000000000000000",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        },
+        "unresolved_demand": {
+          "formula_id": "RCB-PRC-003-12",
+          "description": "Cut pieces not satisfied by the selected plan.",
+          "symbolic_formula": "N_unresolved = N_required - N_produced",
+          "substitution": "40 - 40",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0",
+          "reported_value": 0,
+          "display": "0",
+          "unit": "piece"
+        },
+        "length_reconciliation_difference": {
+          "formula_id": "RCB-PRC-003-13",
+          "description": "Purchased length less required cut length, reusable offcut, and scrap.",
+          "symbolic_formula": "Delta_L = L_purchased - L_required - L_reusable - L_scrap",
+          "substitution": "69 - 62.40 - 6.60 - 0",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.00",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "m"
+        },
+        "weight_reconciliation_difference": {
+          "formula_id": "RCB-PRC-003-14",
+          "description": "Purchased weight less installed, reusable offcut, and scrap weight.",
+          "symbolic_formula": "Delta_W = W_purchased - W_installed - W_reusable - W_scrap",
+          "substitution": "42.5400739827373612823674475955610358 - 38.4710234278668310727496917385943280 - 4.06905055487053020961775585696670777 - 0.000000000000000000000000000000000000",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.000000000000000000000000000000000030",
+          "reported_value": 0,
+          "display": "0.000000",
+          "unit": "kg"
+        }
+      }
+    },
+    "total_required_cut_length": {
+      "formula_id": "RCB-PRC-TOT-001",
+      "description": "Total theoretical cut length across all diameters.",
+      "symbolic_formula": "L_required,total = sum(L_required,d)",
+      "substitution": "18.00 + 14.00 + 62.40",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "94.40",
+      "reported_value": 94.4,
+      "display": "94.400000",
+      "unit": "m"
+    },
+    "total_purchased_length": {
+      "formula_id": "RCB-PRC-TOT-002",
+      "description": "Total purchased stock length across all diameters.",
+      "symbolic_formula": "L_purchased,total = sum(L_purchased,d)",
+      "substitution": "18 + 18 + 69",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "105",
+      "reported_value": 105,
+      "display": "105.000000",
+      "unit": "m"
+    },
+    "total_purchased_weight": {
+      "formula_id": "RCB-PRC-TOT-003",
+      "description": "Total purchased reinforcing-steel weight across all diameters.",
+      "symbolic_formula": "W_purchased,total = sum(W_purchased,d)",
+      "substitution": "44.3896424167694204685573366214549939 + 28.4093711467324290998766954377311961 + 42.5400739827373612823674475955610358",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "115.339087546239210850801479654747226",
+      "reported_value": 115.339088,
+      "display": "115.339088",
+      "unit": "kg"
+    },
+    "total_reusable_offcut_length": {
+      "formula_id": "RCB-PRC-TOT-004",
+      "description": "Total reusable offcut length across all diameters.",
+      "symbolic_formula": "L_reusable,total = sum(L_reusable,d)",
+      "substitution": "10.60",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "10.60",
+      "reported_value": 10.6,
+      "display": "10.600000",
+      "unit": "m"
+    },
+    "total_reusable_offcut_weight": {
+      "formula_id": "RCB-PRC-TOT-005",
+      "description": "Total reusable offcut weight across all diameters.",
+      "symbolic_formula": "W_reusable,total = sum(W_reusable,d)",
+      "substitution": "10.3822441430332922318125770653514180",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "10.3822441430332922318125770653514180",
+      "reported_value": 10.382244,
+      "display": "10.382244",
+      "unit": "kg"
+    },
+    "total_scrap_length": {
+      "formula_id": "RCB-PRC-TOT-006",
+      "description": "Total non-reusable scrap length across all diameters.",
+      "symbolic_formula": "L_scrap,total = sum(L_scrap,d)",
+      "substitution": "0",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "m"
+    },
+    "total_scrap_weight": {
+      "formula_id": "RCB-PRC-TOT-007",
+      "description": "Total non-reusable scrap weight across all diameters.",
+      "symbolic_formula": "W_scrap,total = sum(W_scrap,d)",
+      "substitution": "0.000000000000000000000000000000000000",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.000000000000000000000000000000000000",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "kg"
+    },
+    "total_unresolved_demand": {
+      "formula_id": "RCB-PRC-TOT-008",
+      "description": "Total unresolved cut-piece demand.",
+      "symbolic_formula": "N_unresolved,total = sum(N_unresolved,d)",
+      "substitution": "0",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0",
+      "reported_value": 0,
+      "display": "0",
+      "unit": "piece"
+    },
+    "length_reconciliation_difference": {
+      "formula_id": "RCB-PRC-TOT-009",
+      "description": "Overall purchased-length reconciliation.",
+      "symbolic_formula": "Delta_L,total = L_purchased,total - L_required,total - L_reusable,total - L_scrap,total",
+      "substitution": "105 - 94.40 - 10.60 - 0",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.00",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "m"
+    },
+    "weight_reconciliation_difference": {
+      "formula_id": "RCB-PRC-TOT-010",
+      "description": "Overall purchased-weight reconciliation.",
+      "symbolic_formula": "Delta_W,total = W_purchased,total - W_installed,total - W_reusable,total - W_scrap,total",
+      "substitution": "115.339087546239210850801479654747226 - 104.956843403205918618988902589395808 - 10.3822441430332922318125770653514180 - 0.000000000000000000000000000000000000",
+      "rounding_stage": "reporting_only",
+      "unrounded_value": "0.000000000000000000000000000000000000",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "kg"
+    },
+    "reusable_offcut_threshold": {
+      "unrounded_value": "1",
+      "reported_value": 1,
+      "display": "1.000000",
+      "unit": "m"
+    },
+    "cut_kerf": {
+      "unrounded_value": "0",
+      "reported_value": 0,
+      "display": "0.000000",
+      "unit": "m/cut"
+    },
+    "reusable_offcut_cost_credit_applied": false
+  },
+  "resources_and_costs": {
+    "materials": [
+      {
+        "resource_id": "MAT-CON-RM",
+        "description": "Ready-mix concrete",
+        "quantity_basis": "concrete_procurement_volume",
+        "quantity": {
+          "unrounded_value": "0.8",
+          "reported_value": 0.8,
+          "display": "0.800000",
+          "unit": "m^3"
+        },
+        "rate": {
+          "unrounded_value": "5500",
+          "reported_value": 5500,
+          "display": "5500.00",
+          "unit": "PHP/m^3"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-001",
+          "description": "Direct material cost for Ready-mix concrete.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "0.8 * 5500",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "4400.0",
+          "reported_value": 4400,
+          "display": "4400.00",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-FRM-PLY",
+        "description": "12 mm plywood sheet equivalent",
+        "quantity_basis": "plywood_procurement_quantity",
+        "quantity": {
+          "unrounded_value": "2",
+          "reported_value": 2,
+          "display": "2.000000",
+          "unit": "sheet"
+        },
+        "rate": {
+          "unrounded_value": "850",
+          "reported_value": 850,
+          "display": "850.00",
+          "unit": "PHP/sheet"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-002",
+          "description": "Direct material cost for 12 mm plywood sheet equivalent.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "2 * 850",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "1700",
+          "reported_value": 1700,
+          "display": "1700.00",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-FRM-LBR",
+        "description": "Form lumber",
+        "quantity_basis": "form_lumber_procurement_quantity",
+        "quantity": {
+          "unrounded_value": "33",
+          "reported_value": 33,
+          "display": "33.000000",
+          "unit": "board_foot"
+        },
+        "rate": {
+          "unrounded_value": "55",
+          "reported_value": 55,
+          "display": "55.00",
+          "unit": "PHP/board_foot"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-003",
+          "description": "Direct material cost for Form lumber.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "33 * 55",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "1815",
+          "reported_value": 1815,
+          "display": "1815.00",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-FRM-OIL",
+        "description": "Form release oil",
+        "quantity_basis": "release_oil_procurement_quantity",
+        "quantity": {
+          "unrounded_value": "1",
+          "reported_value": 1,
+          "display": "1.000000",
+          "unit": "L"
+        },
+        "rate": {
+          "unrounded_value": "180",
+          "reported_value": 180,
+          "display": "180.00",
+          "unit": "PHP/L"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-004",
+          "description": "Direct material cost for Form release oil.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "1 * 180",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "180",
+          "reported_value": 180,
+          "display": "180.00",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-RB-20",
+        "description": "20 mm reinforcing steel",
+        "quantity_basis": "20_mm_purchased_weight",
+        "quantity": {
+          "unrounded_value": "44.3896424167694204685573366214549939",
+          "reported_value": 44.389642,
+          "display": "44.389642",
+          "unit": "kg"
+        },
+        "rate": {
+          "unrounded_value": "62",
+          "reported_value": 62,
+          "display": "62.00",
+          "unit": "PHP/kg"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-005",
+          "description": "Direct material cost for 20 mm reinforcing steel.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "44.3896424167694204685573366214549939 * 62",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "2752.15782983970406905055487053020962",
+          "reported_value": 2752.16,
+          "display": "2752.16",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-RB-16",
+        "description": "16 mm reinforcing steel",
+        "quantity_basis": "16_mm_purchased_weight",
+        "quantity": {
+          "unrounded_value": "28.4093711467324290998766954377311961",
+          "reported_value": 28.409371,
+          "display": "28.409371",
+          "unit": "kg"
+        },
+        "rate": {
+          "unrounded_value": "60",
+          "reported_value": 60,
+          "display": "60.00",
+          "unit": "PHP/kg"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-006",
+          "description": "Direct material cost for 16 mm reinforcing steel.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "28.4093711467324290998766954377311961 * 60",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "1704.56226880394574599260172626387177",
+          "reported_value": 1704.56,
+          "display": "1704.56",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-RB-10",
+        "description": "10 mm reinforcing steel",
+        "quantity_basis": "10_mm_purchased_weight",
+        "quantity": {
+          "unrounded_value": "42.5400739827373612823674475955610358",
+          "reported_value": 42.540074,
+          "display": "42.540074",
+          "unit": "kg"
+        },
+        "rate": {
+          "unrounded_value": "64",
+          "reported_value": 64,
+          "display": "64.00",
+          "unit": "PHP/kg"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-007",
+          "description": "Direct material cost for 10 mm reinforcing steel.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "42.5400739827373612823674475955610358 * 64",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "2722.56473489519112207151664611590629",
+          "reported_value": 2722.56,
+          "display": "2722.56",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "MAT-TIE-WIRE",
+        "description": "Tie wire",
+        "quantity_basis": "tie_wire_procurement_quantity",
+        "quantity": {
+          "unrounded_value": "2",
+          "reported_value": 2,
+          "display": "2.000000",
+          "unit": "kg"
+        },
+        "rate": {
+          "unrounded_value": "90",
+          "reported_value": 90,
+          "display": "90.00",
+          "unit": "PHP/kg"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-MAT-008",
+          "description": "Direct material cost for Tie wire.",
+          "symbolic_formula": "C_material,line = Q_procurement * rate",
+          "substitution": "2 * 90",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "180",
+          "reported_value": 180,
+          "display": "180.00",
+          "unit": "PHP"
+        }
+      }
+    ],
+    "labor": [
+      {
+        "resource_id": "LAB-CON-PLACE",
+        "description": "Concrete placing crew",
+        "quantity_basis": "concrete_required_volume",
+        "basis_quantity": {
+          "unrounded_value": "0.750870",
+          "reported_value": 0.75087,
+          "display": "0.750870",
+          "unit": "m^3"
+        },
+        "productivity": {
+          "unrounded_value": "4",
+          "reported_value": 4,
+          "display": "4.000000",
+          "unit": "m^3/crew-day"
+        },
+        "crew_days": {
+          "formula_id": "RCB-CST-LAB-001-A",
+          "description": "Crew usage for Concrete placing crew.",
+          "symbolic_formula": "T_crew = Q_basis / productivity",
+          "substitution": "0.750870 / 4",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.1877175",
+          "reported_value": 0.187718,
+          "display": "0.187718",
+          "unit": "crew-day"
+        },
+        "rate": {
+          "unrounded_value": "4800",
+          "reported_value": 4800,
+          "display": "4800.00",
+          "unit": "PHP/crew-day"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-LAB-001-B",
+          "description": "Direct labor cost for Concrete placing crew.",
+          "symbolic_formula": "C_labor,line = T_crew * rate",
+          "substitution": "0.1877175 * 4800",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "901.0440000",
+          "reported_value": 901.04,
+          "display": "901.04",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "LAB-FRM",
+        "description": "Formwork carpentry crew",
+        "quantity_basis": "formwork_contact_area",
+        "basis_quantity": {
+          "unrounded_value": "6.480",
+          "reported_value": 6.48,
+          "display": "6.480000",
+          "unit": "m^2"
+        },
+        "productivity": {
+          "unrounded_value": "10",
+          "reported_value": 10,
+          "display": "10.000000",
+          "unit": "m^2/crew-day"
+        },
+        "crew_days": {
+          "formula_id": "RCB-CST-LAB-002-A",
+          "description": "Crew usage for Formwork carpentry crew.",
+          "symbolic_formula": "T_crew = Q_basis / productivity",
+          "substitution": "6.480 / 10",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.648",
+          "reported_value": 0.648,
+          "display": "0.648000",
+          "unit": "crew-day"
+        },
+        "rate": {
+          "unrounded_value": "3600",
+          "reported_value": 3600,
+          "display": "3600.00",
+          "unit": "PHP/crew-day"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-LAB-002-B",
+          "description": "Direct labor cost for Formwork carpentry crew.",
+          "symbolic_formula": "C_labor,line = T_crew * rate",
+          "substitution": "0.648 * 3600",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "2332.800",
+          "reported_value": 2332.8,
+          "display": "2332.80",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "LAB-RB",
+        "description": "Rebar fabrication and installation crew",
+        "quantity_basis": "theoretical_installed_rebar_weight",
+        "basis_quantity": {
+          "unrounded_value": "104.956843403205918618988902589395808",
+          "reported_value": 104.956843,
+          "display": "104.956843",
+          "unit": "kg"
+        },
+        "productivity": {
+          "unrounded_value": "250",
+          "reported_value": 250,
+          "display": "250.000000",
+          "unit": "kg/crew-day"
+        },
+        "crew_days": {
+          "formula_id": "RCB-CST-LAB-003-A",
+          "description": "Crew usage for Rebar fabrication and installation crew.",
+          "symbolic_formula": "T_crew = Q_basis / productivity",
+          "substitution": "104.956843403205918618988902589395808 / 250",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.419827373612823674475955610357583232",
+          "reported_value": 0.419827,
+          "display": "0.419827",
+          "unit": "crew-day"
+        },
+        "rate": {
+          "unrounded_value": "4200",
+          "reported_value": 4200,
+          "display": "4200.00",
+          "unit": "PHP/crew-day"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-LAB-003-B",
+          "description": "Direct labor cost for Rebar fabrication and installation crew.",
+          "symbolic_formula": "C_labor,line = T_crew * rate",
+          "substitution": "0.419827373612823674475955610357583232 * 4200",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "1763.27496917385943279901356350184957",
+          "reported_value": 1763.27,
+          "display": "1763.27",
+          "unit": "PHP"
+        }
+      }
+    ],
+    "equipment": [
+      {
+        "resource_id": "EQ-CON-VIB",
+        "description": "Concrete vibrator",
+        "quantity_basis": "concrete_required_volume",
+        "basis_quantity": {
+          "unrounded_value": "0.750870",
+          "reported_value": 0.75087,
+          "display": "0.750870",
+          "unit": "m^3"
+        },
+        "productivity": {
+          "unrounded_value": "5",
+          "reported_value": 5,
+          "display": "5.000000",
+          "unit": "m^3/unit-day"
+        },
+        "computed_unit_days": {
+          "formula_id": "RCB-CST-EQ-001-A",
+          "description": "Calculated equipment usage before minimum charge for Concrete vibrator.",
+          "symbolic_formula": "T_calc = Q_basis / productivity",
+          "substitution": "0.750870 / 5",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.150174",
+          "reported_value": 0.150174,
+          "display": "0.150174",
+          "unit": "unit-day"
+        },
+        "minimum_charge": {
+          "unrounded_value": "0.25",
+          "reported_value": 0.25,
+          "display": "0.250000",
+          "unit": "unit-day"
+        },
+        "charged_unit_days": {
+          "formula_id": "RCB-CST-EQ-001-B",
+          "description": "Charged equipment usage for Concrete vibrator.",
+          "symbolic_formula": "T_charge = max(T_calc, T_min)",
+          "substitution": "max(0.150174, 0.25)",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.25",
+          "reported_value": 0.25,
+          "display": "0.250000",
+          "unit": "unit-day"
+        },
+        "rate": {
+          "unrounded_value": "1200",
+          "reported_value": 1200,
+          "display": "1200.00",
+          "unit": "PHP/unit-day"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-EQ-001-C",
+          "description": "Direct equipment cost for Concrete vibrator.",
+          "symbolic_formula": "C_equipment,line = T_charge * rate",
+          "substitution": "0.25 * 1200",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "300.00",
+          "reported_value": 300,
+          "display": "300.00",
+          "unit": "PHP"
+        }
+      },
+      {
+        "resource_id": "EQ-RB-CUT",
+        "description": "Rebar cutter and bender",
+        "quantity_basis": "theoretical_installed_rebar_weight",
+        "basis_quantity": {
+          "unrounded_value": "104.956843403205918618988902589395808",
+          "reported_value": 104.956843,
+          "display": "104.956843",
+          "unit": "kg"
+        },
+        "productivity": {
+          "unrounded_value": "500",
+          "reported_value": 500,
+          "display": "500.000000",
+          "unit": "kg/unit-day"
+        },
+        "computed_unit_days": {
+          "formula_id": "RCB-CST-EQ-002-A",
+          "description": "Calculated equipment usage before minimum charge for Rebar cutter and bender.",
+          "symbolic_formula": "T_calc = Q_basis / productivity",
+          "substitution": "104.956843403205918618988902589395808 / 500",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.209913686806411837237977805178791616",
+          "reported_value": 0.209914,
+          "display": "0.209914",
+          "unit": "unit-day"
+        },
+        "minimum_charge": {
+          "unrounded_value": "0.25",
+          "reported_value": 0.25,
+          "display": "0.250000",
+          "unit": "unit-day"
+        },
+        "charged_unit_days": {
+          "formula_id": "RCB-CST-EQ-002-B",
+          "description": "Charged equipment usage for Rebar cutter and bender.",
+          "symbolic_formula": "T_charge = max(T_calc, T_min)",
+          "substitution": "max(0.209913686806411837237977805178791616, 0.25)",
+          "rounding_stage": "reporting_only",
+          "unrounded_value": "0.25",
+          "reported_value": 0.25,
+          "display": "0.250000",
+          "unit": "unit-day"
+        },
+        "rate": {
+          "unrounded_value": "900",
+          "reported_value": 900,
+          "display": "900.00",
+          "unit": "PHP/unit-day"
+        },
+        "amount": {
+          "formula_id": "RCB-CST-EQ-002-C",
+          "description": "Direct equipment cost for Rebar cutter and bender.",
+          "symbolic_formula": "C_equipment,line = T_charge * rate",
+          "substitution": "0.25 * 900",
+          "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+          "unrounded_value": "225.00",
+          "reported_value": 225,
+          "display": "225.00",
+          "unit": "PHP"
+        }
+      }
+    ],
+    "direct_material_cost": {
+      "formula_id": "RCB-CST-SUB-001",
+      "description": "Direct material subtotal as the sum of reported material line amounts.",
+      "symbolic_formula": "C_material = sum(reported material line amounts)",
+      "substitution": "4400.00 + 1700.00 + 1815.00 + 180.00 + 2752.16 + 1704.56 + 2722.56 + 180.00",
+      "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+      "unrounded_value": "15454.28",
+      "reported_value": 15454.28,
+      "display": "15454.28",
+      "unit": "PHP"
+    },
+    "direct_labor_cost": {
+      "formula_id": "RCB-CST-SUB-002",
+      "description": "Direct labor subtotal as the sum of reported labor line amounts.",
+      "symbolic_formula": "C_labor = sum(reported labor line amounts)",
+      "substitution": "901.04 + 2332.80 + 1763.27",
+      "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+      "unrounded_value": "4997.11",
+      "reported_value": 4997.11,
+      "display": "4997.11",
+      "unit": "PHP"
+    },
+    "direct_equipment_cost": {
+      "formula_id": "RCB-CST-SUB-003",
+      "description": "Direct equipment subtotal as the sum of reported equipment line amounts.",
+      "symbolic_formula": "C_equipment = sum(reported equipment line amounts)",
+      "substitution": "300.00 + 225.00",
+      "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+      "unrounded_value": "525.00",
+      "reported_value": 525,
+      "display": "525.00",
+      "unit": "PHP"
+    },
+    "total_direct_cost": {
+      "formula_id": "RCB-CST-TOT-001",
+      "description": "Total direct cost with no overhead, tax, or profit.",
+      "symbolic_formula": "C_direct = C_material + C_labor + C_equipment",
+      "substitution": "15454.28 + 4997.11 + 525.00",
+      "rounding_stage": "round_half_up_to_PHP_0.01_at_line_level",
+      "unrounded_value": "20976.39",
+      "reported_value": 20976.39,
+      "display": "20976.39",
+      "unit": "PHP"
+    },
+    "excluded_costs": {
+      "overhead": {
+        "unrounded_value": "0",
+        "reported_value": 0,
+        "display": "0.00",
+        "unit": "PHP"
+      },
+      "tax": {
+        "unrounded_value": "0",
+        "reported_value": 0,
+        "display": "0.00",
+        "unit": "PHP"
+      },
+      "profit": {
+        "unrounded_value": "0",
+        "reported_value": 0,
+        "display": "0.00",
+        "unit": "PHP"
+      }
+    },
+    "rounding_policy": {
+      "line_amount_increment": {
+        "value": 0.01,
+        "unit": "PHP"
+      },
+      "mode": "round_half_up_each_line_before_subtotal",
+      "category_subtotal_policy": "sum_reported_line_amounts",
+      "grand_total_policy": "sum_reported_category_subtotals"
+    }
+  },
+  "reconciliations": {
+    "geometry_net_depth": {
+      "formula_id": "RCB-REC-001",
+      "description": "Check the explicit net beam depth against overall depth less slab thickness.",
+      "symbolic_formula": "Delta_D = (D_overall - t_slab) - D_net,input",
+      "substitution": "(0.6 - 0.15) - 0.45",
+      "rounding_stage": "reporting_only",
+      "difference": {
+        "unrounded_value": "0.00",
+        "reported_value": 0,
+        "display": "0.000000",
+        "unit": "m"
+      },
+      "status": "PASS"
+    },
+    "concrete_two_method_check": {
+      "formula_id": "RCB-REC-002",
+      "description": "Compare net concrete from deductions with the direct beam-drop prism method.",
+      "symbolic_formula": "Delta_V = V_net,deduction - V_net,direct",
+      "substitution": "0.7290 - 0.7290",
+      "rounding_stage": "reporting_only",
+      "difference": {
+        "unrounded_value": "0.0000",
+        "reported_value": 0,
+        "display": "0.000000",
+        "unit": "m^3"
+      },
+      "status": "PASS"
+    },
+    "formwork_two_method_check": {
+      "formula_id": "RCB-REC-003",
+      "description": "Compare component-sum formwork with the independent perimeter method.",
+      "symbolic_formula": "Delta_A = A_form,components - A_form,perimeter",
+      "substitution": "6.480 - 6.480",
+      "rounding_stage": "reporting_only",
+      "difference": {
+        "unrounded_value": "0.000",
+        "reported_value": 0,
+        "display": "0.000000",
+        "unit": "m^2"
+      },
+      "status": "PASS"
+    },
+    "stirrup_boundary_check": {
+      "formula_id": "RCB-REC-004",
+      "description": "Confirm that spacing-zone transition coordinates are not double-counted.",
+      "symbolic_formula": "N_duplicate = N_generated - N_unique",
+      "substitution": "40 - 40",
+      "rounding_stage": "none_integer_count",
+      "duplicate_count": {
+        "unrounded_value": "0",
+        "reported_value": 0,
+        "display": "0",
+        "unit": "stirrup"
+      },
+      "status": "PASS"
+    },
+    "rebar_length_check": {
+      "formula_id": "RCB-REC-005",
+      "description": "Reconcile purchased stock length with cuts, reusable offcuts, and scrap.",
+      "symbolic_formula": "Delta_L = L_purchased - L_installed - L_reusable - L_scrap",
+      "substitution": "105 - 94.40 - 10.60 - 0",
+      "rounding_stage": "reporting_only",
+      "difference": {
+        "unrounded_value": "0.00",
+        "reported_value": 0,
+        "display": "0.000000",
+        "unit": "m"
+      },
+      "status": "PASS"
+    },
+    "rebar_weight_check": {
+      "formula_id": "RCB-REC-006",
+      "description": "Reconcile purchased stock weight with installed steel, reusable offcuts, and scrap.",
+      "symbolic_formula": "Delta_W = W_purchased - W_installed - W_reusable - W_scrap",
+      "substitution": "115.339087546239210850801479654747226 - 104.956843403205918618988902589395808 - 10.3822441430332922318125770653514180 - 0.000000000000000000000000000000000000",
+      "rounding_stage": "reporting_only",
+      "difference": {
+        "unrounded_value": "0.000000000000000000000000000000000000",
+        "reported_value": 0,
+        "display": "0.000000",
+        "unit": "kg"
+      },
+      "status": "PASS"
+    },
+    "unresolved_demand_check": {
+      "formula_id": "RCB-REC-007",
+      "description": "Confirm that every required reinforcing-steel cut piece is assigned to stock.",
+      "symbolic_formula": "N_unresolved,total = sum(N_required,d - N_produced,d)",
+      "substitution": "0",
+      "rounding_stage": "none_integer_count",
+      "unresolved": {
+        "unrounded_value": "0",
+        "reported_value": 0,
+        "display": "0",
+        "unit": "piece"
+      },
+      "status": "PASS"
+    },
+    "cost_check": {
+      "formula_id": "RCB-REC-008",
+      "description": "Reconcile total direct cost with reported material, labor, and equipment subtotals.",
+      "symbolic_formula": "Delta_C = C_direct - C_material - C_labor - C_equipment",
+      "substitution": "20976.39 - 15454.28 - 4997.11 - 525.00",
+      "rounding_stage": "reported_category_subtotals",
+      "difference": {
+        "unrounded_value": "0.00",
+        "reported_value": 0,
+        "display": "0.00",
+        "unit": "PHP"
+      },
+      "status": "PASS"
+    }
+  },
+  "calculation_payload_sha256": "aa5bbcf33d6ffcce0c74a729a5ea0e0c780ba99978f502cb2d552c0546c736ae"
+}
