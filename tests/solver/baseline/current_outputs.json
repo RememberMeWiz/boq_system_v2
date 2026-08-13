@@ -1,0 +1,1074 @@
+{
+  "execution": {
+    "all_samples_deterministic": true,
+    "method": "two independent fresh Python processes",
+    "process_payload_hashes": [
+      "dd20c25f418db388815bb0d2f12e23d6b8ca09bb0676a13ab417f32ae9fad5fc",
+      "dd20c25f418db388815bb0d2f12e23d6b8ca09bb0676a13ab417f32ae9fad5fc"
+    ]
+  },
+  "repository": {
+    "branch": "main",
+    "commit": "97f16aa3fd7b6d8e7cd364b6edc2ac303a5f54e6",
+    "url": "https://github.com/RememberMeWiz/boq_system_v2"
+  },
+  "samples": {
+    "full_13_trade_takeoff_sample": {
+      "determinism": {
+        "canonical_hashes_equal": true,
+        "inputs_equal": true,
+        "outputs_equal": true,
+        "result": "PASS"
+      },
+      "input": {
+        "10": {
+          "fixtures_count": 4,
+          "sanitary_run_m": 25.0,
+          "water_run_m": 20.0
+        },
+        "11": {
+          "homerun_m": 45.0,
+          "outlets_count": 16
+        },
+        "12": {
+          "pipe_run_m": 10.0,
+          "room_area_m2": 50.0
+        },
+        "13": {
+          "acp_m2": 15.0,
+          "handrail_m": 8.0,
+          "waterproofing_m2": 30.0
+        },
+        "2": {
+          "footing_specs": [
+            {
+              "count": 4,
+              "depth_m": 0.4,
+              "length_m": 1.5,
+              "width_m": 1.5
+            }
+          ],
+          "slab_area": 120.0,
+          "slab_t": 0.1
+        },
+        "3": {
+          "elements": [
+            {
+              "class": "A",
+              "count": 4,
+              "height_m": 0.4,
+              "length_m": 1.5,
+              "type": "footing",
+              "width_m": 1.5
+            }
+          ]
+        },
+        "4": {
+          "wall_elements": [
+            {
+              "height_m": 3.0,
+              "length_m": 10.0,
+              "openings": [
+                {
+                  "height_m": 1.5,
+                  "width_m": 1.5
+                }
+              ],
+              "thickness_mm": 150
+            }
+          ]
+        },
+        "5": {
+          "rebar_elements": [
+            {
+              "count": 20,
+              "diameter_mm": 16.0,
+              "length_m": 6.0,
+              "member": "generic"
+            }
+          ],
+          "structural_steel_kg": 150.0
+        },
+        "6": {
+          "ceiling_area": 90.0,
+          "pitch_deg": 15.0,
+          "roof_plan_area": 100.0
+        },
+        "7": {
+          "doors": [
+            {
+              "count": 2,
+              "type": "panel"
+            }
+          ],
+          "windows_sqm": 12.0
+        },
+        "8": {
+          "floor_area": 80.0,
+          "is_diagonal": false,
+          "wall_area": 30.0
+        },
+        "9": {
+          "ceiling_area": 90.0,
+          "is_rough_chb": false,
+          "masonry_area": 150.0,
+          "metal_area": 10.0
+        }
+      },
+      "run_1": {
+        "output": {
+          "grand_total_direct_cost": 910481.93,
+          "sections": {
+            "1": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 0.0,
+                "material": 0.0,
+                "total": 46576.92
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 0.0,
+              "line_items": {
+                "mobilization_demobilization": 8639.05,
+                "permits_clearances": 18500.0,
+                "safety_health_ppe": 6479.29,
+                "temporary_facilities": 12958.58
+              },
+              "materials": {},
+              "quantities": {
+                "basis_direct_cost": 863905.01
+              }
+            },
+            "10": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 8260.0,
+                "material": 34900.0,
+                "total": 43160.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 4.25,
+              "materials": {
+                "ppr_pcs": 8,
+                "upvc_2in_pcs": 5,
+                "upvc_4in_pcs": 10
+              },
+              "quantities": {
+                "fixtures_count": 4,
+                "sanitary_run_m": 25.0,
+                "water_run_m": 20.0
+              }
+            },
+            "11": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 4527.2,
+                "material": 11667.8,
+                "total": 16195.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 2.84,
+              "materials": {},
+              "quantities": {
+                "conduit_pcs": 15,
+                "outlets_count": 16,
+                "wire_m": 50.4
+              }
+            },
+            "12": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 17200.0,
+                "material": 88910.0,
+                "total": 106110.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 1.73,
+              "materials": {},
+              "quantities": {
+                "acu_tons": 2.92,
+                "cooling_load_btu": 35000.0,
+                "copper_piping_m": 11.0
+              }
+            },
+            "13": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 10420.0,
+                "material": 46790.0,
+                "total": 57210.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 3.88,
+              "materials": {
+                "waterproofing_kg": 36.0
+              },
+              "quantities": {
+                "acp_cladding_m2": 16.2,
+                "handrail_m": 8.0,
+                "waterproofing_m2": 30.0
+              }
+            },
+            "2": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 18269.52,
+                "material": 130710.0,
+                "total": 148979.52
+              },
+              "equipment_hours": 0.82,
+              "labor_manday": 1.78,
+              "materials": {
+                "gravel_m3": 6.9,
+                "soil_poison_l": 645.0
+              },
+              "quantities": {
+                "backfill_m3": 1.534,
+                "excavation_m3": 4.9,
+                "gravel_bedding_m3": 6.9,
+                "soil_poisoning_l": 645.0
+              }
+            },
+            "3": {
+              "cost": {
+                "equipment": 945.0,
+                "labor": 4649.4,
+                "material": 21185.08,
+                "total": 26779.48
+              },
+              "equipment_hours": 0.76,
+              "labor_manday": 2.15,
+              "materials": {
+                "cement_bags": 35,
+                "form_lumber_bdft": 67.2,
+                "gravel_m3": 3.78,
+                "marine_ply_sheets": 3,
+                "sand_m3": 1.89
+              },
+              "quantities": {
+                "concrete_volume_m3": 3.78,
+                "formwork_contact_area_m2": 9.6,
+                "volume_by_class_m3": {
+                  "A": 3.78
+                }
+              }
+            },
+            "4": {
+              "cost": {
+                "equipment": 416.4,
+                "labor": 11532.9,
+                "material": 20744.43,
+                "total": 32693.73
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 8.04,
+              "materials": {
+                "mortar_cement_bags": 28.03,
+                "mortar_sand_m3": 2.331,
+                "plaster_cement_bags": 11.0,
+                "plaster_sand_m3": 0.917
+              },
+              "quantities": {
+                "chb_by_thickness": {
+                  "150": 347
+                },
+                "chb_count": 347,
+                "plaster_area_m2": 57.3
+              }
+            },
+            "5": {
+              "cost": {
+                "equipment": 1223.5,
+                "labor": 4556.88,
+                "material": 18461.09,
+                "total": 24241.47
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 0.76,
+              "materials": {
+                "tie_wire_kg": 2.84
+              },
+              "quantities": {
+                "rebar_weight_by_diameter_kg": {
+                  "16.0": 189.4
+                },
+                "rebar_weight_kg": 189.4,
+                "structural_steel_kg": 150.0
+              }
+            },
+            "6": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 35586.18,
+                "material": 120444.62,
+                "total": 156030.8
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 15.61,
+              "materials": {
+                "roofing_rivets_pcs": 3015
+              },
+              "quantities": {
+                "ceiling_area_m2": 94.5,
+                "metal_furring_m": 225.0,
+                "roof_slope_area_m2": 115.951
+              }
+            },
+            "7": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 9792.0,
+                "material": 68168.0,
+                "total": 77960.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 2.0,
+              "materials": {},
+              "quantities": {
+                "door_counts": {
+                  "flush": 0,
+                  "panel": 2,
+                  "tempered_glass": 0
+                },
+                "jamb_lumber_bdft": 16.0,
+                "windows_m2": 12.0
+              }
+            },
+            "8": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 27288.0,
+                "material": 105862.91,
+                "total": 133150.91
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 13.75,
+              "materials": {
+                "mortar_bed_bags": 19.2,
+                "tile_grout_kg": 44.0
+              },
+              "quantities": {
+                "floor_tile_area_m2": 86.4,
+                "wall_tile_area_m2": 32.4
+              }
+            },
+            "9": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 21250.0,
+                "material": 20144.1,
+                "total": 41394.1
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 12.5,
+              "materials": {
+                "ceiling_latex_l": 11.25,
+                "metal_enamel_l": 1.11,
+                "metal_primer_l": 1.25,
+                "neutralizer_l": 15.0,
+                "primer_l": 15.0,
+                "topcoat_l": 37.5
+              },
+              "quantities": {
+                "ceiling_area_m2": 90.0,
+                "masonry_area_m2": 150.0,
+                "metal_area_m2": 10.0
+              }
+            }
+          },
+          "sections_2_to_13_subtotal": 863905.01
+        },
+        "output_canonical_sha256": "f6b6b1aafecc577543342f2c63910dcda0e63a8bc358497317908629f83d903d"
+      },
+      "run_2": {
+        "output": {
+          "grand_total_direct_cost": 910481.93,
+          "sections": {
+            "1": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 0.0,
+                "material": 0.0,
+                "total": 46576.92
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 0.0,
+              "line_items": {
+                "mobilization_demobilization": 8639.05,
+                "permits_clearances": 18500.0,
+                "safety_health_ppe": 6479.29,
+                "temporary_facilities": 12958.58
+              },
+              "materials": {},
+              "quantities": {
+                "basis_direct_cost": 863905.01
+              }
+            },
+            "10": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 8260.0,
+                "material": 34900.0,
+                "total": 43160.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 4.25,
+              "materials": {
+                "ppr_pcs": 8,
+                "upvc_2in_pcs": 5,
+                "upvc_4in_pcs": 10
+              },
+              "quantities": {
+                "fixtures_count": 4,
+                "sanitary_run_m": 25.0,
+                "water_run_m": 20.0
+              }
+            },
+            "11": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 4527.2,
+                "material": 11667.8,
+                "total": 16195.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 2.84,
+              "materials": {},
+              "quantities": {
+                "conduit_pcs": 15,
+                "outlets_count": 16,
+                "wire_m": 50.4
+              }
+            },
+            "12": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 17200.0,
+                "material": 88910.0,
+                "total": 106110.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 1.73,
+              "materials": {},
+              "quantities": {
+                "acu_tons": 2.92,
+                "cooling_load_btu": 35000.0,
+                "copper_piping_m": 11.0
+              }
+            },
+            "13": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 10420.0,
+                "material": 46790.0,
+                "total": 57210.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 3.88,
+              "materials": {
+                "waterproofing_kg": 36.0
+              },
+              "quantities": {
+                "acp_cladding_m2": 16.2,
+                "handrail_m": 8.0,
+                "waterproofing_m2": 30.0
+              }
+            },
+            "2": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 18269.52,
+                "material": 130710.0,
+                "total": 148979.52
+              },
+              "equipment_hours": 0.82,
+              "labor_manday": 1.78,
+              "materials": {
+                "gravel_m3": 6.9,
+                "soil_poison_l": 645.0
+              },
+              "quantities": {
+                "backfill_m3": 1.534,
+                "excavation_m3": 4.9,
+                "gravel_bedding_m3": 6.9,
+                "soil_poisoning_l": 645.0
+              }
+            },
+            "3": {
+              "cost": {
+                "equipment": 945.0,
+                "labor": 4649.4,
+                "material": 21185.08,
+                "total": 26779.48
+              },
+              "equipment_hours": 0.76,
+              "labor_manday": 2.15,
+              "materials": {
+                "cement_bags": 35,
+                "form_lumber_bdft": 67.2,
+                "gravel_m3": 3.78,
+                "marine_ply_sheets": 3,
+                "sand_m3": 1.89
+              },
+              "quantities": {
+                "concrete_volume_m3": 3.78,
+                "formwork_contact_area_m2": 9.6,
+                "volume_by_class_m3": {
+                  "A": 3.78
+                }
+              }
+            },
+            "4": {
+              "cost": {
+                "equipment": 416.4,
+                "labor": 11532.9,
+                "material": 20744.43,
+                "total": 32693.73
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 8.04,
+              "materials": {
+                "mortar_cement_bags": 28.03,
+                "mortar_sand_m3": 2.331,
+                "plaster_cement_bags": 11.0,
+                "plaster_sand_m3": 0.917
+              },
+              "quantities": {
+                "chb_by_thickness": {
+                  "150": 347
+                },
+                "chb_count": 347,
+                "plaster_area_m2": 57.3
+              }
+            },
+            "5": {
+              "cost": {
+                "equipment": 1223.5,
+                "labor": 4556.88,
+                "material": 18461.09,
+                "total": 24241.47
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 0.76,
+              "materials": {
+                "tie_wire_kg": 2.84
+              },
+              "quantities": {
+                "rebar_weight_by_diameter_kg": {
+                  "16.0": 189.4
+                },
+                "rebar_weight_kg": 189.4,
+                "structural_steel_kg": 150.0
+              }
+            },
+            "6": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 35586.18,
+                "material": 120444.62,
+                "total": 156030.8
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 15.61,
+              "materials": {
+                "roofing_rivets_pcs": 3015
+              },
+              "quantities": {
+                "ceiling_area_m2": 94.5,
+                "metal_furring_m": 225.0,
+                "roof_slope_area_m2": 115.951
+              }
+            },
+            "7": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 9792.0,
+                "material": 68168.0,
+                "total": 77960.0
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 2.0,
+              "materials": {},
+              "quantities": {
+                "door_counts": {
+                  "flush": 0,
+                  "panel": 2,
+                  "tempered_glass": 0
+                },
+                "jamb_lumber_bdft": 16.0,
+                "windows_m2": 12.0
+              }
+            },
+            "8": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 27288.0,
+                "material": 105862.91,
+                "total": 133150.91
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 13.75,
+              "materials": {
+                "mortar_bed_bags": 19.2,
+                "tile_grout_kg": 44.0
+              },
+              "quantities": {
+                "floor_tile_area_m2": 86.4,
+                "wall_tile_area_m2": 32.4
+              }
+            },
+            "9": {
+              "cost": {
+                "equipment": 0.0,
+                "labor": 21250.0,
+                "material": 20144.1,
+                "total": 41394.1
+              },
+              "equipment_hours": 0.0,
+              "labor_manday": 12.5,
+              "materials": {
+                "ceiling_latex_l": 11.25,
+                "metal_enamel_l": 1.11,
+                "metal_primer_l": 1.25,
+                "neutralizer_l": 15.0,
+                "primer_l": 15.0,
+                "topcoat_l": 37.5
+              },
+              "quantities": {
+                "ceiling_area_m2": 90.0,
+                "masonry_area_m2": 150.0,
+                "metal_area_m2": 10.0
+              }
+            }
+          },
+          "sections_2_to_13_subtotal": 863905.01
+        },
+        "output_canonical_sha256": "f6b6b1aafecc577543342f2c63910dcda0e63a8bc358497317908629f83d903d"
+      },
+      "source": "test_fajardo_v2.py::TestFajardoEngineV2::test_full_13_trade_takeoff_pipeline"
+    },
+    "rebar_optimizer_sample": {
+      "determinism": {
+        "canonical_hashes_equal": true,
+        "inputs_equal": true,
+        "outputs_equal": true,
+        "result": "PASS"
+      },
+      "input": {
+        "demands": [
+          {
+            "diameter_mm": 20,
+            "element_ref": "Column Main",
+            "quantity": 10,
+            "required_length_m": 4.0
+          },
+          {
+            "diameter_mm": 20,
+            "element_ref": "Beam Main",
+            "quantity": 5,
+            "required_length_m": 5.8
+          }
+        ],
+        "diameter_mm": 20,
+        "stock_lengths_m": [
+          12.0,
+          9.0,
+          6.0
+        ]
+      },
+      "run_1": {
+        "output": {
+          "diameter_mm": 20,
+          "patterns": [
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "scrap_m": 0.0,
+              "stock_length_m": 12.0,
+              "utilization_pct": 100.0
+            },
+            {
+              "cuts": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "scrap_m": 0.0,
+              "stock_length_m": 12.0,
+              "utilization_pct": 100.0
+            },
+            {
+              "cuts": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "scrap_m": 0.0,
+              "stock_length_m": 12.0,
+              "utilization_pct": 100.0
+            },
+            {
+              "cuts": [
+                4.0
+              ],
+              "scrap_m": 2.0,
+              "stock_length_m": 6.0,
+              "utilization_pct": 66.67
+            }
+          ],
+          "purchased_bars": {
+            "12.0": 3,
+            "6.0": 6,
+            "9.0": 0
+          },
+          "scrap_percentage": 4.17,
+          "total_purchased_weight_kg": 177.55,
+          "total_required_weight_kg": 170.15,
+          "total_scrap_weight_kg": 7.4
+        },
+        "output_canonical_sha256": "0841149e8d0f16ef4f2c914b5d930ee5818a46630d4c2d0af471120c0d4ccea3"
+      },
+      "run_2": {
+        "output": {
+          "diameter_mm": 20,
+          "patterns": [
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                5.8
+              ],
+              "scrap_m": 0.20000000000000018,
+              "stock_length_m": 6.0,
+              "utilization_pct": 96.67
+            },
+            {
+              "cuts": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "scrap_m": 0.0,
+              "stock_length_m": 12.0,
+              "utilization_pct": 100.0
+            },
+            {
+              "cuts": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "scrap_m": 0.0,
+              "stock_length_m": 12.0,
+              "utilization_pct": 100.0
+            },
+            {
+              "cuts": [
+                4.0,
+                4.0,
+                4.0
+              ],
+              "scrap_m": 0.0,
+              "stock_length_m": 12.0,
+              "utilization_pct": 100.0
+            },
+            {
+              "cuts": [
+                4.0
+              ],
+              "scrap_m": 2.0,
+              "stock_length_m": 6.0,
+              "utilization_pct": 66.67
+            }
+          ],
+          "purchased_bars": {
+            "12.0": 3,
+            "6.0": 6,
+            "9.0": 0
+          },
+          "scrap_percentage": 4.17,
+          "total_purchased_weight_kg": 177.55,
+          "total_required_weight_kg": 170.15,
+          "total_scrap_weight_kg": 7.4
+        },
+        "output_canonical_sha256": "0841149e8d0f16ef4f2c914b5d930ee5818a46630d4c2d0af471120c0d4ccea3"
+      },
+      "source": "test_fajardo_v2.py::TestRebarOptimizer::test_bin_packing_scrap_reduction"
+    },
+    "section_iii_concrete_worked_case": {
+      "determinism": {
+        "canonical_hashes_equal": true,
+        "inputs_equal": true,
+        "outputs_equal": true,
+        "result": "PASS"
+      },
+      "input": [
+        {
+          "class": "A",
+          "count": 4,
+          "height_m": 0.4,
+          "length_m": 1.5,
+          "type": "footing",
+          "width_m": 1.5
+        }
+      ],
+      "run_1": {
+        "output": {
+          "cost": {
+            "equipment": 945.0,
+            "labor": 4649.4,
+            "material": 21185.08,
+            "total": 26779.48
+          },
+          "equipment_hours": 0.76,
+          "labor_manday": 2.15,
+          "materials": {
+            "cement_bags": 35,
+            "form_lumber_bdft": 67.2,
+            "gravel_m3": 3.78,
+            "marine_ply_sheets": 3,
+            "sand_m3": 1.89
+          },
+          "quantities": {
+            "concrete_volume_m3": 3.78,
+            "formwork_contact_area_m2": 9.6,
+            "volume_by_class_m3": {
+              "A": 3.78
+            }
+          }
+        },
+        "output_canonical_sha256": "2798acd8c2a15db378bd4491b23d38ad6dcb54deb2a05a52003ad2698ea896a1"
+      },
+      "run_2": {
+        "output": {
+          "cost": {
+            "equipment": 945.0,
+            "labor": 4649.4,
+            "material": 21185.08,
+            "total": 26779.48
+          },
+          "equipment_hours": 0.76,
+          "labor_manday": 2.15,
+          "materials": {
+            "cement_bags": 35,
+            "form_lumber_bdft": 67.2,
+            "gravel_m3": 3.78,
+            "marine_ply_sheets": 3,
+            "sand_m3": 1.89
+          },
+          "quantities": {
+            "concrete_volume_m3": 3.78,
+            "formwork_contact_area_m2": 9.6,
+            "volume_by_class_m3": {
+              "A": 3.78
+            }
+          }
+        },
+        "output_canonical_sha256": "2798acd8c2a15db378bd4491b23d38ad6dcb54deb2a05a52003ad2698ea896a1"
+      },
+      "source": "test_fajardo_v2.py::TestFajardoEngineV2::test_section_3_footing_concrete_worked_case"
+    },
+    "section_v_existing_automated_test_case": {
+      "determinism": {
+        "canonical_hashes_equal": true,
+        "inputs_equal": true,
+        "outputs_equal": true,
+        "result": "PASS"
+      },
+      "input": [
+        {
+          "count": 40,
+          "cover_m": 0.075,
+          "diameter_mm": 16.0,
+          "member": "footing_mat",
+          "member_length_m": 1.5
+        }
+      ],
+      "run_1": {
+        "output": {
+          "cost": {
+            "equipment": 273.68,
+            "labor": 1333.32,
+            "material": 4774.68,
+            "total": 6381.67
+          },
+          "equipment_hours": 0.0,
+          "labor_manday": 0.44,
+          "materials": {
+            "tie_wire_kg": 1.64
+          },
+          "quantities": {
+            "rebar_weight_by_diameter_kg": {
+              "16.0": 109.47
+            },
+            "rebar_weight_kg": 109.47,
+            "structural_steel_kg": 0.0
+          }
+        },
+        "output_canonical_sha256": "6f2de0f3d6dee99c5b31ad2ea4d288340217e1a85c146df3c19cc4090dff6776"
+      },
+      "run_2": {
+        "output": {
+          "cost": {
+            "equipment": 273.68,
+            "labor": 1333.32,
+            "material": 4774.68,
+            "total": 6381.67
+          },
+          "equipment_hours": 0.0,
+          "labor_manday": 0.44,
+          "materials": {
+            "tie_wire_kg": 1.64
+          },
+          "quantities": {
+            "rebar_weight_by_diameter_kg": {
+              "16.0": 109.47
+            },
+            "rebar_weight_kg": 109.47,
+            "structural_steel_kg": 0.0
+          }
+        },
+        "output_canonical_sha256": "6f2de0f3d6dee99c5b31ad2ea4d288340217e1a85c146df3c19cc4090dff6776"
+      },
+      "source": "test_fajardo_v2.py::TestFajardoEngineV2::test_section_5_rebar_footing_mat_worked_case"
+    },
+    "section_v_reinforcement_worked_case": {
+      "determinism": {
+        "canonical_hashes_equal": true,
+        "inputs_equal": true,
+        "outputs_equal": true,
+        "result": "PASS"
+      },
+      "input": [
+        {
+          "count": 80,
+          "cover_m": 0.075,
+          "diameter_mm": 16.0,
+          "member": "footing_mat",
+          "member_length_m": 1.5
+        }
+      ],
+      "run_1": {
+        "output": {
+          "cost": {
+            "equipment": 547.35,
+            "labor": 2666.64,
+            "material": 9549.36,
+            "total": 12763.35
+          },
+          "equipment_hours": 0.0,
+          "labor_manday": 0.88,
+          "materials": {
+            "tie_wire_kg": 3.28
+          },
+          "quantities": {
+            "rebar_weight_by_diameter_kg": {
+              "16.0": 218.94
+            },
+            "rebar_weight_kg": 218.94,
+            "structural_steel_kg": 0.0
+          }
+        },
+        "output_canonical_sha256": "b53059a121f25f9e321d37857a93109b1525788909df8d3c0245c110656a0bc9"
+      },
+      "run_2": {
+        "output": {
+          "cost": {
+            "equipment": 547.35,
+            "labor": 2666.64,
+            "material": 9549.36,
+            "total": 12763.35
+          },
+          "equipment_hours": 0.0,
+          "labor_manday": 0.88,
+          "materials": {
+            "tie_wire_kg": 3.28
+          },
+          "quantities": {
+            "rebar_weight_by_diameter_kg": {
+              "16.0": 218.94
+            },
+            "rebar_weight_kg": 218.94,
+            "structural_steel_kg": 0.0
+          }
+        },
+        "output_canonical_sha256": "b53059a121f25f9e321d37857a93109b1525788909df8d3c0245c110656a0bc9"
+      },
+      "source": "sample_solved_cases.md §2.2 (four footings, 80 total bars)"
+    }
+  },
+  "schema_version": 1
+}

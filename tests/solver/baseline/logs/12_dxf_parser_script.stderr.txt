@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/mnt/data/boq_system_v2_worker_a_r1/test_dxf_parser.py", line 12, in <module>
+    from engine.pdf_dxf_parser import DrawingParserV2, DrawingParseResult
+ImportError: cannot import name 'DrawingParseResult' from 'engine.pdf_dxf_parser' (/mnt/data/boq_system_v2_worker_a_r1/backend/engine/pdf_dxf_parser.py)

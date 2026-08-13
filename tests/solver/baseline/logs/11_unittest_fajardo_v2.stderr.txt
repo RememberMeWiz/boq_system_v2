@@ -1,0 +1,12 @@
+test_full_13_trade_takeoff_pipeline (test_fajardo_v2.TestFajardoEngineV2.test_full_13_trade_takeoff_pipeline)
+Verifies full 13-trade end-to-end takeoff orchestrator. ... ok
+test_section_3_footing_concrete_worked_case (test_fajardo_v2.TestFajardoEngineV2.test_section_3_footing_concrete_worked_case)
+Verifies Section III concrete takeoff against handbook worked case. ... ok
+test_section_5_rebar_footing_mat_worked_case (test_fajardo_v2.TestFajardoEngineV2.test_section_5_rebar_footing_mat_worked_case)
+Verifies Section V footing mat rebar weight against handbook worked case (218.90 kg). ... ok
+test_bin_packing_scrap_reduction (test_fajardo_v2.TestRebarOptimizer.test_bin_packing_scrap_reduction) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.000s
+
+OK

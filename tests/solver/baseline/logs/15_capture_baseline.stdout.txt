@@ -1,0 +1,36 @@
+{
+  "determinism": "PASS",
+  "source_integrity": "PASS",
+  "test_commands": [
+    {
+      "command": "python -m pytest -ra",
+      "exit_code": 2,
+      "id": "10_pytest_ra"
+    },
+    {
+      "command": "python -m pytest -ra test_fajardo_v2.py",
+      "exit_code": 0,
+      "id": "10a_pytest_solver_only"
+    },
+    {
+      "command": "python -m unittest -v test_fajardo_v2.py",
+      "exit_code": 0,
+      "id": "11_unittest_fajardo_v2"
+    },
+    {
+      "command": "python test_dxf_parser.py",
+      "exit_code": 1,
+      "id": "12_dxf_parser_script"
+    },
+    {
+      "command": "python backend/engine/test_extraction_suite.py",
+      "exit_code": 1,
+      "id": "13_extraction_suite_script"
+    },
+    {
+      "command": "MPLBACKEND=Agg python backend/engine/test_vector_diff.py",
+      "exit_code": 0,
+      "id": "14_vector_diff_script"
+    }
+  ]
+}
