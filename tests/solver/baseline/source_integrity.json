@@ -1,0 +1,98 @@
+{
+  "after": {
+    "backend/engine/dupa_loader.py": {
+      "exists": true,
+      "sha256": "3f70e89eadb998880c11305815683911a436f224aa7f9b7e9cf0eec92868937f",
+      "size_bytes": 4393
+    },
+    "backend/engine/fajardo.py": {
+      "exists": true,
+      "sha256": "897f2578443e2f0de1be9164a97e36a0ed893f104ee5f5fbeb051fa1ab8b4acc",
+      "size_bytes": 39077
+    },
+    "backend/engine/pdf_dxf_parser.py": {
+      "exists": true,
+      "sha256": "6a751d8e81b0baefda4762ed6eec4c35ce0d430c0a35f59541cd58b6137516ec",
+      "size_bytes": 25272
+    },
+    "backend/engine/rebar_optimizer.py": {
+      "exists": true,
+      "sha256": "8f964840bf743e28deca09c8bd12b918da12d3a9ac1e440fa6f4e12a1804a797",
+      "size_bytes": 4535
+    },
+    "backend/engine/test_extraction_suite.py": {
+      "exists": true,
+      "sha256": "ee452952f0f615107f78d82fd34374ad98aa2c9685cef9125aa1ae77e45d1d24",
+      "size_bytes": 3764
+    },
+    "backend/engine/test_vector_diff.py": {
+      "exists": true,
+      "sha256": "5fa8981c48fc4dc210847aeb071636a813f4e63d29e28daa0178439d4ff2b8f5",
+      "size_bytes": 10277
+    },
+    "test_dxf_parser.py": {
+      "exists": true,
+      "sha256": "99d845639f5383174be86eefbefd2f71ccea8c01916f6f07f7f69c6b23d4f434",
+      "size_bytes": 2997
+    },
+    "test_fajardo_v2.py": {
+      "exists": true,
+      "sha256": "84d2363bcdec5c1f9c6b5d1e1d793abc5e5dc30056c98d4f76ff382d1b1db717",
+      "size_bytes": 4179
+    }
+  },
+  "before": {
+    "backend/engine/dupa_loader.py": {
+      "exists": true,
+      "sha256": "3f70e89eadb998880c11305815683911a436f224aa7f9b7e9cf0eec92868937f",
+      "size_bytes": 4393
+    },
+    "backend/engine/fajardo.py": {
+      "exists": true,
+      "sha256": "897f2578443e2f0de1be9164a97e36a0ed893f104ee5f5fbeb051fa1ab8b4acc",
+      "size_bytes": 39077
+    },
+    "backend/engine/pdf_dxf_parser.py": {
+      "exists": true,
+      "sha256": "6a751d8e81b0baefda4762ed6eec4c35ce0d430c0a35f59541cd58b6137516ec",
+      "size_bytes": 25272
+    },
+    "backend/engine/rebar_optimizer.py": {
+      "exists": true,
+      "sha256": "8f964840bf743e28deca09c8bd12b918da12d3a9ac1e440fa6f4e12a1804a797",
+      "size_bytes": 4535
+    },
+    "backend/engine/test_extraction_suite.py": {
+      "exists": true,
+      "sha256": "ee452952f0f615107f78d82fd34374ad98aa2c9685cef9125aa1ae77e45d1d24",
+      "size_bytes": 3764
+    },
+    "backend/engine/test_vector_diff.py": {
+      "exists": true,
+      "sha256": "5fa8981c48fc4dc210847aeb071636a813f4e63d29e28daa0178439d4ff2b8f5",
+      "size_bytes": 10277
+    },
+    "test_dxf_parser.py": {
+      "exists": true,
+      "sha256": "99d845639f5383174be86eefbefd2f71ccea8c01916f6f07f7f69c6b23d4f434",
+      "size_bytes": 2997
+    },
+    "test_fajardo_v2.py": {
+      "exists": true,
+      "sha256": "84d2363bcdec5c1f9c6b5d1e1d793abc5e5dc30056c98d4f76ff382d1b1db717",
+      "size_bytes": 4179
+    }
+  },
+  "files": [
+    "backend/engine/fajardo.py",
+    "backend/engine/rebar_optimizer.py",
+    "backend/engine/dupa_loader.py",
+    "backend/engine/pdf_dxf_parser.py",
+    "backend/engine/test_extraction_suite.py",
+    "backend/engine/test_vector_diff.py",
+    "test_fajardo_v2.py",
+    "test_dxf_parser.py"
+  ],
+  "schema_version": 1,
+  "unchanged": true
+}

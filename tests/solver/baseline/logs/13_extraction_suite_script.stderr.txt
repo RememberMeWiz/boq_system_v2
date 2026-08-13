@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/mnt/data/boq_system_v2_worker_a_r1/backend/engine/test_extraction_suite.py", line 97, in <module>
+    run_tests()
+    ~~~~~~~~~^^
+  File "/mnt/data/boq_system_v2_worker_a_r1/backend/engine/test_extraction_suite.py", line 18, in run_tests
+    parser = DrawingParserV2()
+TypeError: DrawingParserV2.__init__() missing 1 required positional argument: 'filepath'

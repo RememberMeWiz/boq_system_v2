@@ -1,0 +1,385 @@
+{
+  "authoritative_for_remote_git_provenance": false,
+  "authorized_artifact_paths": [
+    "docs/solver/baseline_report.md",
+    "tests/solver/baseline/capture_baseline.py",
+    "tests/solver/baseline/command_runs.json",
+    "tests/solver/baseline/current_outputs.json",
+    "tests/solver/baseline/environment.json",
+    "tests/solver/baseline/logs/01_git_ls_remote_main.stderr.txt",
+    "tests/solver/baseline/logs/01_git_ls_remote_main.stdout.txt",
+    "tests/solver/baseline/logs/02_python_vv.stderr.txt",
+    "tests/solver/baseline/logs/02_python_vv.stdout.txt",
+    "tests/solver/baseline/logs/03_uname_a.stderr.txt",
+    "tests/solver/baseline/logs/03_uname_a.stdout.txt",
+    "tests/solver/baseline/logs/04_os_release.stderr.txt",
+    "tests/solver/baseline/logs/04_os_release.stdout.txt",
+    "tests/solver/baseline/logs/05_reference_input_inventory.stderr.txt",
+    "tests/solver/baseline/logs/05_reference_input_inventory.stdout.txt",
+    "tests/solver/baseline/logs/10_pytest_ra.stderr.txt",
+    "tests/solver/baseline/logs/10_pytest_ra.stdout.txt",
+    "tests/solver/baseline/logs/10a_pytest_solver_only.stderr.txt",
+    "tests/solver/baseline/logs/10a_pytest_solver_only.stdout.txt",
+    "tests/solver/baseline/logs/11_unittest_fajardo_v2.stderr.txt",
+    "tests/solver/baseline/logs/11_unittest_fajardo_v2.stdout.txt",
+    "tests/solver/baseline/logs/12_dxf_parser_script.stderr.txt",
+    "tests/solver/baseline/logs/12_dxf_parser_script.stdout.txt",
+    "tests/solver/baseline/logs/13_extraction_suite_script.stderr.txt",
+    "tests/solver/baseline/logs/13_extraction_suite_script.stdout.txt",
+    "tests/solver/baseline/logs/14_vector_diff_script.stderr.txt",
+    "tests/solver/baseline/logs/14_vector_diff_script.stdout.txt",
+    "tests/solver/baseline/logs/15_capture_baseline.stderr.txt",
+    "tests/solver/baseline/logs/15_capture_baseline.stdout.txt",
+    "tests/solver/baseline/r1_git_evidence.json",
+    "tests/solver/baseline/source_integrity.json"
+  ],
+  "baseline_test_commands": [
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "https://github.com/RememberMeWiz/boq_system_v2",
+        "main"
+      ],
+      "category": "repository_probe",
+      "command": "git ls-remote --heads https://github.com/RememberMeWiz/boq_system_v2 main",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 128,
+      "id": "01_git_ls_remote_main",
+      "shell_quoted_argv": "git ls-remote --heads https://github.com/RememberMeWiz/boq_system_v2 main",
+      "stderr": "fatal: unable to access 'https://github.com/RememberMeWiz/boq_system_v2/': Could not resolve host: github.com\n",
+      "stderr_log": "tests/solver/baseline/logs/01_git_ls_remote_main.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/01_git_ls_remote_main.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-VV"
+      ],
+      "category": "environment",
+      "command": "python -VV",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "02_python_vv",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -VV",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/02_python_vv.stderr.txt",
+      "stdout": "Python 3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]\n",
+      "stdout_log": "tests/solver/baseline/logs/02_python_vv.stdout.txt"
+    },
+    {
+      "argv": [
+        "uname",
+        "-a"
+      ],
+      "category": "environment",
+      "command": "uname -a",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "03_uname_a",
+      "shell_quoted_argv": "uname -a",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/03_uname_a.stderr.txt",
+      "stdout": "Linux bc01a9e14499 6.18.35 #1 SMP Mon Jul 27 18:07:50 UTC 2026 x86_64 GNU/Linux\n",
+      "stdout_log": "tests/solver/baseline/logs/03_uname_a.stdout.txt"
+    },
+    {
+      "argv": [
+        "cat",
+        "/etc/os-release"
+      ],
+      "category": "environment",
+      "command": "cat /etc/os-release",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "04_os_release",
+      "shell_quoted_argv": "cat /etc/os-release",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/04_os_release.stderr.txt",
+      "stdout": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.3\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+      "stdout_log": "tests/solver/baseline/logs/04_os_release.stdout.txt"
+    },
+    {
+      "argv": [
+        "bash",
+        "-lc",
+        "find backend/reference_data/sample_inputs -maxdepth 1 -type f -printf '%f\\n' | sort"
+      ],
+      "category": "precondition",
+      "command": "find backend/reference_data/sample_inputs -maxdepth 1 -type f -printf '%f\\n' | sort",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "05_reference_input_inventory",
+      "shell_quoted_argv": "bash -lc 'find backend/reference_data/sample_inputs -maxdepth 1 -type f -printf '\"'\"'%f\\n'\"'\"' | sort'",
+      "stderr": "find: \u2018backend/reference_data/sample_inputs\u2019: No such file or directory\n",
+      "stderr_log": "tests/solver/baseline/logs/05_reference_input_inventory.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/05_reference_input_inventory.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "pytest",
+        "-ra"
+      ],
+      "category": "test",
+      "command": "python -m pytest -ra",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 2,
+      "id": "10_pytest_ra",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -m pytest -ra",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/10_pytest_ra.stderr.txt",
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0\nrootdir: /mnt/data/boq_system_v2_worker_a_r1\nplugins: cov-7.0.0, anyio-4.13.0, json-report-1.5.0, Faker-40.1.2, ddtrace-4.4.0, metadata-3.1.1, asyncio-1.3.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 4 items / 1 error\n\n==================================== ERRORS ====================================\n_____________________ ERROR collecting test_dxf_parser.py ______________________\nImportError while importing test module '/mnt/data/boq_system_v2_worker_a_r1/test_dxf_parser.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/usr/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntest_dxf_parser.py:12: in <module>\n    from engine.pdf_dxf_parser import DrawingParserV2, DrawingParseResult\nE   ImportError: cannot import name 'DrawingParseResult' from 'engine.pdf_dxf_parser' (/mnt/data/boq_system_v2_worker_a_r1/backend/engine/pdf_dxf_parser.py)\n=========================== short test summary info ============================\nERROR test_dxf_parser.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.58s ===============================\n",
+      "stdout_log": "tests/solver/baseline/logs/10_pytest_ra.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "pytest",
+        "-ra",
+        "test_fajardo_v2.py"
+      ],
+      "category": "test",
+      "command": "python -m pytest -ra test_fajardo_v2.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "10a_pytest_solver_only",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -m pytest -ra test_fajardo_v2.py",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/10a_pytest_solver_only.stderr.txt",
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0\nrootdir: /mnt/data/boq_system_v2_worker_a_r1\nplugins: cov-7.0.0, anyio-4.13.0, json-report-1.5.0, Faker-40.1.2, ddtrace-4.4.0, metadata-3.1.1, asyncio-1.3.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 4 items\n\ntest_fajardo_v2.py ....                                                  [100%]\n\n============================== 4 passed in 0.03s ===============================\n",
+      "stdout_log": "tests/solver/baseline/logs/10a_pytest_solver_only.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "unittest",
+        "-v",
+        "test_fajardo_v2.py"
+      ],
+      "category": "test",
+      "command": "python -m unittest -v test_fajardo_v2.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "11_unittest_fajardo_v2",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -m unittest -v test_fajardo_v2.py",
+      "stderr": "test_full_13_trade_takeoff_pipeline (test_fajardo_v2.TestFajardoEngineV2.test_full_13_trade_takeoff_pipeline)\nVerifies full 13-trade end-to-end takeoff orchestrator. ... ok\ntest_section_3_footing_concrete_worked_case (test_fajardo_v2.TestFajardoEngineV2.test_section_3_footing_concrete_worked_case)\nVerifies Section III concrete takeoff against handbook worked case. ... ok\ntest_section_5_rebar_footing_mat_worked_case (test_fajardo_v2.TestFajardoEngineV2.test_section_5_rebar_footing_mat_worked_case)\nVerifies Section V footing mat rebar weight against handbook worked case (218.90 kg). ... ok\ntest_bin_packing_scrap_reduction (test_fajardo_v2.TestRebarOptimizer.test_bin_packing_scrap_reduction) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+      "stderr_log": "tests/solver/baseline/logs/11_unittest_fajardo_v2.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/11_unittest_fajardo_v2.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "test_dxf_parser.py"
+      ],
+      "category": "test",
+      "command": "python test_dxf_parser.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 1,
+      "id": "12_dxf_parser_script",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python test_dxf_parser.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/mnt/data/boq_system_v2_worker_a_r1/test_dxf_parser.py\", line 12, in <module>\n    from engine.pdf_dxf_parser import DrawingParserV2, DrawingParseResult\nImportError: cannot import name 'DrawingParseResult' from 'engine.pdf_dxf_parser' (/mnt/data/boq_system_v2_worker_a_r1/backend/engine/pdf_dxf_parser.py)\n",
+      "stderr_log": "tests/solver/baseline/logs/12_dxf_parser_script.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/12_dxf_parser_script.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "backend/engine/test_extraction_suite.py"
+      ],
+      "category": "test",
+      "command": "python backend/engine/test_extraction_suite.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 1,
+      "id": "13_extraction_suite_script",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python backend/engine/test_extraction_suite.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/mnt/data/boq_system_v2_worker_a_r1/backend/engine/test_extraction_suite.py\", line 97, in <module>\n    run_tests()\n    ~~~~~~~~~^^\n  File \"/mnt/data/boq_system_v2_worker_a_r1/backend/engine/test_extraction_suite.py\", line 18, in run_tests\n    parser = DrawingParserV2()\nTypeError: DrawingParserV2.__init__() missing 1 required positional argument: 'filepath'\n",
+      "stderr_log": "tests/solver/baseline/logs/13_extraction_suite_script.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/13_extraction_suite_script.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "backend/engine/test_vector_diff.py"
+      ],
+      "category": "test",
+      "command": "MPLBACKEND=Agg python backend/engine/test_vector_diff.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {
+        "MPLBACKEND": "Agg"
+      },
+      "exit_code": 0,
+      "id": "14_vector_diff_script",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python backend/engine/test_vector_diff.py",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/14_vector_diff_script.stderr.txt",
+      "stdout": "[OK] Generated synthetic vector blueprint PDF: sample_structural_plan.pdf\n[OK] Generated secondary SVG overlay: outputs/structural_vector_overlay.svg\n\n============================================================\nVECTOR INGESTION & VISUAL DIFF METRICS REPORT\n============================================================\nTotal Extracted Vector Elements : 39\nFootings / Columns Identified  : 18\nBeams / Slabs Identified       : 10\nMasonry Walls Identified       : 4\nAverage Spatial Variance Error : 0.0509 mm\nSpatial Variance Threshold    : < 1.0000 mm\nVisual Alignment Status        : PASSED (Sub-millimeter Alignment)\n============================================================\n\n[OK] Rendered visual comparison dashboard image: outputs/vector_diff_comparison.png\nTask 3 Execution Complete. Result: PASS\n",
+      "stdout_log": "tests/solver/baseline/logs/14_vector_diff_script.stdout.txt"
+    }
+  ],
+  "capture_command": {
+    "command": "python tests/solver/baseline/capture_baseline.py",
+    "exit_code": 0,
+    "stderr_file": "tests/solver/baseline/logs/15_capture_baseline.stderr.txt",
+    "stdout_file": "tests/solver/baseline/logs/15_capture_baseline.stdout.txt"
+  },
+  "captured_at_utc": "2026-08-12T12:07:04.669658+00:00",
+  "evidence_classification": "HISTORICAL_LOCAL_RECONSTRUCTION_ONLY",
+  "expected_future_commit_message": "test(solver): freeze legacy solver baseline S0-001",
+  "future_repository_steward_branch": "solver/s0-baseline",
+  "hash_comparison": {
+    "deterministic_match": true,
+    "fixture_match": true,
+    "new_deterministic_result_hashes": [
+      "dd20c25f418db388815bb0d2f12e23d6b8ca09bb0676a13ab417f32ae9fad5fc",
+      "dd20c25f418db388815bb0d2f12e23d6b8ca09bb0676a13ab417f32ae9fad5fc"
+    ],
+    "new_fixture_sha256": "582a7b00e502953764b73156b9a3eedda23e57af0041518b7221288be98fa7c6",
+    "original_deterministic_result_hash": "dd20c25f418db388815bb0d2f12e23d6b8ca09bb0676a13ab417f32ae9fad5fc",
+    "original_fixture_sha256": "582a7b00e502953764b73156b9a3eedda23e57af0041518b7221288be98fa7c6"
+  },
+  "native_clone_attempt": {
+    "historical_attempt": {
+      "argv": [
+        "git",
+        "clone",
+        "https://github.com/RememberMeWiz/boq_system_v2.git",
+        "/mnt/data/boq_system_v2_worker_a_r1_clone_probe"
+      ],
+      "attempted": true,
+      "command": "git clone https://github.com/RememberMeWiz/boq_system_v2.git /mnt/data/boq_system_v2_worker_a_r1_clone_probe",
+      "cwd": "/mnt/data",
+      "exit_code": 128,
+      "result": "BLOCKED: execution container could not resolve github.com",
+      "stderr": "Cloning into '/mnt/data/boq_system_v2_worker_a_r1_clone_probe'...\nfatal: unable to access 'https://github.com/RememberMeWiz/boq_system_v2.git/': Could not resolve host: github.com\n",
+      "stdout": ""
+    },
+    "reason": "The R1 execution container could not resolve github.com. No genuine-clone Git provenance was established by Worker A.",
+    "result": "BLOCKED"
+  },
+  "r2_provenance_note": "This file preserves historical R1 execution facts only. Local reconstruction commits, local branch state, and failed push attempts are not final Git provenance. The Repository Steward must generate all authoritative Git evidence from a genuine clone at the verified base. No remote branch or worker SHA is claimed by this package.",
+  "remote_branch_claimed": false,
+  "remote_git_provenance_established": false,
+  "remote_worker_commit_sha": null,
+  "repository_url": "https://github.com/RememberMeWiz/boq_system_v2",
+  "schema_version": 3,
+  "source_integrity": {
+    "after": {
+      "backend/engine/dupa_loader.py": {
+        "exists": true,
+        "sha256": "3f70e89eadb998880c11305815683911a436f224aa7f9b7e9cf0eec92868937f",
+        "size_bytes": 4393
+      },
+      "backend/engine/fajardo.py": {
+        "exists": true,
+        "sha256": "897f2578443e2f0de1be9164a97e36a0ed893f104ee5f5fbeb051fa1ab8b4acc",
+        "size_bytes": 39077
+      },
+      "backend/engine/pdf_dxf_parser.py": {
+        "exists": true,
+        "sha256": "6a751d8e81b0baefda4762ed6eec4c35ce0d430c0a35f59541cd58b6137516ec",
+        "size_bytes": 25272
+      },
+      "backend/engine/rebar_optimizer.py": {
+        "exists": true,
+        "sha256": "8f964840bf743e28deca09c8bd12b918da12d3a9ac1e440fa6f4e12a1804a797",
+        "size_bytes": 4535
+      },
+      "backend/engine/test_extraction_suite.py": {
+        "exists": true,
+        "sha256": "ee452952f0f615107f78d82fd34374ad98aa2c9685cef9125aa1ae77e45d1d24",
+        "size_bytes": 3764
+      },
+      "backend/engine/test_vector_diff.py": {
+        "exists": true,
+        "sha256": "5fa8981c48fc4dc210847aeb071636a813f4e63d29e28daa0178439d4ff2b8f5",
+        "size_bytes": 10277
+      },
+      "test_dxf_parser.py": {
+        "exists": true,
+        "sha256": "99d845639f5383174be86eefbefd2f71ccea8c01916f6f07f7f69c6b23d4f434",
+        "size_bytes": 2997
+      },
+      "test_fajardo_v2.py": {
+        "exists": true,
+        "sha256": "84d2363bcdec5c1f9c6b5d1e1d793abc5e5dc30056c98d4f76ff382d1b1db717",
+        "size_bytes": 4179
+      }
+    },
+    "before": {
+      "backend/engine/dupa_loader.py": {
+        "exists": true,
+        "sha256": "3f70e89eadb998880c11305815683911a436f224aa7f9b7e9cf0eec92868937f",
+        "size_bytes": 4393
+      },
+      "backend/engine/fajardo.py": {
+        "exists": true,
+        "sha256": "897f2578443e2f0de1be9164a97e36a0ed893f104ee5f5fbeb051fa1ab8b4acc",
+        "size_bytes": 39077
+      },
+      "backend/engine/pdf_dxf_parser.py": {
+        "exists": true,
+        "sha256": "6a751d8e81b0baefda4762ed6eec4c35ce0d430c0a35f59541cd58b6137516ec",
+        "size_bytes": 25272
+      },
+      "backend/engine/rebar_optimizer.py": {
+        "exists": true,
+        "sha256": "8f964840bf743e28deca09c8bd12b918da12d3a9ac1e440fa6f4e12a1804a797",
+        "size_bytes": 4535
+      },
+      "backend/engine/test_extraction_suite.py": {
+        "exists": true,
+        "sha256": "ee452952f0f615107f78d82fd34374ad98aa2c9685cef9125aa1ae77e45d1d24",
+        "size_bytes": 3764
+      },
+      "backend/engine/test_vector_diff.py": {
+        "exists": true,
+        "sha256": "5fa8981c48fc4dc210847aeb071636a813f4e63d29e28daa0178439d4ff2b8f5",
+        "size_bytes": 10277
+      },
+      "test_dxf_parser.py": {
+        "exists": true,
+        "sha256": "99d845639f5383174be86eefbefd2f71ccea8c01916f6f07f7f69c6b23d4f434",
+        "size_bytes": 2997
+      },
+      "test_fajardo_v2.py": {
+        "exists": true,
+        "sha256": "84d2363bcdec5c1f9c6b5d1e1d793abc5e5dc30056c98d4f76ff382d1b1db717",
+        "size_bytes": 4179
+      }
+    },
+    "monitored_files": [
+      "backend/engine/fajardo.py",
+      "backend/engine/rebar_optimizer.py",
+      "backend/engine/dupa_loader.py",
+      "backend/engine/pdf_dxf_parser.py",
+      "backend/engine/test_extraction_suite.py",
+      "backend/engine/test_vector_diff.py",
+      "test_fajardo_v2.py",
+      "test_dxf_parser.py"
+    ],
+    "unchanged": true
+  },
+  "task": "S0-001-R1 historical execution evidence, reclassified for S0-001-R2",
+  "verified_base_branch": "main",
+  "verified_base_commit_sha": "97f16aa3fd7b6d8e7cd364b6edc2ac303a5f54e6"
+}

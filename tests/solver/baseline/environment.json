@@ -1,0 +1,100 @@
+{
+  "captured_at_utc": "2026-08-13T01:59:10.203441+00:00",
+  "dependencies_declared_in_requirements": {
+    "PyMuPDF": {
+      "installed": true,
+      "version": "1.28.0"
+    },
+    "ezdxf": {
+      "installed": true,
+      "version": "1.4.4"
+    },
+    "flask": {
+      "installed": true,
+      "version": "3.1.3"
+    },
+    "google-genai": {
+      "installed": true,
+      "version": "2.14.0"
+    },
+    "matplotlib": {
+      "installed": true,
+      "version": "3.11.1"
+    },
+    "opencv-python-headless": {
+      "installed": true,
+      "version": "5.0.0.93"
+    },
+    "openpyxl": {
+      "installed": true,
+      "version": "3.1.5"
+    },
+    "pandas": {
+      "installed": true,
+      "version": "3.0.3"
+    },
+    "pdfplumber": {
+      "installed": true,
+      "version": "0.11.10"
+    },
+    "pillow": {
+      "installed": true,
+      "version": "12.3.0"
+    },
+    "pytesseract": {
+      "installed": true,
+      "version": "0.3.13"
+    },
+    "pytest": {
+      "installed": true,
+      "version": "9.1.1"
+    },
+    "pywebview": {
+      "installed": true,
+      "version": "6.2.1"
+    },
+    "requests": {
+      "installed": true,
+      "version": "2.34.2"
+    },
+    "svgwrite": {
+      "installed": true,
+      "version": "1.4.3"
+    }
+  },
+  "operating_system": {
+    "machine": "AMD64",
+    "os_release": {},
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 158 Stepping 13, GenuineIntel",
+    "release": "11",
+    "system": "Windows",
+    "version": "10.0.26200"
+  },
+  "python": {
+    "executable": "C:\\Users\\louis\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0\\python.exe",
+    "implementation": "CPython",
+    "version": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "version_info": [
+      3,
+      12,
+      10,
+      "final",
+      0
+    ]
+  },
+  "reference_input_file_count": 5,
+  "reference_input_files_present": [
+    "backend\\reference_data\\sample_inputs\\BOQ_Schedule.xlsx",
+    "backend\\reference_data\\sample_inputs\\Structural Drawings Details For Residential House Autocad Free Drawing.DWG",
+    "backend\\reference_data\\sample_inputs\\column steelworks estimates VCNGC1.xlsx",
+    "backend\\reference_data\\sample_inputs\\plan part 1.pdf",
+    "backend\\reference_data\\sample_inputs\\toaz.info-dpwh-school-building-design-pr_8c7e3394e435fcdcfd0388bd8589512e.pdf"
+  ],
+  "repository": {
+    "branch": "main",
+    "checkout_mode": "immutable-source reconstruction; not a Git clone",
+    "commit": "97f16aa3fd7b6d8e7cd364b6edc2ac303a5f54e6",
+    "url": "https://github.com/RememberMeWiz/boq_system_v2"
+  }
+}

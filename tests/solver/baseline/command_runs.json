@@ -1,0 +1,211 @@
+{
+  "repository": {
+    "branch": "main",
+    "commit": "97f16aa3fd7b6d8e7cd364b6edc2ac303a5f54e6",
+    "url": "https://github.com/RememberMeWiz/boq_system_v2"
+  },
+  "runs": [
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--heads",
+        "https://github.com/RememberMeWiz/boq_system_v2",
+        "main"
+      ],
+      "category": "repository_probe",
+      "command": "git ls-remote --heads https://github.com/RememberMeWiz/boq_system_v2 main",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 128,
+      "id": "01_git_ls_remote_main",
+      "shell_quoted_argv": "git ls-remote --heads https://github.com/RememberMeWiz/boq_system_v2 main",
+      "stderr": "fatal: unable to access 'https://github.com/RememberMeWiz/boq_system_v2/': Could not resolve host: github.com\n",
+      "stderr_log": "tests/solver/baseline/logs/01_git_ls_remote_main.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/01_git_ls_remote_main.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-VV"
+      ],
+      "category": "environment",
+      "command": "python -VV",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "02_python_vv",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -VV",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/02_python_vv.stderr.txt",
+      "stdout": "Python 3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]\n",
+      "stdout_log": "tests/solver/baseline/logs/02_python_vv.stdout.txt"
+    },
+    {
+      "argv": [
+        "uname",
+        "-a"
+      ],
+      "category": "environment",
+      "command": "uname -a",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "03_uname_a",
+      "shell_quoted_argv": "uname -a",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/03_uname_a.stderr.txt",
+      "stdout": "Linux bc01a9e14499 6.18.35 #1 SMP Mon Jul 27 18:07:50 UTC 2026 x86_64 GNU/Linux\n",
+      "stdout_log": "tests/solver/baseline/logs/03_uname_a.stdout.txt"
+    },
+    {
+      "argv": [
+        "cat",
+        "/etc/os-release"
+      ],
+      "category": "environment",
+      "command": "cat /etc/os-release",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "04_os_release",
+      "shell_quoted_argv": "cat /etc/os-release",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/04_os_release.stderr.txt",
+      "stdout": "PRETTY_NAME=\"Debian GNU/Linux 13 (trixie)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"13\"\nVERSION=\"13 (trixie)\"\nVERSION_CODENAME=trixie\nDEBIAN_VERSION_FULL=13.3\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+      "stdout_log": "tests/solver/baseline/logs/04_os_release.stdout.txt"
+    },
+    {
+      "argv": [
+        "bash",
+        "-lc",
+        "find backend/reference_data/sample_inputs -maxdepth 1 -type f -printf '%f\\n' | sort"
+      ],
+      "category": "precondition",
+      "command": "find backend/reference_data/sample_inputs -maxdepth 1 -type f -printf '%f\\n' | sort",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "05_reference_input_inventory",
+      "shell_quoted_argv": "bash -lc 'find backend/reference_data/sample_inputs -maxdepth 1 -type f -printf '\"'\"'%f\\n'\"'\"' | sort'",
+      "stderr": "find: ‘backend/reference_data/sample_inputs’: No such file or directory\n",
+      "stderr_log": "tests/solver/baseline/logs/05_reference_input_inventory.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/05_reference_input_inventory.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "pytest",
+        "-ra"
+      ],
+      "category": "test",
+      "command": "python -m pytest -ra",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 2,
+      "id": "10_pytest_ra",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -m pytest -ra",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/10_pytest_ra.stderr.txt",
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0\nrootdir: /mnt/data/boq_system_v2_worker_a_r1\nplugins: cov-7.0.0, anyio-4.13.0, json-report-1.5.0, Faker-40.1.2, ddtrace-4.4.0, metadata-3.1.1, asyncio-1.3.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 4 items / 1 error\n\n==================================== ERRORS ====================================\n_____________________ ERROR collecting test_dxf_parser.py ______________________\nImportError while importing test module '/mnt/data/boq_system_v2_worker_a_r1/test_dxf_parser.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\n/usr/lib/python3.13/importlib/__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntest_dxf_parser.py:12: in <module>\n    from engine.pdf_dxf_parser import DrawingParserV2, DrawingParseResult\nE   ImportError: cannot import name 'DrawingParseResult' from 'engine.pdf_dxf_parser' (/mnt/data/boq_system_v2_worker_a_r1/backend/engine/pdf_dxf_parser.py)\n=========================== short test summary info ============================\nERROR test_dxf_parser.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n=============================== 1 error in 0.58s ===============================\n",
+      "stdout_log": "tests/solver/baseline/logs/10_pytest_ra.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "pytest",
+        "-ra",
+        "test_fajardo_v2.py"
+      ],
+      "category": "test",
+      "command": "python -m pytest -ra test_fajardo_v2.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "10a_pytest_solver_only",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -m pytest -ra test_fajardo_v2.py",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/10a_pytest_solver_only.stderr.txt",
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.13.5, pytest-9.0.2, pluggy-1.6.0\nrootdir: /mnt/data/boq_system_v2_worker_a_r1\nplugins: cov-7.0.0, anyio-4.13.0, json-report-1.5.0, Faker-40.1.2, ddtrace-4.4.0, metadata-3.1.1, asyncio-1.3.0\nasyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 4 items\n\ntest_fajardo_v2.py ....                                                  [100%]\n\n============================== 4 passed in 0.03s ===============================\n",
+      "stdout_log": "tests/solver/baseline/logs/10a_pytest_solver_only.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "-m",
+        "unittest",
+        "-v",
+        "test_fajardo_v2.py"
+      ],
+      "category": "test",
+      "command": "python -m unittest -v test_fajardo_v2.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 0,
+      "id": "11_unittest_fajardo_v2",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python -m unittest -v test_fajardo_v2.py",
+      "stderr": "test_full_13_trade_takeoff_pipeline (test_fajardo_v2.TestFajardoEngineV2.test_full_13_trade_takeoff_pipeline)\nVerifies full 13-trade end-to-end takeoff orchestrator. ... ok\ntest_section_3_footing_concrete_worked_case (test_fajardo_v2.TestFajardoEngineV2.test_section_3_footing_concrete_worked_case)\nVerifies Section III concrete takeoff against handbook worked case. ... ok\ntest_section_5_rebar_footing_mat_worked_case (test_fajardo_v2.TestFajardoEngineV2.test_section_5_rebar_footing_mat_worked_case)\nVerifies Section V footing mat rebar weight against handbook worked case (218.90 kg). ... ok\ntest_bin_packing_scrap_reduction (test_fajardo_v2.TestRebarOptimizer.test_bin_packing_scrap_reduction) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n",
+      "stderr_log": "tests/solver/baseline/logs/11_unittest_fajardo_v2.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/11_unittest_fajardo_v2.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "test_dxf_parser.py"
+      ],
+      "category": "test",
+      "command": "python test_dxf_parser.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 1,
+      "id": "12_dxf_parser_script",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python test_dxf_parser.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/mnt/data/boq_system_v2_worker_a_r1/test_dxf_parser.py\", line 12, in <module>\n    from engine.pdf_dxf_parser import DrawingParserV2, DrawingParseResult\nImportError: cannot import name 'DrawingParseResult' from 'engine.pdf_dxf_parser' (/mnt/data/boq_system_v2_worker_a_r1/backend/engine/pdf_dxf_parser.py)\n",
+      "stderr_log": "tests/solver/baseline/logs/12_dxf_parser_script.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/12_dxf_parser_script.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "backend/engine/test_extraction_suite.py"
+      ],
+      "category": "test",
+      "command": "python backend/engine/test_extraction_suite.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {},
+      "exit_code": 1,
+      "id": "13_extraction_suite_script",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python backend/engine/test_extraction_suite.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/mnt/data/boq_system_v2_worker_a_r1/backend/engine/test_extraction_suite.py\", line 97, in <module>\n    run_tests()\n    ~~~~~~~~~^^\n  File \"/mnt/data/boq_system_v2_worker_a_r1/backend/engine/test_extraction_suite.py\", line 18, in run_tests\n    parser = DrawingParserV2()\nTypeError: DrawingParserV2.__init__() missing 1 required positional argument: 'filepath'\n",
+      "stderr_log": "tests/solver/baseline/logs/13_extraction_suite_script.stderr.txt",
+      "stdout": "",
+      "stdout_log": "tests/solver/baseline/logs/13_extraction_suite_script.stdout.txt"
+    },
+    {
+      "argv": [
+        "/opt/pyvenv/bin/python",
+        "backend/engine/test_vector_diff.py"
+      ],
+      "category": "test",
+      "command": "MPLBACKEND=Agg python backend/engine/test_vector_diff.py",
+      "cwd": "/mnt/data/boq_system_v2_worker_a_r1",
+      "environment_overrides": {
+        "MPLBACKEND": "Agg"
+      },
+      "exit_code": 0,
+      "id": "14_vector_diff_script",
+      "shell_quoted_argv": "/opt/pyvenv/bin/python backend/engine/test_vector_diff.py",
+      "stderr": "",
+      "stderr_log": "tests/solver/baseline/logs/14_vector_diff_script.stderr.txt",
+      "stdout": "[OK] Generated synthetic vector blueprint PDF: sample_structural_plan.pdf\n[OK] Generated secondary SVG overlay: outputs/structural_vector_overlay.svg\n\n============================================================\nVECTOR INGESTION & VISUAL DIFF METRICS REPORT\n============================================================\nTotal Extracted Vector Elements : 39\nFootings / Columns Identified  : 18\nBeams / Slabs Identified       : 10\nMasonry Walls Identified       : 4\nAverage Spatial Variance Error : 0.0509 mm\nSpatial Variance Threshold    : < 1.0000 mm\nVisual Alignment Status        : PASSED (Sub-millimeter Alignment)\n============================================================\n\n[OK] Rendered visual comparison dashboard image: outputs/vector_diff_comparison.png\nTask 3 Execution Complete. Result: PASS\n",
+      "stdout_log": "tests/solver/baseline/logs/14_vector_diff_script.stdout.txt"
+    }
+  ],
+  "schema_version": 1
+}
