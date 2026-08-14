@@ -1,3 +1,15 @@
+> STATUS NOTICE - HISTORICAL / PARTIALLY SUPERSEDED
+>
+> This document records an earlier project design or implementation state.
+> It is not sufficient authority for current production behavior.
+>
+> Current product direction:
+> - `docs/product/PRODUCT_VISION_R3.md`
+> - `docs/product/PRODUCT_PLAN_R3.md`
+>
+> Current technical decisions require the applicable Team Leader,
+> specialized QA, and PM acceptance.
+
 # Automated Quantity Takeoff and Bill of Quantities (BOQ) Generation System
 ## Objectives Statement and Technical Specifications — Version 2.0 (v2.0)
 

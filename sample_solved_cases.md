@@ -1,3 +1,15 @@
+> STATUS NOTICE - HISTORICAL / PARTIALLY SUPERSEDED
+>
+> This document records an earlier project design or implementation state.
+> It is not sufficient authority for current production behavior.
+>
+> Current product direction:
+> - `docs/product/PRODUCT_VISION_R3.md`
+> - `docs/product/PRODUCT_PLAN_R3.md`
+>
+> Current technical decisions require the applicable Team Leader,
+> specialized QA, and PM acceptance.
+
 # Plan2Takeoff V2 — Sample Solved Cases & Methodological Knowledge Base
 
 > **Companion Reference to**: [`tech_spec_v2.md`](file:///e:/Users/Louis/Documents/boq_system_v2/tech_spec_v2.md)  
