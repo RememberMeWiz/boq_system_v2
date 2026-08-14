@@ -44,7 +44,7 @@ sample_solved_cases.md
 ## Supersession banner
 
 ```text
-> STATUS NOTICE ? HISTORICAL / PARTIALLY SUPERSEDED
+> STATUS NOTICE - HISTORICAL / PARTIALLY SUPERSEDED
 >
 > This document records an earlier project design or implementation state.
 > It is not sufficient authority for current production behavior.

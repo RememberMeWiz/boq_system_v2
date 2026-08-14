@@ -27,11 +27,11 @@ The first production-grade slice remains **RC beam** because it exercises drawin
 
 ## M1 exit requirements
 
-- Solver readiness ? Solver QA ? PM;
+- Solver readiness -> Solver QA -> PM;
 - Parser P0-006 real golden-source materialization;
 - Research Wave 3 closed / PM-accepted reference evidence;
 - PM adoption/defer/reject decisions for implementation-facing research;
-- minimum Parser ? Integration ? Solver contracts stable enough to implement.
+- minimum Parser -> Integration -> Solver contracts stable enough to implement.
 
 ### Research governance model
 
@@ -40,8 +40,8 @@ Research Wave 3 is closed and accepted by PM as frozen reference evidence.
 From Wave 4 onward, Research executes under two specialized, independent lanes:
 
 ```text
-Research 1 / 2 / 3 ? Research A TL ? Research A QA ? PM
-Research 4 / 5 / 6 ? Research B TL ? Research B QA ? PM
+Research 1 / 2 / 3 -> Research A TL -> Research A QA -> PM
+Research 4 / 5 / 6 -> Research B TL -> Research B QA -> PM
 ```
 
 Key governance principles:
@@ -55,14 +55,14 @@ Key governance principles:
 
 ```text
 drawing evidence
-? Parser claims
-? verification/conflict state
-? canonical beam input
-? Solver
-? fabrication/procurement
-? rate provenance
-? BOQ
-? audit trace
+-> Parser claims
+-> verification/conflict state
+-> canonical beam input
+-> Solver
+-> fabrication/procurement
+-> rate provenance
+-> BOQ
+-> audit trace
 ```
 
 ## Parser expansion sequence
@@ -71,12 +71,12 @@ After the RC beam slice:
 
 ```text
 beam
-? column
-? footing
-? slab
-? structural package
-? architectural elements
-? MEP
+-> column
+-> footing
+-> slab
+-> structural package
+-> architectural elements
+-> MEP
 ```
 
 Every added element type inherits the same source-evidence and unit-safety architecture.
@@ -123,8 +123,8 @@ Then scale.
 Research operates under independent Technical and Commercial lanes:
 
 ```text
-Research A ? Technical / Evidence (TL + QA)
-Research B ? Commercial / Product (TL + QA)
+Research A - Technical / Evidence (TL + QA)
+Research B - Commercial / Product (TL + QA)
 ```
 
 Keep Solver as one umbrella team for now, while separating the architecture into:

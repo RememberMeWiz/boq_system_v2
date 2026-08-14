@@ -6,14 +6,14 @@ Evidence-backed construction drawing intelligence and Bill of Quantities system.
 
 ```text
 drawing
-? evidence-backed Parser claims
-? verification/conflict state
-? canonical Solver input
-? deterministic quantities
-? fabrication/procurement
-? rate provenance
-? BOQ
-? reproducible audit trace
+-> evidence-backed Parser claims
+-> verification/conflict state
+-> canonical Solver input
+-> deterministic quantities
+-> fabrication/procurement
+-> rate provenance
+-> BOQ
+-> reproducible audit trace
 ```
 
 The key product differentiator is:
