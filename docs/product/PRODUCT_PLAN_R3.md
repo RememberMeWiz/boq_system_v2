@@ -27,36 +27,42 @@ The first production-grade slice remains **RC beam** because it exercises drawin
 
 ## M1 exit requirements
 
-- Solver readiness → Solver QA → PM;
+- Solver readiness ? Solver QA ? PM;
 - Parser P0-006 real golden-source materialization;
-- Research Wave 3 → Research TL → Research QA → PM;
+- Research Wave 3 closed / PM-accepted reference evidence;
 - PM adoption/defer/reject decisions for implementation-facing research;
-- minimum Parser → Integration → Solver contracts stable enough to implement.
+- minimum Parser ? Integration ? Solver contracts stable enough to implement.
 
-### Current Research state
+### Research governance model
 
-Research Workers 1–6 have returned Wave 3 outputs. **Research TL is ACTIVE**, reviewing and synthesizing them.
+Research Wave 3 is closed and accepted by PM as frozen reference evidence.
 
-Next:
+From Wave 4 onward, Research executes under two specialized, independent lanes:
 
 ```text
-Research TL
-→ Research QA
-→ PM
+Research 1 / 2 / 3 ? Research A TL ? Research A QA ? PM
+Research 4 / 5 / 6 ? Research B TL ? Research B QA ? PM
 ```
+
+Key governance principles:
+- **Worker naming:** Workers maintain their numeric identities (`Research 1` through `Research 6`). `A`/`B` designations apply to TL and QA leadership lanes.
+- **Scalability:** The team is not capped at six workers; `Research 7+` may be added when capacity or specialization warrants.
+- **Span of control:** Default TL span-of-control is 3 substantive active workers to prevent synthesis bottlenecks.
+- **Independence:** Research A and Research B advance, review, and close their milestone cycles independently.
+- **State tracking:** Transient live execution status belongs in PM project tracking, not as static text in the product roadmap.
 
 ## M2: trusted RC beam slice
 
 ```text
 drawing evidence
-→ Parser claims
-→ verification/conflict state
-→ canonical beam input
-→ Solver
-→ fabrication/procurement
-→ rate provenance
-→ BOQ
-→ audit trace
+? Parser claims
+? verification/conflict state
+? canonical beam input
+? Solver
+? fabrication/procurement
+? rate provenance
+? BOQ
+? audit trace
 ```
 
 ## Parser expansion sequence
@@ -65,26 +71,29 @@ After the RC beam slice:
 
 ```text
 beam
-→ column
-→ footing
-→ slab
-→ structural package
-→ architectural elements
-→ MEP
+? column
+? footing
+? slab
+? structural package
+? architectural elements
+? MEP
 ```
 
 Every added element type inherits the same source-evidence and unit-safety architecture.
 
 ## Parallel Research Wave 4 recommendation
 
-After Wave 3 closes:
+Under the two-lane research structure:
 
-- `R4-CORPUS-001` Drawing + BOQ Corpus and Benchmark Program;
-- `R4-MARKET-001` competitor landscape and hands-on comparison;
-- `R4-UX-001` estimator workflow and visual-provenance UX;
-- `R4-PROCESS-001` backjob/process efficiency research;
-- `R4-CAREER-001` portfolio/freelance/BIM-VDC/digital-construction leverage;
-- `R4-DWG-001` focused native DWG/DXF paired-source acquisition.
+- **Research A (Technical / Evidence):**
+  - `R4-CORPUS-001` Drawing + BOQ Corpus and Benchmark Program;
+  - `R4-DWG-001` focused native DWG/DXF paired-source acquisition;
+  - technical ontology and drawing-understanding benchmarks.
+- **Research B (Commercial / Product):**
+  - `R4-MARKET-001` competitor landscape and hands-on comparison;
+  - `R4-UX-001` estimator workflow and visual-provenance UX;
+  - `R4-PROCESS-001` backjob/process efficiency research;
+  - `R4-CAREER-001` portfolio/freelance/BIM-VDC/digital-construction leverage.
 
 ## Corpus targets
 
@@ -109,17 +118,14 @@ with evidence
 
 Then scale.
 
-
 ## Organization decision for Wave 4 onward
 
-After Research Wave 3 closes, split Research into:
+Research operates under independent Technical and Commercial lanes:
 
 ```text
-Research A — Technical / Evidence
-Research B — Commercial / Product
+Research A ? Technical / Evidence (TL + QA)
+Research B ? Commercial / Product (TL + QA)
 ```
-
-with separate TLs and a shared Research QA initially.
 
 Keep Solver as one umbrella team for now, while separating the architecture into:
 
@@ -132,8 +138,8 @@ Pricing / Rate Engine
 Pricing becomes a separate team only when workload and ownership complexity justify it.
 
 See:
-
-- `docs/product/PRODUCT_STRATEGY_DECISION_ARCHIVE_R1.md`
+- `docs/product/PRODUCT_STRATEGY_DECISION_ARCHIVE_R2.md`
+- `docs/governance/research/`
 
 ## Global stretch goal
 
@@ -144,7 +150,6 @@ Long-term product strategy:
 Current implementation remains Philippine-first.
 
 Future architecture should support jurisdiction-configurable:
-
 - measurement policy;
 - standards authority;
 - procurement policy;
@@ -157,5 +162,4 @@ Future architecture should support jurisdiction-configurable:
 Global support is a stretch milestone after the Philippine evidence-backed pipeline is proven.
 
 See:
-
-- `docs/product/PRODUCT_STRATEGY_DECISION_ARCHIVE_R1.md`
+- `docs/product/PRODUCT_STRATEGY_DECISION_ARCHIVE_R2.md`
