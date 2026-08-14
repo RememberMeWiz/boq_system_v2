@@ -1,0 +1,124 @@
+{
+  "verdict": "QA_PASS_WITH_NOTES",
+  "review_type": "PM_AUTHORIZED_NARROW_QA_RETURN_RECLOSE",
+  "prior_qa_verdict": "QA_RETURNED",
+  "prior_qa_package_sha256": "6a539f6ebf686674a8d59b328cd95626b797fd2aae7013610cbfaf900ee9ae86",
+  "basis": "Independent semantic recount of every returned gate. IDs, origin labels, semantic-dimension annotations, and narrative-only fields were excluded. COST chronology/numeric cases were canonicalized by relationship/sign/order rather than cosmetic values. REBAR problem bodies were canonicalized without IDs/derived outputs. RISK signatures use core state/decision fields.",
+  "returned_gates": {
+    "R2-COST-001": [
+      {
+        "metric": "escalation_scenarios",
+        "minimum": 40,
+        "corrected_raw": 60,
+        "qa_independent_distinct": 60,
+        "status": "PASS",
+        "note": "Still 60 distinct when source identity is also removed from the QA signature."
+      }
+    ],
+    "R2-REBAR-001": [
+      {
+        "metric": "fabrication_length_cases",
+        "minimum": 100,
+        "corrected_raw": 134,
+        "qa_independent_distinct": 110,
+        "status": "PASS"
+      },
+      {
+        "metric": "cutting_stock_instances",
+        "minimum": 150,
+        "corrected_raw": 174,
+        "qa_independent_distinct": 160,
+        "status": "PASS"
+      },
+      {
+        "metric": "multi_diameter_inventory_phase_requirement",
+        "minimum": 20,
+        "corrected_subset_raw": 40,
+        "worker_tl_material_distinct": 26,
+        "qa_strict_multi_diameter_raw": 36,
+        "qa_strict_multi_diameter_distinct": 22,
+        "status": "PASS_WITH_NOTE",
+        "excluded_single_diameter_labeled_cases": [
+          "CS-QA-MD-023",
+          "CS-QA-MD-033",
+          "CS-QA-MD-034",
+          "CS-QA-MD-038"
+        ],
+        "note": "QA requires at least two distinct demand diameters for this phase label. The stricter recount remains above the required minimum."
+      }
+    ],
+    "R2-RISK-001": [
+      {
+        "metric": "uncertainty_classification_cases",
+        "minimum": 80,
+        "corrected_raw": 88,
+        "qa_independent_distinct": 88,
+        "status": "PASS"
+      },
+      {
+        "metric": "contingency_cases",
+        "minimum": 40,
+        "corrected_raw": 46,
+        "qa_independent_distinct": 46,
+        "status": "PASS"
+      },
+      {
+        "metric": "parser_boundary_cases",
+        "minimum": 50,
+        "corrected_raw": 58,
+        "qa_independent_distinct": 58,
+        "status": "PASS"
+      },
+      {
+        "metric": "revision_risk_cases",
+        "minimum": 50,
+        "corrected_raw": 58,
+        "qa_independent_distinct": 58,
+        "status": "PASS"
+      },
+      {
+        "metric": "release_gate_cases",
+        "minimum": 75,
+        "corrected_raw": 84,
+        "qa_independent_distinct": 84,
+        "status": "PASS"
+      }
+    ],
+    "R2-RISK-002": [
+      {
+        "metric": "parser_solver_boundary_cases",
+        "minimum": 30,
+        "corrected_raw": 36,
+        "qa_independent_distinct": 36,
+        "status": "PASS"
+      }
+    ]
+  },
+  "preserved_prior_gates": {
+    "status": "PRESERVED_FROM_QA_R1",
+    "reason": "The PM/TL R2 scope is narrow. Independent path comparison found only the returned corpora, their explanatory documents, and portability validators changed. Source registers are byte-identical, and frozen package SHA-256/size references match the actual R1 TL packet.",
+    "correction_dependency_comparison": {
+      "COST-001": {
+        "common_deliverable_paths": 23,
+        "unchanged": 20,
+        "changed": 3
+      },
+      "REBAR-001": {
+        "common_deliverable_paths": 43,
+        "unchanged": 37,
+        "changed": 6
+      },
+      "RISK-001": {
+        "common_deliverable_paths": 47,
+        "unchanged": 37,
+        "changed": 10
+      },
+      "RISK-002": {
+        "common_deliverable_paths": 22,
+        "unchanged": 19,
+        "changed": 3
+      }
+    }
+  },
+  "blocking_failures": []
+}

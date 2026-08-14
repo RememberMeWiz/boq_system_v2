@@ -1,0 +1,278 @@
+{
+  "r2_status": "PASS_PRESERVED_FROM_QA_R1",
+  "r2_review_date": "2026-08-14",
+  "reason_for_carry_forward": "R2 is a PM-authorized narrow correction recheck. All four corrected package source_register.csv files are byte-identical to the corresponding R1 packages, so the previously completed independent external-source verification remains tied to the same source records.",
+  "source_register_hash_continuity": {
+    "R2-COST-001": {
+      "original_sha256": "8ac82d813b4bf7aaa68a725eb4e65ae97043b22a5ab02d0e3456f33cab9d8869",
+      "corrected_sha256": "8ac82d813b4bf7aaa68a725eb4e65ae97043b22a5ab02d0e3456f33cab9d8869",
+      "byte_identical": true
+    },
+    "R2-REBAR-001": {
+      "original_sha256": "8bbca260546ef712570886b14eeae615071f0db6ebf9b090cb43a071213194d5",
+      "corrected_sha256": "8bbca260546ef712570886b14eeae615071f0db6ebf9b090cb43a071213194d5",
+      "byte_identical": true
+    },
+    "R2-RISK-001": {
+      "original_sha256": "21787f11f4b237755111290e6b490b27425a570388af213d4379114b859af004",
+      "corrected_sha256": "21787f11f4b237755111290e6b490b27425a570388af213d4379114b859af004",
+      "byte_identical": true
+    },
+    "R2-RISK-002": {
+      "original_sha256": "848eee95ff8689890c5c29bce56e9e621c16a06c6b38ca75ea00f615a7e598e8",
+      "corrected_sha256": "848eee95ff8689890c5c29bce56e9e621c16a06c6b38ca75ea00f615a7e598e8",
+      "byte_identical": true
+    }
+  },
+  "prior_qa_source_verification": {
+    "qa_r1_package_sha256": "6a539f6ebf686674a8d59b328cd95626b797fd2aae7013610cbfaf900ee9ae86",
+    "verification_date": "2026-08-13",
+    "verified_external_sources": 25,
+    "verified_primary_official_or_technical_sources": 25,
+    "minimum_required_external": 25,
+    "minimum_required_primary_official_technical": 10,
+    "result": "PASS",
+    "method": "Independent web retrieval of package-registered sources; checked source identity, authority and material consistency with the package locator/claimed use. Verification does not adopt policy or certify inaccessible full standard text."
+  },
+  "sources": [
+    {
+      "package": "R2-COST-002",
+      "source_id": "LAB-NWPC-VII",
+      "authority": "NWPC / RTWPB VII",
+      "title": "Region VII",
+      "url": "https://nwpc.dole.gov.ph/region-vii/",
+      "verification": "VERIFIED",
+      "basis": "official labor/wage page"
+    },
+    {
+      "package": "R2-COST-002",
+      "source_id": "IDX-PSA-CMWPI-2026-04",
+      "authority": "Philippine Statistics Authority",
+      "title": "CMWPI NCR April 2026",
+      "url": "https://psa.gov.ph/content/construction-materials-wholesale-price-index-national-capital-region-2018100-april-2026",
+      "verification": "VERIFIED",
+      "basis": "official statistics release"
+    },
+    {
+      "package": "R2-COST-002",
+      "source_id": "FX-BSP-PHPUSD",
+      "authority": "Bangko Sentral ng Pilipinas",
+      "title": "PHP per USD monthly averages",
+      "url": "https://www.bsp.gov.ph/statistics/external/tab12_pus_data.aspx",
+      "verification": "VERIFIED",
+      "basis": "official central-bank statistics"
+    },
+    {
+      "package": "R2-COST-001",
+      "source_id": "SUP-004",
+      "authority": "SteelAsia",
+      "title": "Rebar",
+      "url": "https://www.steelasia.com/rebar",
+      "verification": "VERIFIED",
+      "basis": "manufacturer technical/product page"
+    },
+    {
+      "package": "R2-COST-001",
+      "source_id": "PH-013",
+      "authority": "DTI Bureau of Philippine Standards",
+      "title": "PNS 49:2020 steel bars announcement",
+      "url": "https://bps.dti.gov.ph/press-releases/24-2020/196-dti-bps-approves-standard-on-steel-bars",
+      "verification": "VERIFIED",
+      "basis": "official standards authority"
+    },
+    {
+      "package": "R2-ONTOLOGY-001",
+      "source_id": "SRC-001",
+      "authority": "RICS",
+      "title": "NRM landing",
+      "url": "https://www.rics.org/profession-standards/rics-standards-and-guidance/sector-standards/construction-standards/nrm",
+      "verification": "VERIFIED",
+      "basis": "professional standards body"
+    },
+    {
+      "package": "R2-ONTOLOGY-001",
+      "source_id": "SRC-017",
+      "authority": "ISO",
+      "title": "ISO 12006-2:2015",
+      "url": "https://www.iso.org/standard/61753.html",
+      "verification": "VERIFIED",
+      "basis": "official standards metadata"
+    },
+    {
+      "package": "R2-ONTOLOGY-001",
+      "source_id": "SRC-026",
+      "authority": "Construction Specifications Institute",
+      "title": "About OmniClass",
+      "url": "https://www.csiresources.org/standards/omniclass/standards-omniclass-about",
+      "verification": "VERIFIED",
+      "basis": "official classification standard page"
+    },
+    {
+      "package": "R2-ONTOLOGY-001",
+      "source_id": "SRC-038",
+      "authority": "NBS",
+      "title": "About Uniclass",
+      "url": "https://uniclass.thenbs.com/about",
+      "verification": "VERIFIED",
+      "basis": "official classification page"
+    },
+    {
+      "package": "R2-ONTOLOGY-001",
+      "source_id": "SRC-011",
+      "authority": "ICMS Coalition",
+      "title": "The Standard",
+      "url": "https://icms-coalition.org/the-standard/",
+      "verification": "VERIFIED",
+      "basis": "official standard page"
+    },
+    {
+      "package": "R2-REBAR-002",
+      "source_id": "SRC-R2-003",
+      "authority": "Google",
+      "title": "OR-Tools Bin Packing",
+      "url": "https://developers.google.com/optimization/pack/bin_packing",
+      "verification": "VERIFIED",
+      "basis": "primary software documentation"
+    },
+    {
+      "package": "R2-REBAR-002",
+      "source_id": "SRC-R2-007",
+      "authority": "INFORMS Operations Research",
+      "title": "Gilmore & Gomory 1961",
+      "url": "https://pubsonline.informs.org/doi/10.1287/opre.9.6.849",
+      "verification": "VERIFIED",
+      "basis": "primary research record"
+    },
+    {
+      "package": "R2-REBAR-001",
+      "source_id": "SRC-001",
+      "authority": "ASTM International",
+      "title": "ASTM A615/A615M-26",
+      "url": "https://store.astm.org/a0615_a0615m-26.html",
+      "verification": "VERIFIED",
+      "basis": "official standard metadata"
+    },
+    {
+      "package": "R2-REBAR-001",
+      "source_id": "SRC-014",
+      "authority": "CRSI",
+      "title": "CRSI Home and publications",
+      "url": "https://www.crsi.org/",
+      "verification": "VERIFIED",
+      "basis": "official technical institute"
+    },
+    {
+      "package": "R2-RISK-001",
+      "source_id": "SRC-057",
+      "authority": "NIST",
+      "title": "Monte Carlo Tool",
+      "url": "https://www.nist.gov/services-resources/software/monte-carlo-tool",
+      "verification": "VERIFIED",
+      "basis": "government technical source"
+    },
+    {
+      "package": "R2-RISK-001",
+      "source_id": "SRC-069",
+      "authority": "Federal Highway Administration",
+      "title": "Major Project Program Cost Estimating Guidance",
+      "url": "https://www.fhwa.dot.gov/majorprojects/cost_estimating/guidance.cfm",
+      "verification": "VERIFIED",
+      "basis": "government guidance"
+    },
+    {
+      "package": "R2-RISK-001",
+      "source_id": "SRC-013",
+      "authority": "U.S. GAO",
+      "title": "GAO-20-195G Cost Estimating and Assessment Guide",
+      "url": "https://www.gao.gov/products/gao-20-195g",
+      "verification": "VERIFIED",
+      "basis": "government audit guidance"
+    },
+    {
+      "package": "R2-RISK-002",
+      "source_id": "SRC-021",
+      "authority": "U.S. Bureau of Labor Statistics",
+      "title": "PPI Guide for Price Adjustment",
+      "url": "https://www.bls.gov/ppi/publications/price-adjustment-guide-for-contracting-parties.htm",
+      "verification": "VERIFIED",
+      "basis": "official method/revision guidance"
+    },
+    {
+      "package": "R2-RISK-002",
+      "source_id": "SRC-005",
+      "authority": "U.S. Bureau of Labor Statistics",
+      "title": "CPI series ID codes",
+      "url": "https://www.bls.gov/cpi/factsheets/cpi-series-ids.htm",
+      "verification": "VERIFIED",
+      "basis": "official metadata"
+    },
+    {
+      "package": "R2-RISK-002",
+      "source_id": "SRC-007",
+      "authority": "BLS via FRED",
+      "title": "PPI Ready-Mix Concrete Manufacturing",
+      "url": "https://fred.stlouisfed.org/series/PCU327320327320",
+      "verification": "VERIFIED",
+      "basis": "authority metadata and observations"
+    },
+    {
+      "package": "R2-RISK-002",
+      "source_id": "SRC-014",
+      "authority": "NIST/SEMATECH",
+      "title": "Kolmogorov-Smirnov Goodness-of-Fit Test",
+      "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda35g.htm",
+      "verification": "VERIFIED",
+      "basis": "government technical method"
+    },
+    {
+      "package": "R2-RISK-002",
+      "source_id": "SRC-017",
+      "authority": "HM Treasury / UK Government",
+      "title": "Orange Book",
+      "url": "https://www.gov.uk/government/publications/orange-book/the-orange-book-management-of-risk-principles-and-concepts",
+      "verification": "VERIFIED",
+      "basis": "official risk guidance"
+    },
+    {
+      "package": "R2-RISK-002",
+      "source_id": "SRC-024",
+      "authority": "U.S. Bureau of Labor Statistics",
+      "title": "PPI Handbook presentation - Index revision",
+      "url": "https://www.bls.gov/opub/hom/ppi/presentation.htm",
+      "verification": "VERIFIED",
+      "basis": "official revision-method guidance"
+    },
+    {
+      "package": "R2-COST-001",
+      "source_id": "SUP-003",
+      "authority": "SteelAsia",
+      "title": "Mechanical Couplers",
+      "url": "https://www.steelasia.com/mechanical-couplers",
+      "verification": "VERIFIED",
+      "basis": "manufacturer technical/product page"
+    },
+    {
+      "package": "R2-REBAR-001",
+      "source_id": "SRC-002",
+      "authority": "ASTM International",
+      "title": "ASTM A706/A706M-24",
+      "url": "https://store.astm.org/a0706_a0706m-24.html",
+      "verification": "VERIFIED",
+      "basis": "official standard metadata"
+    }
+  ],
+  "attempted_not_counted": [
+    {
+      "source": "SCIP bin-packing example",
+      "result": "NOT_COUNTED",
+      "reason": "independent web retrieval returned an internal access error"
+    },
+    {
+      "source": "PSA OpenSTAT direct table view",
+      "result": "NOT_COUNTED",
+      "reason": "direct table URL could not be safely opened through the retrieval path; separate PSA CMWPI official release was verified and counted"
+    }
+  ],
+  "r2_new_external_retrieval_performed": false,
+  "note": "No source was silently substituted, upgraded, or newly counted during the narrow R2 recheck."
+}

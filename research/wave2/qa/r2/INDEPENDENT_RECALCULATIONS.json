@@ -1,0 +1,413 @@
+{
+  "overall_status": "PASS_FOR_CORRECTION_SENSITIVE_NUMERICAL_CLAIMS",
+  "r2_correction_sensitive": {
+    "cost_001_escalation_numeric_cases": {
+      "cases_recomputed": 33,
+      "passed": 33,
+      "failed": 0,
+      "detail": [
+        {
+          "case_id": "ESC-R1-001",
+          "kind": "index_ratio",
+          "stored": "1100.000000",
+          "qa_recomputed": "1100.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-002",
+          "kind": "index_ratio",
+          "stored": "1080.000000",
+          "qa_recomputed": "1080.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-003",
+          "kind": "index_ratio",
+          "stored": "1253.571429",
+          "qa_recomputed": "1253.571429",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-004",
+          "kind": "identity",
+          "stored": "980.000000",
+          "qa_recomputed": "980.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-010",
+          "kind": "index_ratio",
+          "stored": "1070.000000",
+          "qa_recomputed": "1070.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-011",
+          "kind": "index_ratio",
+          "stored": "1080.000000",
+          "qa_recomputed": "1080.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-012",
+          "kind": "index_ratio",
+          "stored": "1095.000000",
+          "qa_recomputed": "1095.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-013",
+          "kind": "bridge_ratio",
+          "stored": "1125.000000",
+          "qa_recomputed": "1125.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-015",
+          "kind": "bridge_ratio",
+          "stored": "1178.181818",
+          "qa_recomputed": "1178.181818",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-017",
+          "kind": "index_ratio",
+          "stored": "1120.000000",
+          "qa_recomputed": "1120.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-018",
+          "kind": "index_ratio",
+          "stored": "1090.000000",
+          "qa_recomputed": "1090.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-019",
+          "kind": "index_ratio",
+          "stored": "1120.000000",
+          "qa_recomputed": "1120.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-023",
+          "kind": "identity",
+          "stored": "1000.000000",
+          "qa_recomputed": "1000.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-024",
+          "kind": "index_ratio",
+          "stored": "1200.000000",
+          "qa_recomputed": "1200.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-025",
+          "kind": "weighted_basket",
+          "stored": "1099.500000",
+          "qa_recomputed": "1099.500000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-027",
+          "kind": "cap_ratio",
+          "stored": "1100.000000",
+          "qa_recomputed": "1100.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-028",
+          "kind": "floor_ratio",
+          "stored": "1000.000000",
+          "qa_recomputed": "1000.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-029",
+          "kind": "deadband_ratio",
+          "stored": "1000.000000",
+          "qa_recomputed": "1000.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-030",
+          "kind": "deadband_ratio",
+          "stored": "1060.000000",
+          "qa_recomputed": "1060.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-032",
+          "kind": "identity",
+          "stored": "1500.000000",
+          "qa_recomputed": "1500.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-033",
+          "kind": "identity",
+          "stored": "1500.000000",
+          "qa_recomputed": "1500.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-036",
+          "kind": "identity",
+          "stored": "1500.000000",
+          "qa_recomputed": "1500.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-040",
+          "kind": "identity",
+          "stored": "1300.000000",
+          "qa_recomputed": "1300.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-041",
+          "kind": "identity",
+          "stored": "1520.000000",
+          "qa_recomputed": "1520.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-042",
+          "kind": "identity",
+          "stored": "1500.000000",
+          "qa_recomputed": "1500.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-043",
+          "kind": "identity",
+          "stored": "1480.000000",
+          "qa_recomputed": "1480.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-044",
+          "kind": "fx_conversion",
+          "stored": "1427.500000",
+          "qa_recomputed": "1427.500000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-047",
+          "kind": "fx_conversion",
+          "stored": "1387.500000",
+          "qa_recomputed": "1387.500000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-048",
+          "kind": "foreign_index_fx",
+          "stored": "1598.800000",
+          "qa_recomputed": "1598.800000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-050",
+          "kind": "location_index",
+          "stored": "1188.000000",
+          "qa_recomputed": "1188.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-054",
+          "kind": "index_ratio",
+          "stored": "1060.000000",
+          "qa_recomputed": "1060.000000",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-057",
+          "kind": "index_ratio",
+          "stored": "1542.857143",
+          "qa_recomputed": "1542.857143",
+          "pass": true
+        },
+        {
+          "case_id": "ESC-R1-059",
+          "kind": "deadband_ratio",
+          "stored": "1030.000000",
+          "qa_recomputed": "1030.000000",
+          "pass": true
+        }
+      ]
+    },
+    "rebar_001_fabrication_length": {
+      "active_cases_recomputed": 134,
+      "active_passed": 134,
+      "new_correction_cases": 24,
+      "new_correction_cases_passed": 24,
+      "new_case_detail": [
+        {
+          "case_id": "FAB-QA-111",
+          "stored_mm": 13000.0,
+          "qa_recomputed_mm": 13000.0,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-112",
+          "stored_mm": 5999.5,
+          "qa_recomputed_mm": 5999.5,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-113",
+          "stored_mm": 1669.115,
+          "qa_recomputed_mm": 1669.115,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-114",
+          "stored_mm": 1757.345,
+          "qa_recomputed_mm": 1757.345,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-115",
+          "stored_mm": 3695.575,
+          "qa_recomputed_mm": 3695.575,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-116",
+          "stored_mm": 3858.149,
+          "qa_recomputed_mm": 3858.149,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-117",
+          "stored_mm": 1931.969,
+          "qa_recomputed_mm": 1931.969,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-118",
+          "stored_mm": 2511.46,
+          "qa_recomputed_mm": 2511.46,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-119",
+          "stored_mm": 3675.398,
+          "qa_recomputed_mm": 3675.398,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-120",
+          "stored_mm": 3772.788,
+          "qa_recomputed_mm": 3772.788,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-121",
+          "stored_mm": 2915.984,
+          "qa_recomputed_mm": 2915.984,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-122",
+          "stored_mm": 4312.087,
+          "qa_recomputed_mm": 4312.087,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-123",
+          "stored_mm": 2990.686,
+          "qa_recomputed_mm": 2990.686,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-124",
+          "stored_mm": 3107.345,
+          "qa_recomputed_mm": 3107.345,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-125",
+          "stored_mm": 2676.46,
+          "qa_recomputed_mm": 2676.46,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-126",
+          "stored_mm": 2951.239,
+          "qa_recomputed_mm": 2951.239,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-127",
+          "stored_mm": 5400.0,
+          "qa_recomputed_mm": 5400.0,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-128",
+          "stored_mm": 5197.92,
+          "qa_recomputed_mm": 5197.92,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-129",
+          "stored_mm": 7360.0,
+          "qa_recomputed_mm": 7360.0,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-130",
+          "stored_mm": 4167.566,
+          "qa_recomputed_mm": 4167.566,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-131",
+          "stored_mm": 5750.0,
+          "qa_recomputed_mm": 5750.0,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-132",
+          "stored_mm": 4963.717,
+          "qa_recomputed_mm": 4963.717,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-133",
+          "stored_mm": 3614.159,
+          "qa_recomputed_mm": 3614.159,
+          "pass": true
+        },
+        {
+          "case_id": "FAB-QA-134",
+          "stored_mm": 3880.133,
+          "qa_recomputed_mm": 3880.133,
+          "pass": true
+        }
+      ]
+    },
+    "rebar_original_cutting_stock_preservation": {
+      "original_input_cases_compared": 150,
+      "changed_original_input_cases": 0,
+      "original_optimum_records_compared": 150,
+      "changed_original_optimum_records": 0,
+      "consequence": "The prior QA-R1 independent 50/50 EXACT_SMALL DP result remains applicable to the original exact-small corpus."
+    }
+  },
+  "preserved_from_qa_r1": {
+    "qa_r1_package_sha256": "6a539f6ebf686674a8d59b328cd95626b797fd2aae7013610cbfaf900ee9ae86",
+    "cost_002_normalization": "74/74 independently recomputed",
+    "ontology_002_dimensional": "36/36 independently reimplemented and matched",
+    "rebar_001_exact_small_dp": "50/50 original exact-small optimum pairs independently matched",
+    "rebar_002_correction_scale_conservation": "50/50 ledgers independently conserved; 1,285 stock bars and 3,800 fabricated pieces traversed",
+    "risk_001_reference_boq": "9 line amounts and PHP 628,327.51 direct-cost total independently reconciled",
+    "risk_002_fit_statistics": "8/8 fit summaries independently matched",
+    "risk_002_backtest_coverage": "70/96 = 0.7291666667 independently recounted"
+  },
+  "preservation_basis": "R2 dependency comparison shows the previously QA-checked numerical/statistical datasets are byte-identical except for the explicitly corrected semantic corpora and REBAR cutting-stock additions. Original REBAR inputs and optimum records remain byte-identical by case ID."
+}

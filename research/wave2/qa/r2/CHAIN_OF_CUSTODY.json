@@ -1,0 +1,137 @@
+{
+  "review_role": "Independent Research QA Reviewer",
+  "review_date": "2026-08-14",
+  "input_package": {
+    "name": "INDEPENDENT_RESEARCH_WAVE2_TECH_REVIEW_R2.zip",
+    "sha256": "0e55545416dbe63f53ed35a6881cd7d1088355268bfaf2fe50880632a4527fa3",
+    "declared_status": "READY_FOR_RESEARCH_QA"
+  },
+  "prior_lineage": {
+    "qa_r1_name": "INDEPENDENT_RESEARCH_WAVE2_QA_TO_PM_R1.zip",
+    "qa_r1_sha256": "6a539f6ebf686674a8d59b328cd95626b797fd2aae7013610cbfaf900ee9ae86",
+    "qa_r1_verdict": "QA_RETURNED",
+    "tech_r1_name": "INDEPENDENT_RESEARCH_WAVE2_TECH_REVIEW_R1.zip",
+    "tech_r1_sha256": "d0391c1aac2f6b730d48826532c2ad596998fd8447cc66359867833be44af113"
+  },
+  "top_level_r2_integrity": {
+    "sha256_manifest_entries": 15,
+    "verified": true,
+    "mismatches": []
+  },
+  "worker_corrections": [
+    {
+      "worker": "Research 1",
+      "filename": "RESEARCH_1_R2_COST_001_QA_CORRECTION_R1.zip",
+      "sha256": "bdfb343df4306fd26fc47da7688a692269d27ba5c77e66fedfd082e67fd96035",
+      "internal_manifest_entries_verified": 43,
+      "internal_manifest_mismatches": 0
+    },
+    {
+      "worker": "Research 3",
+      "filename": "RESEARCH_3_R2_REBAR_001_QA_CORRECTION_R1.zip",
+      "sha256": "dad9263db5785c69f97fa6866641eebb014c2621ba65a7e6525d4cea5e4731b2",
+      "internal_manifest_entries_verified": 77,
+      "internal_manifest_mismatches": 0
+    },
+    {
+      "worker": "Research 4",
+      "filename": "RESEARCH_4_R2_RISK_QA_CORRECTION_R1.zip",
+      "sha256": "ff8bcfe1a63976728c409306506fba1664efa175464ee0e143853c276e4a16ba",
+      "internal_manifest_entries_verified": 153,
+      "internal_manifest_mismatches": 0,
+      "nested_manifests": {
+        "RISK_001": {
+          "entries_verified": 79,
+          "mismatches": 0
+        },
+        "RISK_002": {
+          "entries_verified": 45,
+          "mismatches": 0
+        }
+      }
+    }
+  ],
+  "frozen_reference_verification_against_r1_tl_packet": [
+    {
+      "label": "Research 1 COST-002",
+      "filename": "RESEARCH_1_R2_COST_002.zip",
+      "sha256": "ca0ac67697bce77d48c150f80acdceac7179ea41697212f5b20e4e603d904b7b",
+      "size_bytes": 107653,
+      "hash_and_size_match": true
+    },
+    {
+      "label": "Research 2 ONTOLOGY-001",
+      "filename": "R2_ONTOLOGY_RESEARCH.zip",
+      "sha256": "630fd4b8b3e04324d733c327539d6810ea752066ff7b6c49d63c77fbc237b0d2",
+      "size_bytes": 94346,
+      "hash_and_size_match": true
+    },
+    {
+      "label": "Research 2 ONTOLOGY-002",
+      "filename": "RESEARCH_2_R2_ONTOLOGY_002.zip",
+      "sha256": "32e77d3662515f8c12818044a003f8cde850a0a9e8d13e10de230dc096680444",
+      "size_bytes": 149034,
+      "hash_and_size_match": true
+    },
+    {
+      "label": "Research 3 REBAR-002",
+      "filename": "RESEARCH_3_R2_REBAR_002.zip",
+      "sha256": "0605914b0386c88c0c71eb3c630945ea472ed0e0c259d603d009329ef2a96740",
+      "size_bytes": 113548,
+      "hash_and_size_match": true
+    },
+    {
+      "label": "Research 3 REBAR-002-CORRECTION-R1",
+      "filename": "RESEARCH_3_R2_REBAR_002_CORRECTION_R1.zip",
+      "sha256": "a87cd11e53e8c3d0b14f1ca551c760d24f050045712f2ef4bb366fd11eb5cd97",
+      "size_bytes": 208918,
+      "hash_and_size_match": true
+    }
+  ],
+  "source_register_continuity": {
+    "R2-COST-001": {
+      "original_sha256": "8ac82d813b4bf7aaa68a725eb4e65ae97043b22a5ab02d0e3456f33cab9d8869",
+      "corrected_sha256": "8ac82d813b4bf7aaa68a725eb4e65ae97043b22a5ab02d0e3456f33cab9d8869",
+      "byte_identical": true
+    },
+    "R2-REBAR-001": {
+      "original_sha256": "8bbca260546ef712570886b14eeae615071f0db6ebf9b090cb43a071213194d5",
+      "corrected_sha256": "8bbca260546ef712570886b14eeae615071f0db6ebf9b090cb43a071213194d5",
+      "byte_identical": true
+    },
+    "R2-RISK-001": {
+      "original_sha256": "21787f11f4b237755111290e6b490b27425a570388af213d4379114b859af004",
+      "corrected_sha256": "21787f11f4b237755111290e6b490b27425a570388af213d4379114b859af004",
+      "byte_identical": true
+    },
+    "R2-RISK-002": {
+      "original_sha256": "848eee95ff8689890c5c29bce56e9e621c16a06c6b38ca75ea00f615a7e598e8",
+      "corrected_sha256": "848eee95ff8689890c5c29bce56e9e621c16a06c6b38ca75ea00f615a7e598e8",
+      "byte_identical": true
+    }
+  },
+  "qa_clean_validator_runs": {
+    "COST": {
+      "commands": 2,
+      "all_exit_zero": true,
+      "tree_files_pre": 44,
+      "tree_files_post": 44,
+      "changed_files": []
+    },
+    "REBAR": {
+      "commands": 3,
+      "all_exit_zero": true,
+      "tree_files_pre": 78,
+      "tree_files_post": 78,
+      "changed_files": []
+    },
+    "RISK": {
+      "commands": 3,
+      "all_exit_zero": true,
+      "tree_files_pre": 154,
+      "tree_files_post": 154,
+      "changed_files": []
+    }
+  },
+  "custody_conclusion": "PASS. No hash/size mismatch, manifest mismatch, validator mutation, or frozen-reference substitution was found."
+}
