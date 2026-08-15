@@ -1,0 +1,157 @@
+{
+  "registry_version": "integration.canonical-field-registry/1.0",
+  "solver_contract_version": "solver-contract/1.1.0",
+  "canonical_fact_contract_version": "integration.canonical-fact/2.0",
+  "entries": {
+    "beam_schedule.B1.depth": {
+      "canonical_field_id": "beam_schedule.B1.depth",
+      "accepted_claim_ids": [
+        "claim-001-b1-depth",
+        "claim-003-b1-depth"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": "depth",
+      "normalization_rule_id": "length.mm_to_m",
+      "mapped_to_solver": true,
+      "solver_dimension": "LENGTH",
+      "solver_unit": "m",
+      "required_for_projection": true
+    },
+    "beam_schedule.B1.stirrup_spacing_raw": {
+      "canonical_field_id": "beam_schedule.B1.stirrup_spacing_raw",
+      "accepted_claim_ids": [
+        "claim-001-b1-spacing",
+        "claim-003-b1-spacing"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.raw_text_m",
+      "mapped_to_solver": false
+    },
+    "beam_schedule.B1.stirrups": {
+      "canonical_field_id": "beam_schedule.B1.stirrups",
+      "accepted_claim_ids": [
+        "claim-001-b1-stirrups",
+        "claim-003-b1-stirrups"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    },
+    "beam_schedule.B1.width": {
+      "canonical_field_id": "beam_schedule.B1.width",
+      "accepted_claim_ids": [
+        "claim-001-b1-width",
+        "claim-003-b1-width"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": "width",
+      "normalization_rule_id": "length.mm_to_m",
+      "mapped_to_solver": true,
+      "solver_dimension": "LENGTH",
+      "solver_unit": "m",
+      "required_for_projection": true
+    },
+    "footing_schedule.F-3.reinforcement.bar_x_raw": {
+      "canonical_field_id": "footing_schedule.F-3.reinforcement.bar_x_raw",
+      "accepted_claim_ids": [
+        "claim-002-f3-bar-x"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    },
+    "footing_schedule.F-3.reinforcement.bar_y_raw": {
+      "canonical_field_id": "footing_schedule.F-3.reinforcement.bar_y_raw",
+      "accepted_claim_ids": [
+        "claim-002-f3-bar-y"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    },
+    "footing_schedule.F-3.depth": {
+      "canonical_field_id": "footing_schedule.F-3.depth",
+      "accepted_claim_ids": [
+        "claim-002-f3-depth"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "length.mm_to_m",
+      "mapped_to_solver": false
+    },
+    "footing_schedule.F-3.length": {
+      "canonical_field_id": "footing_schedule.F-3.length",
+      "accepted_claim_ids": [
+        "claim-002-f3-length"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "length.mm_to_m",
+      "mapped_to_solver": false
+    },
+    "footing_schedule.F-3.thickness": {
+      "canonical_field_id": "footing_schedule.F-3.thickness",
+      "accepted_claim_ids": [
+        "claim-002-f3-thickness"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "length.mm_to_m",
+      "mapped_to_solver": false
+    },
+    "footing_schedule.F-3.width": {
+      "canonical_field_id": "footing_schedule.F-3.width",
+      "accepted_claim_ids": [
+        "claim-002-f3-width"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "length.mm_to_m",
+      "mapped_to_solver": false
+    },
+    "foundation_plan.grid_A1.structural_marks": {
+      "canonical_field_id": "foundation_plan.grid_A1.structural_marks",
+      "accepted_claim_ids": [
+        "claim-002-grid-a1-marks"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    },
+    "foundation_plan.grid_A1.footing_schedule_resolution": {
+      "canonical_field_id": "foundation_plan.grid_A1.footing_schedule_resolution",
+      "accepted_claim_ids": [
+        "claim-004-foundation-f3-dependency-blocked"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    },
+    "drawing_set.subset.sheet.S-4.present": {
+      "canonical_field_id": "drawing_set.subset.sheet.S-4.present",
+      "accepted_claim_ids": [
+        "claim-004-subset-s4-missing"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    },
+    "drawing_set.subset.sheet.S-5.present": {
+      "canonical_field_id": "drawing_set.subset.sheet.S-5.present",
+      "accepted_claim_ids": [
+        "claim-004-subset-s5-missing"
+      ],
+      "parser_ready_required": true,
+      "solver_parameter_key": null,
+      "normalization_rule_id": "identity.unitless",
+      "mapped_to_solver": false
+    }
+  }
+}

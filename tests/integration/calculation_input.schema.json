@@ -1,0 +1,99 @@
+{
+  "$id": "https://boq-system-v2.local/schemas/calculation_input.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "conflict_state": {
+      "const": "RESOLVED"
+    },
+    "contract_version": {
+      "const": "solver-contract/1.1.0"
+    },
+    "element_id": {
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+      "type": "string"
+    },
+    "element_type": {
+      "pattern": "^[A-Z][A-Z0-9_.-]+$",
+      "type": "string"
+    },
+    "identity": {
+      "$ref": "https://boq-system-v2.local/schemas/calculation_identity.schema.json"
+    },
+    "input_id": {
+      "pattern": "^input:sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "input_snapshot_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "optional_domain_facts": {
+      "additionalProperties": false,
+      "properties": {
+        "drawing_revision": {
+          "maxLength": 80,
+          "minLength": 1,
+          "type": "string"
+        },
+        "reinforcement_grade": {
+          "maxLength": 60,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "parameters": {
+      "additionalProperties": {
+        "$ref": "https://boq-system-v2.local/schemas/unit_value.schema.json"
+      },
+      "minProperties": 1,
+      "type": "object"
+    },
+    "requested_output_stage": {
+      "enum": [
+        "SOURCE_FACT",
+        "DERIVED_GEOMETRY",
+        "GROSS_MEASURED",
+        "DEDUCTION",
+        "ADDITION",
+        "NET_MEASURED",
+        "BILLABLE",
+        "INSTALLED_THEORETICAL",
+        "FABRICATION_REQUIRED",
+        "WASTE",
+        "REQUIRED",
+        "PROCUREMENT",
+        "CHARGEABLE_RESOURCE",
+        "COST_BASIS",
+        "REUSABLE_OFFCUT",
+        "SCRAP",
+        "SURPLUS"
+      ]
+    },
+    "source_refs": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "input_id",
+    "input_snapshot_hash",
+    "contract_version",
+    "element_id",
+    "element_type",
+    "conflict_state",
+    "identity",
+    "parameters",
+    "source_refs",
+    "requested_output_stage"
+  ],
+  "title": "CalculationInput",
+  "type": "object"
+}

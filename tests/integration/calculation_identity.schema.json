@@ -1,0 +1,104 @@
+{
+  "$id": "https://boq-system-v2.local/schemas/calculation_identity.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "dependentRequired": {
+    "rate_set_id": [
+      "rate_snapshot_id"
+    ],
+    "rate_snapshot_id": [
+      "rate_set_id"
+    ]
+  },
+  "properties": {
+    "acceptance_oracle_refs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "oracle_id": {
+            "pattern": "^[A-Z][A-Z0-9]+(?:-[A-Z0-9]+)+$",
+            "type": "string"
+          },
+          "oracle_version": {
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "oracle_id",
+          "oracle_version"
+        ],
+        "type": "object"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "formula_ref": {
+      "additionalProperties": false,
+      "properties": {
+        "formula_id": {
+          "pattern": "^FORMULA\\.[A-Z0-9_.-]+$",
+          "type": "string"
+        },
+        "formula_version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "formula_id",
+        "formula_version"
+      ],
+      "type": "object"
+    },
+    "policy_refs": {
+      "items": {
+        "$ref": "https://boq-system-v2.local/schemas/policy_ref.schema.json"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "rate_set_id": {
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+      "type": "string"
+    },
+    "rate_snapshot_id": {
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+      "type": "string"
+    },
+    "solver_version": {
+      "maxLength": 120,
+      "minLength": 1,
+      "type": "string"
+    },
+    "specification_refs": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "specification_id": {
+            "pattern": "^SPEC\\.[A-Z0-9_.-]+$",
+            "type": "string"
+          },
+          "specification_version": {
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "specification_id",
+          "specification_version"
+        ],
+        "type": "object"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "formula_ref",
+    "policy_refs",
+    "solver_version"
+  ],
+  "title": "CalculationIdentity",
+  "type": "object"
+}

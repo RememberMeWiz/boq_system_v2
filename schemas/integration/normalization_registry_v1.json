@@ -1,0 +1,37 @@
+{
+  "registry_version": "integration.normalization-registry/1.0",
+  "rules": {
+    "length.mm_to_m": {
+      "version": "1.0",
+      "source_unit": "mm",
+      "canonical_unit": "m",
+      "dimension": "LENGTH",
+      "factor": "0.001",
+      "operation": "multiply"
+    },
+    "length.m_identity": {
+      "version": "1.0",
+      "source_unit": "m",
+      "canonical_unit": "m",
+      "dimension": "LENGTH",
+      "factor": "1",
+      "operation": "multiply"
+    },
+    "identity.unitless": {
+      "version": "1.0",
+      "source_unit": null,
+      "canonical_unit": null,
+      "dimension": "DIMENSIONLESS",
+      "factor": null,
+      "operation": "identity"
+    },
+    "identity.raw_text_m": {
+      "version": "1.0",
+      "source_unit": "m",
+      "canonical_unit": "m",
+      "dimension": "RAW_TEXT",
+      "factor": null,
+      "operation": "identity"
+    }
+  }
+}

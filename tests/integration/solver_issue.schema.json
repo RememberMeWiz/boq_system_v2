@@ -1,0 +1,134 @@
+{
+  "$id": "https://boq-system-v2.local/schemas/solver_issue.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state_effect": {
+            "enum": [
+              "NONE",
+              "WARNING"
+            ]
+          }
+        },
+        "required": [
+          "state_effect"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blocks_boq": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state_effect": {
+            "enum": [
+              "REVIEW_REQUIRED",
+              "BLOCKED",
+              "INVALID_INPUT",
+              "UNSUPPORTED_CASE",
+              "UNSUPPORTED_POLICY",
+              "UNRESOLVED"
+            ]
+          }
+        },
+        "required": [
+          "state_effect"
+        ]
+      },
+      "then": {
+        "properties": {
+          "blocks_boq": {
+            "const": true
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "blocks_boq": {
+      "type": "boolean"
+    },
+    "category": {
+      "enum": [
+        "BOUNDARY",
+        "SOURCE_EVIDENCE",
+        "CONFLICT",
+        "CAPABILITY",
+        "POLICY",
+        "PARSER",
+        "VERIFICATION",
+        "PROCUREMENT",
+        "PRICING",
+        "CALCULATION",
+        "ROUNDING"
+      ]
+    },
+    "code": {
+      "pattern": "^[A-Z][A-Z0-9_.-]{2,100}$",
+      "type": "string"
+    },
+    "field_path": {
+      "pattern": "^(/[^/~]*(?:~[01][^/~]*)*)*$",
+      "type": "string"
+    },
+    "issue_id": {
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+      "type": "string"
+    },
+    "message": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "provenance_refs": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "severity": {
+      "enum": [
+        "INFO",
+        "WARNING",
+        "REVIEW",
+        "BLOCKER",
+        "ERROR"
+      ]
+    },
+    "state_effect": {
+      "enum": [
+        "NONE",
+        "WARNING",
+        "REVIEW_REQUIRED",
+        "BLOCKED",
+        "INVALID_INPUT",
+        "UNSUPPORTED_CASE",
+        "UNSUPPORTED_POLICY",
+        "UNRESOLVED"
+      ]
+    }
+  },
+  "required": [
+    "issue_id",
+    "code",
+    "category",
+    "severity",
+    "state_effect",
+    "message",
+    "blocks_boq",
+    "provenance_refs"
+  ],
+  "title": "SolverIssue",
+  "type": "object"
+}
