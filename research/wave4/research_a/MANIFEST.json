@@ -1,0 +1,28 @@
+{
+  "archive_lane": "wave4_research_a",
+  "title": "Wave 4 Research Lane A Archive (CAD / DWG / Parser)",
+  "pm_disposition": "ACCEPTED_AS_REFERENCE_EVIDENCE",
+  "packages": {
+    "RESEARCH_A_WAVE4_TECH_REVIEW_R1.zip": {
+      "sha256": "f01d1d11afe42846387daac564ad48a7e55565d75e26292e76ce2993149544d8",
+      "bytes": 297729,
+      "description": "Final Wave 4 Research A Tech Lead review package embedding 3 worker packages"
+    },
+    "RESEARCH_A_WAVE4_QA_REVIEW_R1.zip": {
+      "sha256": "b40b01d35f55f1b013da9727274bd9ab1a190b2ca68df0736a36b1e52bcfaa05",
+      "bytes": 6489,
+      "description": "Final Wave 4 Research A Independent QA review and verification package to PM"
+    }
+  },
+  "decision": {
+    "PM_DECISION_R1.md": {
+      "sha256": "838ef53c47f945c6fde9513d710567c88d3c33155e8ff7b5c53346044f2b0806",
+      "bytes": 5353
+    }
+  },
+  "limitations": [
+    "Corpus inventory is not adjudicated gold truth.",
+    "Bounded DWG walkthroughs are not universal compatibility.",
+    "Synthetic ParserBench is not production accuracy/calibration."
+  ]
+}

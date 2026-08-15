@@ -1,0 +1,35 @@
+{
+  "archive_lane": "wave4_research_b",
+  "title": "Wave 4 Research Lane B Archive (Market / UX / Process)",
+  "pm_disposition": "ACCEPTED_AS_REFERENCE_EVIDENCE",
+  "packages": {
+    "RESEARCH_B_WAVE4_TECH_REVIEW_R1.zip": {
+      "sha256": "b8b9c46b6b51de14526b4ce28975230581272fa056596bf37cb844b21c6f5c0d",
+      "bytes": 271688,
+      "description": "Final Wave 4 Research B Tech Lead review package embedding 3 worker packages"
+    },
+    "RESEARCH_B_WAVE4_QA_REVIEW_R1.zip": {
+      "sha256": "642c0a2e8c0bde4728b752317620254f0dd68049aebcb7fc8629a3d74791da69",
+      "bytes": 10180,
+      "description": "Final Wave 4 Research B Independent QA review and verification package to PM"
+    }
+  },
+  "decision": {
+    "PM_DECISION_R1.md": {
+      "sha256": "9346424b293a8c3b98fd0a1c4dd4b5d84c7e5f56d84574995978961b78ef983b",
+      "bytes": 4751
+    }
+  },
+  "archival_errata": [
+    {
+      "target": "RESEARCH_5_R4_UX_001 Source S31",
+      "erratum": "Correct authors are David Lyell and Enrico Coiera",
+      "resolution": "Preserved in archive manifest and README as an archival erratum without mutating the sealed worker ZIP."
+    }
+  ],
+  "limitations": [
+    "STACK billing-basis provenance note.",
+    "Ambiguous solver-critical evidence remains fail-closed.",
+    "Historical internal-source hash/receipt portability note."
+  ]
+}

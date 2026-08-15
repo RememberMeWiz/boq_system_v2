@@ -10,3 +10,6 @@ Production changes remain subject to their normal team, QA, PM, and Repository S
 
 - `wave2/`: Accepted Wave 2 Independent Research (Fajardo validation, solver design, DPWH historical analysis).
 - `wave3/`: Accepted Wave 3 Independent Research (Concrete, Earthworks, Forms, Finishes, Steel, Labor/Equipment).
+- `wave4/`: Accepted Wave 4 Independent Research:
+  - `wave4/research_a/`: CAD corpus, native DWG reader benchmarks, synthetic ParserBench.
+  - `wave4/research_b/`: Takeoff software market analysis, UX interaction paradigms, Philippine estimating workflows.
