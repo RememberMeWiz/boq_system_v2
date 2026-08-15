@@ -44,9 +44,9 @@ drawing
     - `beam_schedule.B1.width -> parameters.width`
     - `beam_schedule.B1.depth -> parameters.depth`
   - Request Status: Current I1 request remains intentionally fail-closed `BLOCKED` because 13 accepted execution dependencies remain unresolved/unprojected: clear span between support faces; left and right support dimensions along the beam; support-intersection ownership and deduction scope; slab thickness plus slab measurement/intersection/deduction policies; and concrete waste/procurement rate-basis, increment, and rounding policies.
-  - Research Lane A Wave 5: `ACTIVE / TL REVIEW`
-  - Research Lane B Wave 5: `ACTIVE / TL REVIEW`
-  - Antigravity Role: Repository Steward only (not technical approver).
+  - Research Wave 5: `IN PROGRESS / NOT YET PM-ACCEPTED`
+  - Live worker, TL, QA, steward, and backjob routing is maintained by the PM operational board and is intentionally not frozen into this durable checkpoint.
+  - Antigravity Repository Stewards A/B: mechanical Git/filesystem operators only; not technical or QA approvers.
 
 ### Current critical path
 ```text
