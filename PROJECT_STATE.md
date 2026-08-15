@@ -39,11 +39,11 @@ drawing
   - Parser P0-006: `CLOSED / ACCEPTED GOLDEN TRUTH` (18 reviewed / 15 READY / 3 BLOCKED-NULL / 0 hidden defaults)
   - PIS Contract Freeze I0: `CLOSED / ACCEPTED / FROZEN`
   - M1 Architecture & Contract Readiness: `COMPLETE`
-  - Integration I1 Materialization: `CLOSED / ACCEPTED / MERGED` (`c55baf67e4e49c1382618293d8e7ee49e2b542ce`)
+  - Integration I1 Materialization: `CLOSED / ACCEPTED / MERGED / REMOTE VERIFIED` (`c55baf67e4e49c1382618293d8e7ee49e2b542ce`)
   - Integration I1 Frozen Projection:
     - `beam_schedule.B1.width -> parameters.width`
     - `beam_schedule.B1.depth -> parameters.depth`
-  - Request Status: Current I1 request remains intentionally fail-closed `BLOCKED` because execution dependencies (span/length, clear cover, rebar schedules, concrete grade) are not yet projected.
+  - Request Status: Current I1 request remains intentionally fail-closed `BLOCKED` because 13 accepted execution dependencies remain unresolved/unprojected: clear span between support faces; left and right support dimensions along the beam; support-intersection ownership and deduction scope; slab thickness plus slab measurement/intersection/deduction policies; and concrete waste/procurement rate-basis, increment, and rounding policies.
   - Research Lane A Wave 5: `ACTIVE / TL REVIEW`
   - Research Lane B Wave 5: `ACTIVE / TL REVIEW`
   - Antigravity Role: Repository Steward only (not technical approver).
@@ -68,7 +68,7 @@ M2-0 Parser/Solver dependency review
 | Parser PO truth review | `18 / 18 COMPLETE` | Product Owner Acceptance |
 | PIS Contract Freeze I0 | `CLOSED / ACCEPTED / FROZEN` | `PIS_CONTRACT_FREEZE_001_PM_FINAL_DECISION_R1.md` |
 | M1 Architecture Readiness | `COMPLETE` | Milestone 1 Completion Review |
-| Integration I1 Boundary | `CLOSED / ACCEPTED / MERGED` | `INTEGRATION_I1_RCBEAM_001_PM_MERGE_AUTHORIZATION_R1.md` (`c55baf67e4e49c1382618293d8e7ee49e2b542ce`) |
+| Integration I1 Boundary | `CLOSED / ACCEPTED / MERGED / REMOTE VERIFIED` | `INTEGRATION_I1_RCBEAM_001_PM_MERGE_AUTHORIZATION_R1.md` (`c55baf67e4e49c1382618293d8e7ee49e2b542ce`) |
 | Solver Phase 0 readiness | `ACCEPTED / PARKED` | Solver Phase 0 Baseline Audit |
 | Research Wave 2 | `CLOSED_AND_ARCHIVED` | `research/wave2-evidence` |
 | Research Wave 3 | `CLOSED_AND_ARCHIVED` | `research/wave3-evidence` |
