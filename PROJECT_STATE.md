@@ -32,18 +32,22 @@ drawing
 
 ## 2. Current Milestone and Gate State
 
-### Active technical milestone: `PIS-CONTRACT-FREEZE-001`
+### Active technical milestone: `PIS-CONTRACT-FREEZE-001: NOT CLOSED`
 - **Purpose:** Freeze the minimum Parser -> Integration -> Solver evidence contract before production implementation.
-- **Current active gate:** `Integration QA ACTIVE`
-- **Compatibility status:**
+- **Current active owner & gate:** `Integration TL` (`ACTIVE / EVIDENCE RESUBMISSION`)
+  - Integration QA R1 review disposition: `QA_BLOCKED` (`EVIDENCE_COMPLETENESS`).
+  - PM review disposition: `PM_RETURN_TO_INTEGRATION_TL` (evidence custody resubmission; contract architecture remains intact).
+- **Subsystem compatibility status:**
   - Parser TL compatibility: `CLEARED`
   - Solver TL compatibility: `CLEARED`
-  - Integration TL reconciliation: `CLEARED / HANDED TO QA`
-- **Next gate:** `Integration QA -> PM contract-freeze decision`
+  - Integration TL reconciliation: `ACTIVE / RESUBMITTING EVIDENCE`
+- **Next gate:**
+  `Integration TL evidence-complete resubmission -> Integration QA independent replay -> PM contract-freeze decision`
 
 ### Current critical path
 ```text
-Integration QA
+Integration TL evidence-complete resubmission
+-> Integration QA independent replay
 -> PM contract-freeze decision
 -> Integration implementation authorization
 -> RC Beam production vertical slice
@@ -69,7 +73,7 @@ Integration QA
 
 | Wave / Lane | Verified Remote Branch | Tip Commit SHA | Parent Commit SHA |
 |---|---|---|---|
-| Wave 2 | `research/wave2-evidence` | `815d44214a2f52dd34fbc05a0c2faab83b1feb95` | `e9fcd80` (Base) |
+| Wave 2 | `research/wave2-evidence` | `815d44214a2f52dd34fbc05a0c2faab83b1feb95` | `81013b79b0e8051cd3829d515ab7f144af747841` |
 | Wave 3 | `research/wave3-evidence` | `0631843aecfbcdbd3e30ac2e7c6a2f2d5794f449` | `815d44214a2f52dd34fbc05a0c2faab83b1feb95` |
 | Wave 4 | `research/wave4-evidence` | `e31a88eda52a6ce090209ff0fd0f763b5a12ff0c` | `0631843aecfbcdbd3e30ac2e7c6a2f2d5794f449` |
 
@@ -81,7 +85,7 @@ Integration QA
 ## 5. Scope Boundaries and Authorizations
 
 ### Currently Authorized
-- Active QA review on `PIS-CONTRACT-FREEZE-001`.
+- Active evidence resubmission and review on `PIS-CONTRACT-FREEZE-001`.
 - Non-destructive repository governance and navigation documentation.
 
 ### Explicitly Parked / NOT Authorized
@@ -112,6 +116,6 @@ Integration QA
 2. Read `PROJECT_STATE.md` (this file) for current gate state and critical path.
 3. Read `docs/INDEX.md` to navigate current vs historical documentation.
 4. Read `docs/governance/DOCUMENT_AUTHORITY_INDEX_R1.md` to resolve any document precedence questions.
-5. Identify the active milestone (`PIS-CONTRACT-FREEZE-001`) and gate (`Integration QA ACTIVE`).
+5. Identify the active milestone (`PIS-CONTRACT-FREEZE-001`) and gate (`Integration TL ACTIVE / EVIDENCE RESUBMISSION`).
 6. Execute only within explicitly authorized scope.
 7. Always reverify remote `main` before creating any new working branch.

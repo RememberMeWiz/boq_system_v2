@@ -22,11 +22,15 @@ Document precedence is governed by [`docs/governance/DOCUMENT_AUTHORITY_INDEX_R1
 - **[`docs/governance/DOCUMENT_AUTHORITY_INDEX_R1.md`](governance/DOCUMENT_AUTHORITY_INDEX_R1.md)** — Canonical document authority and conflict resolution rules (`AUTHORITATIVE_DOC`).
 - **[`docs/governance/REPOSITORY_MAP_R1.json`](governance/REPOSITORY_MAP_R1.json)** — Machine-readable classification map of repository directories and paths (`AUTHORITATIVE_DOC`).
 - **[`docs/governance/REPOSITORY_HYGIENE_PLAN_R1.md`](governance/REPOSITORY_HYGIENE_PLAN_R1.md)** — Hygiene guidelines for binaries, generated files, and clean git history (`AUTHORITATIVE_DOC`).
-- **Research Governance Charters (`docs/governance/research/`)**:
-  - [`RESEARCH_PROGRAM_CHARTER_R1.md`](governance/research/RESEARCH_PROGRAM_CHARTER_R1.md) — Two-lane research governance structure.
-  - [`RESEARCH_LANE_A_CHARTER_R1.md`](governance/research/RESEARCH_LANE_A_CHARTER_R1.md) — Technical Lane A (CAD/BIM, DWG, Parser).
-  - [`RESEARCH_LANE_B_CHARTER_R1.md`](governance/research/RESEARCH_LANE_B_CHARTER_R1.md) — Commercial Lane B (Market, UX, Process).
-  - [`RESEARCH_GOVERNANCE_INDEX_R1.md`](governance/research/RESEARCH_GOVERNANCE_INDEX_R1.md) — Index of research charters.
+- **Research Governance Documents (`docs/governance/research/`)**:
+  - [`PM_RESEARCH_RESTRUCTURE_DIRECTIVE_R2.md`](governance/research/PM_RESEARCH_RESTRUCTURE_DIRECTIVE_R2.md) — Two-lane research restructuring directive.
+  - [`RESEARCH_A_TL_CHARTER_R2.md`](governance/research/RESEARCH_A_TL_CHARTER_R2.md) — Research Lane A (Technical) Tech Lead charter.
+  - [`RESEARCH_A_QA_CHARTER_R1.md`](governance/research/RESEARCH_A_QA_CHARTER_R1.md) — Research Lane A (Technical) QA charter.
+  - [`RESEARCH_B_TL_CHARTER_R2.md`](governance/research/RESEARCH_B_TL_CHARTER_R2.md) — Research Lane B (Commercial) Tech Lead charter.
+  - [`RESEARCH_B_QA_CHARTER_R1.md`](governance/research/RESEARCH_B_QA_CHARTER_R1.md) — Research Lane B (Commercial) QA charter.
+  - [`RESEARCH_CROSS_TEAM_RULES_R2.md`](governance/research/RESEARCH_CROSS_TEAM_RULES_R2.md) — Cross-team research rules and boundaries.
+  - [`RESEARCH_WAVE4_INITIAL_DISPATCH_MAP_R2.md`](governance/research/RESEARCH_WAVE4_INITIAL_DISPATCH_MAP_R2.md) — Wave 4 dispatch map.
+  - [`MIGRATION_CHECKLIST_R2.md`](governance/research/MIGRATION_CHECKLIST_R2.md) — Governance migration checklist.
 
 ---
 
@@ -38,13 +42,13 @@ Document precedence is governed by [`docs/governance/DOCUMENT_AUTHORITY_INDEX_R1
 - **Test Suites:** `test_dxf_parser.py`, `tests/` (`CURRENT_IMPLEMENTATION`).
 
 ### Integration Subsystem
-- **Active Milestone:** `PIS-CONTRACT-FREEZE-001` (Under QA review).
+- **Current Milestone / Status:** See [`PROJECT_STATE.md`](../PROJECT_STATE.md) for live gate state (`PIS-CONTRACT-FREEZE-001`).
 - **Role:** Contract mediation, coordinate transformation, unit normalization, and conflict gate enforcement.
 
 ### Solver Subsystem
 - **Current Implementation:** `backend/engine/fajardo.py`, `backend/engine/dupa_loader.py`.
 - **Baseline Audit & Golden Cases:** `tests/solver/baseline/`, `tests/solver/golden/` (`ACCEPTED_EVIDENCE`).
-- **Historical Specification:** [`solver_design_spec.md`](../solver_design_spec.md), [`formula_exhaustive_handbook.md`](../formula_exhaustive_handbook.md) (`HISTORICAL_DOC`).
+- **Historical Specification:** [`formula_exhaustive_handbook.md`](../formula_exhaustive_handbook.md) (`HISTORICAL_DOC`).
 
 ---
 

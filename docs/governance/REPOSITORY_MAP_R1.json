@@ -44,7 +44,7 @@
     },
     "backend": {
       "classification": "CURRENT_IMPLEMENTATION",
-      "description": "Backend service implementation, FastAPI endpoints, engine modules, and SQLite database schema."
+      "description": "Backend service implementation, Flask API routes, engine modules, and SQLite persistence/schema."
     },
     "backend/engine": {
       "classification": "CURRENT_IMPLEMENTATION",
@@ -85,10 +85,6 @@
     "parser_design_spec.md": {
       "classification": "HISTORICAL_DOC",
       "description": "Initial design specification for drawing parser; baseline reference for PIS contract freeze."
-    },
-    "solver_design_spec.md": {
-      "classification": "HISTORICAL_DOC",
-      "description": "Initial design specification for BOQ calculation solver."
     },
     "tech_spec_v2.md": {
       "classification": "HISTORICAL_DOC",
