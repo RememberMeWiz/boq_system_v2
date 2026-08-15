@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "document_title": "Repository Path Classification Map R1",
+  "task_id": "ADMIN-REPO-ORGANIZE-001",
+  "captured_date": "2026-08-15",
+  "timezone": "Asia/Manila",
+  "repository": "RememberMeWiz/boq_system_v2",
+  "verified_main_sha": "70b3d06f0bc28686bec44b01a087cc9dcbf78e63",
+  "descriptive_only": true,
+  "moves_or_deletions_authorized": false,
+  "allowed_classifications": [
+    "AUTHORITATIVE_DOC",
+    "CURRENT_IMPLEMENTATION",
+    "ACCEPTED_EVIDENCE",
+    "HISTORICAL_DOC",
+    "RUNTIME_GENERATED",
+    "REFERENCE_DATA",
+    "CLEANUP_CANDIDATE"
+  ],
+  "path_classifications": {
+    "README.md": {
+      "classification": "AUTHORITATIVE_DOC",
+      "description": "Root project README, product thesis, and high-level architecture overview."
+    },
+    "PROJECT_STATE.md": {
+      "classification": "AUTHORITATIVE_DOC",
+      "description": "Durable checkpoint of active milestones, gate states, critical path, and resumability guide."
+    },
+    "docs/INDEX.md": {
+      "classification": "AUTHORITATIVE_DOC",
+      "description": "Master documentation index and navigation map across all subsystems."
+    },
+    "docs/product": {
+      "classification": "AUTHORITATIVE_DOC",
+      "description": "Authoritative product vision (R3), roadmap plan (R3), strategy decision archive (R2), and corpus strategy (R1)."
+    },
+    "docs/governance": {
+      "classification": "AUTHORITATIVE_DOC",
+      "description": "Document authority index, hygiene plan, repository map, and research program governance charters."
+    },
+    "docs/governance/research": {
+      "classification": "AUTHORITATIVE_DOC",
+      "description": "Two-lane research governance charters (Lane A Technical, Lane B Commercial, Master Charter)."
+    },
+    "backend": {
+      "classification": "CURRENT_IMPLEMENTATION",
+      "description": "Backend service implementation, FastAPI endpoints, engine modules, and SQLite database schema."
+    },
+    "backend/engine": {
+      "classification": "CURRENT_IMPLEMENTATION",
+      "description": "Core calculation and extraction engines (fajardo.py, dupa_loader.py, pdf_dxf_parser.py, claude_web_extractor.py)."
+    },
+    "frontend": {
+      "classification": "CURRENT_IMPLEMENTATION",
+      "description": "Web frontend interface application."
+    },
+    "tests": {
+      "classification": "CURRENT_IMPLEMENTATION",
+      "description": "Automated unit and regression test suite."
+    },
+    "tests/solver/baseline": {
+      "classification": "ACCEPTED_EVIDENCE",
+      "description": "Solver Phase 0 baseline command execution outputs and environment captures."
+    },
+    "tests/solver/golden": {
+      "classification": "ACCEPTED_EVIDENCE",
+      "description": "Solver RC beam golden input/output test vectors."
+    },
+    "outputs": {
+      "classification": "RUNTIME_GENERATED",
+      "description": "Runtime execution logs, extraction JSON payloads, vector diff images, and dashboard SVG reconstructions."
+    },
+    "backend/reference_data": {
+      "classification": "REFERENCE_DATA",
+      "description": "Third-party sample CAD drawings, Fajardo reference books, DPWH price lists, and architectural sample PDFs."
+    },
+    "backend/boq_v2.db": {
+      "classification": "CLEANUP_CANDIDATE",
+      "description": "Tracked SQLite database file containing local development data; candidate for future git untracking / ignore."
+    },
+    "formula_exhaustive_handbook.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Early handbook of construction quantity calculation formulas; partially superseded by Fajardo v2."
+    },
+    "parser_design_spec.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Initial design specification for drawing parser; baseline reference for PIS contract freeze."
+    },
+    "solver_design_spec.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Initial design specification for BOQ calculation solver."
+    },
+    "tech_spec_v2.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Early monolithic technical specification document."
+    },
+    "tech_spec_parser_v2.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Early parser-specific technical specification document."
+    },
+    "progress_report_v2.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Historical project progress report."
+    },
+    "sample_solved_cases.md": {
+      "classification": "HISTORICAL_DOC",
+      "description": "Exploratory sample solved construction cases."
+    }
+  },
+  "research_archive_branches": {
+    "research/wave2-evidence": {
+      "tip_sha": "815d44214a2f52dd34fbc05a0c2faab83b1feb95",
+      "classification": "ACCEPTED_EVIDENCE",
+      "description": "Accepted Wave 2 research on Fajardo formulas, solver design, and DPWH historical analysis."
+    },
+    "research/wave3-evidence": {
+      "tip_sha": "0631843aecfbcdbd3e30ac2e7c6a2f2d5794f449",
+      "classification": "ACCEPTED_EVIDENCE",
+      "description": "Accepted Wave 3 research on Concrete, Earthworks, Forms, Finishes, Steel, and Labor/Equipment norms."
+    },
+    "research/wave4-evidence": {
+      "tip_sha": "e31a88eda52a6ce090209ff0fd0f763b5a12ff0c",
+      "classification": "ACCEPTED_EVIDENCE",
+      "description": "Accepted Wave 4 research on CAD corpus audit, native DWG reader benchmark, ParserBench, takeoff market analysis, UX models, and estimating workflows."
+    }
+  }
+}
