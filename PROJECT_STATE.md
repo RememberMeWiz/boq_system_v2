@@ -1,8 +1,8 @@
 # Current Project State
 
-> PM checkpoint and durable resumability record for `RememberMeWiz/boq_system_v2`.  
-> Capture date: 2026-08-15, Asia/Manila.  
-> Verified base commit (`main`): `70b3d06f0bc28686bec44b01a087cc9dcbf78e63`.  
+> PM checkpoint and durable resumability record for `RememberMeWiz/boq_system_v2`.
+> Capture date: 2026-08-15 14:23, Asia/Manila.
+> Verified base commit (`main`): `70b3d06f0bc28686bec44b01a087cc9dcbf78e63`.
 > This checkpoint does not replace PM decisions, accepted QA artifacts, product plans, or technical contracts.
 
 ---
@@ -34,20 +34,18 @@ drawing
 
 ### Active technical milestone: `PIS-CONTRACT-FREEZE-001: NOT CLOSED`
 - **Purpose:** Freeze the minimum Parser -> Integration -> Solver evidence contract before production implementation.
-- **Current active owner & gate:** `Integration TL` (`ACTIVE / EVIDENCE RESUBMISSION`)
-  - Integration QA R1 review disposition: `QA_BLOCKED` (`EVIDENCE_COMPLETENESS`).
-  - PM review disposition: `PM_RETURN_TO_INTEGRATION_TL` (evidence custody resubmission; contract architecture remains intact).
-- **Subsystem compatibility status:**
+- **Current active gate:** `Integration QA ACTIVE / INDEPENDENT REPLAY`
+- **Compatibility / resubmission state:**
   - Parser TL compatibility: `CLEARED`
   - Solver TL compatibility: `CLEARED`
-  - Integration TL reconciliation: `ACTIVE / RESUBMITTING EVIDENCE`
+  - Integration TL evidence-complete resubmission: `COMPLETE / HANDED TO QA`
+  - Integration QA: `ACTIVE`
 - **Next gate:**
-  `Integration TL evidence-complete resubmission -> Integration QA independent replay -> PM contract-freeze decision`
+  `Integration QA independent replay -> PM contract-freeze decision`
 
 ### Current critical path
 ```text
-Integration TL evidence-complete resubmission
--> Integration QA independent replay
+Integration QA independent replay
 -> PM contract-freeze decision
 -> Integration implementation authorization
 -> RC Beam production vertical slice
@@ -85,7 +83,7 @@ Integration TL evidence-complete resubmission
 ## 5. Scope Boundaries and Authorizations
 
 ### Currently Authorized
-- Active evidence resubmission and review on `PIS-CONTRACT-FREEZE-001`.
+- Active QA replay on `PIS-CONTRACT-FREEZE-001`.
 - Non-destructive repository governance and navigation documentation.
 
 ### Explicitly Parked / NOT Authorized
@@ -116,6 +114,6 @@ Integration TL evidence-complete resubmission
 2. Read `PROJECT_STATE.md` (this file) for current gate state and critical path.
 3. Read `docs/INDEX.md` to navigate current vs historical documentation.
 4. Read `docs/governance/DOCUMENT_AUTHORITY_INDEX_R1.md` to resolve any document precedence questions.
-5. Identify the active milestone (`PIS-CONTRACT-FREEZE-001`) and gate (`Integration TL ACTIVE / EVIDENCE RESUBMISSION`).
+5. Identify the active milestone (`PIS-CONTRACT-FREEZE-001`) and gate (`Integration QA ACTIVE / INDEPENDENT REPLAY`).
 6. Execute only within explicitly authorized scope.
 7. Always reverify remote `main` before creating any new working branch.
