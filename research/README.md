@@ -5,3 +5,8 @@ This directory stores non-production research evidence and review artifacts for 
 Research material in this tree is reference evidence. Its presence in Git does **not** by itself adopt construction methodology, commercial policy, structural-domain rules, procurement policy, risk appetite, production schemas, or protected-standard interpretations.
 
 Production changes remain subject to their normal team, QA, PM, and Repository Steward governance.
+
+## Archive Index
+
+- `wave2/`: Accepted Wave 2 Independent Research (Fajardo validation, solver design, DPWH historical analysis).
+- `wave3/`: Accepted Wave 3 Independent Research (Concrete, Earthworks, Forms, Finishes, Steel, Labor/Equipment).

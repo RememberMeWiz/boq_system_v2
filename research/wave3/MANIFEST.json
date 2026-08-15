@@ -1,0 +1,27 @@
+{
+  "archive_wave": "wave3",
+  "title": "Wave 3 Independent Research Archive",
+  "pm_disposition": "ACCEPTED_AS_REFERENCE_EVIDENCE",
+  "packages": {
+    "INDEPENDENT_RESEARCH_WAVE3_TECH_REVIEW_R1.zip": {
+      "sha256": "4b231c5f3f0d0ab4e7e460663a5e85eee5589773b46f0669f8f0947e7477a263",
+      "bytes": 567205,
+      "description": "Final Wave 3 Tech Lead review package embedding 6 worker packages"
+    },
+    "INDEPENDENT_RESEARCH_WAVE3_QA_TO_PM_R1.zip": {
+      "sha256": "bb24abbd2741a35f6826b4c260438629c73c503d4693ad31e09f8a3f8b431ce3",
+      "bytes": 23344,
+      "description": "Final Wave 3 Independent QA review and verification package to PM"
+    }
+  },
+  "decision": {
+    "PM_DECISION_R1.md": {
+      "sha256": "759e0ff74aa991140356b166fa2de088ab3cf59a4740c05314ff5783d937406b",
+      "bytes": 4400
+    }
+  },
+  "limitations": [
+    "ASTM C94 current-edition verification required prior to implementation.",
+    "Reference evidence only; no production authority or merge to main."
+  ]
+}
