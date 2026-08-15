@@ -1,0 +1,38 @@
+{
+  "$id": "https://boq-system-v2.local/schemas/policy_ref.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "policy_id": {
+      "pattern": "^POLICY\\.[A-Z0-9_.-]+$",
+      "type": "string"
+    },
+    "policy_role": {
+      "enum": [
+        "MEASUREMENT_OWNERSHIP",
+        "SLAB_OWNERSHIP",
+        "FORMWORK_SURFACE",
+        "WASTE",
+        "PROCUREMENT_INCREMENT",
+        "ROUNDING",
+        "ANCHORAGE_LAP",
+        "BEND_HOOK",
+        "STOCK_KERF_REUSE",
+        "OPTIMIZATION_OBJECTIVE",
+        "PRICING",
+        "GENERAL"
+      ]
+    },
+    "policy_version": {
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "policy_id",
+    "policy_version",
+    "policy_role"
+  ],
+  "title": "PolicyRef",
+  "type": "object"
+}

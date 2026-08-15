@@ -1,0 +1,260 @@
+{
+  "$id": "https://boq-system-v2.local/schemas/calculation_attempt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "disposition_state": {
+            "enum": [
+              "VALID",
+              "WARNING",
+              "REVIEW_REQUIRED"
+            ]
+          }
+        },
+        "required": [
+          "disposition_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "canonical_input_ready": {
+            "const": true
+          },
+          "may_calculate": {
+            "const": true
+          }
+        },
+        "required": [
+          "calculation_input_hash"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition_state": {
+            "enum": [
+              "BLOCKED",
+              "INVALID_INPUT",
+              "UNSUPPORTED_CASE",
+              "UNSUPPORTED_POLICY",
+              "UNRESOLVED"
+            ]
+          }
+        },
+        "required": [
+          "disposition_state"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "calculation_input_hash"
+          ]
+        },
+        "properties": {
+          "canonical_input_ready": {
+            "const": false
+          },
+          "may_calculate": {
+            "const": false
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition_state": {
+            "const": "UNRESOLVED"
+          }
+        },
+        "required": [
+          "disposition_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "conflicting_claims": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "disposition_state": {
+            "enum": [
+              "UNSUPPORTED_CASE",
+              "UNSUPPORTED_POLICY"
+            ]
+          }
+        },
+        "required": [
+          "disposition_state"
+        ]
+      },
+      "then": {
+        "properties": {
+          "unsupported_items": {
+            "minItems": 1
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "attempt_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "attempt_id": {
+      "pattern": "^attempt:sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "calculation_input_hash": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "canonical_input_ready": {
+      "type": "boolean"
+    },
+    "conflicting_claims": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_refs": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+              "type": "string"
+            },
+            "minItems": 2,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "field_path": {
+            "pattern": "^/.*",
+            "type": "string"
+          }
+        },
+        "required": [
+          "field_path",
+          "claim_refs"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "contract_version": {
+      "const": "solver-contract/1.1.0"
+    },
+    "disposition_state": {
+      "enum": [
+        "VALID",
+        "WARNING",
+        "REVIEW_REQUIRED",
+        "BLOCKED",
+        "INVALID_INPUT",
+        "UNSUPPORTED_CASE",
+        "UNSUPPORTED_POLICY",
+        "UNRESOLVED"
+      ]
+    },
+    "element_id": {
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+      "type": "string"
+    },
+    "element_type": {
+      "maxLength": 80,
+      "minLength": 1,
+      "type": "string"
+    },
+    "issues": {
+      "items": {
+        "$ref": "https://boq-system-v2.local/schemas/solver_issue.schema.json"
+      },
+      "type": "array"
+    },
+    "may_calculate": {
+      "type": "boolean"
+    },
+    "missing_fields": {
+      "items": {
+        "pattern": "^/.*",
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "policy_refs": {
+      "items": {
+        "$ref": "https://boq-system-v2.local/schemas/policy_ref.schema.json"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "request_id": {
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+      "type": "string"
+    },
+    "source_refs": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "unsupported_items": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "category": {
+            "enum": [
+              "CASE",
+              "POLICY",
+              "CAPABILITY",
+              "ELEMENT_TYPE"
+            ]
+          },
+          "code": {
+            "pattern": "^[A-Z][A-Z0-9_.-]{2,100}$",
+            "type": "string"
+          },
+          "reference": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "category",
+          "code"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "attempt_id",
+    "attempt_hash",
+    "contract_version",
+    "request_id",
+    "source_refs",
+    "policy_refs",
+    "issues",
+    "missing_fields",
+    "conflicting_claims",
+    "unsupported_items",
+    "disposition_state",
+    "canonical_input_ready",
+    "may_calculate"
+  ],
+  "title": "CalculationAttempt",
+  "type": "object"
+}

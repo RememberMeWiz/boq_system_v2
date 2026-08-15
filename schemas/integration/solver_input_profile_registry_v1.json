@@ -1,0 +1,35 @@
+{
+  "registry_version": "integration.solver-input-profile-registry/1.0",
+  "profiles": {
+    "rc_beam.concrete_volume/1.0": {
+      "formula_id": "FORMULA.RC_BEAM.CONCRETE_VOLUME",
+      "formula_version": "1.0.0",
+      "solver_version": "solver-kernel/0.0.0-readiness",
+      "allowed_output_stages": [
+        "BILLABLE"
+      ],
+      "required_policy_roles": [
+        "MEASUREMENT_OWNERSHIP"
+      ],
+      "authorized_projected_parameter_keys": [
+        "width",
+        "depth"
+      ],
+      "required_execution_dependencies": [
+        "/parameters/clear_span_between_support_faces",
+        "/parameters/left_support.dimension_along_beam",
+        "/parameters/right_support.dimension_along_beam",
+        "/policies/support_intersection_owner",
+        "/policies/support_deduction_scope",
+        "/parameters/slab.thickness",
+        "/policies/slab.measured_separately_across_clear_span_beam_strip",
+        "/policies/slab_intersection_owner",
+        "/policies/slab_deduction_length_basis",
+        "/policies/concrete_policy.waste_rate",
+        "/policies/concrete_policy.waste_basis",
+        "/policies/concrete_policy.procurement_increment",
+        "/policies/concrete_policy.procurement_rounding"
+      ]
+    }
+  }
+}

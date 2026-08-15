@@ -1,0 +1,2679 @@
+{
+  "$id": "https://boq-system-v2.local/schemas/unit_value.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "%"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PERCENTAGE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "1"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "DIMENSIONLESS"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "L"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "VOLUME"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 3,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "L/m2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "CURRENCY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/L"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": -3,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/bar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": -1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/board_foot"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": -1,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/count"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": -1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/crew-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": -1,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": -1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/kg"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": -1,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/m"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": -1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/m2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": -2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/m3"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": -3,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/piece"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": -1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/sheet"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": -1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "PHP/unit-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "UNIT_RATE"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": -1
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "USD"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "CURRENCY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 1,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "bar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "bar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "bar_diameter/hook"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 1,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "bar_diameter/stirrup"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 1,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "beam"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "beam"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "board_foot"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "BOARD_FOOT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 1,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "board_foot/m2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 1,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": -2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "cm"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "LENGTH"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "cm2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "AREA"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "count"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "count"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "count/h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": -1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "crew-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "CREW_TIME"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 1,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "cut"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "cut"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "g"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "MASS"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 1,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "TIME"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "hook"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "hook"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "hook/stirrup"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "MASS"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 1,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg/crew-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": -1,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 1,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg/h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 1,
+              "time": -1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg/kg_installed_rebar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg/m"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "MASS_PER_LENGTH"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": -1,
+              "mass": 1,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg/m3"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "DENSITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": -3,
+              "mass": 1,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "kg/unit-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 1,
+              "time": 0,
+              "unit_day": -1
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "lap"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "lap"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "lap/bar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "LENGTH"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m/bar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m/cut"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m/h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 1,
+              "mass": 0,
+              "time": -1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m/lap"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "AREA"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m2/crew-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": -1,
+              "currency": 0,
+              "item": 0,
+              "length": 2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m2/h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 2,
+              "mass": 0,
+              "time": -1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m3"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "VOLUME"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 3,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m3/crew-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": -1,
+              "currency": 0,
+              "item": 0,
+              "length": 3,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m3/h"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 3,
+              "mass": 0,
+              "time": -1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "m3/unit-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "PRODUCTIVITY"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 3,
+              "mass": 0,
+              "time": 0,
+              "unit_day": -1
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "min"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "TIME"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 1,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "mm"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "LENGTH"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "mm/bar_diameter"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": -1,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "mm/hook"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "mm/stirrup"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": -1,
+              "length": 1,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "mm2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "AREA"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "piece"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "piece"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "piece/bar"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "sheet"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "sheet"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "sheet/m2"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "RESOURCE_FACTOR"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": -2,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "stirrup"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "ITEM_COUNT"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 1,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "stirrup"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "pattern": "^(?:0|[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9])$",
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "unit": {
+            "const": "unit-day"
+          }
+        },
+        "required": [
+          "unit"
+        ]
+      },
+      "then": {
+        "properties": {
+          "dimension": {
+            "const": "EQUIPMENT_TIME"
+          },
+          "dimension_vector": {
+            "const": {
+              "bar_diameter": 0,
+              "board_foot": 0,
+              "crew_day": 0,
+              "currency": 0,
+              "item": 0,
+              "length": 0,
+              "mass": 0,
+              "time": 0,
+              "unit_day": 1
+            }
+          }
+        }
+      }
+    },
+    {
+      "else": {
+        "not": {
+          "required": [
+            "rounding_record"
+          ]
+        }
+      },
+      "if": {
+        "properties": {
+          "rounding_state": {
+            "const": "ROUNDED"
+          }
+        },
+        "required": [
+          "rounding_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "rounding_record"
+        ]
+      }
+    }
+  ],
+  "properties": {
+    "dimension": {
+      "enum": [
+        "AREA",
+        "BOARD_FOOT",
+        "CREW_TIME",
+        "CURRENCY",
+        "DENSITY",
+        "DIMENSIONLESS",
+        "EQUIPMENT_TIME",
+        "ITEM_COUNT",
+        "LENGTH",
+        "MASS",
+        "MASS_PER_LENGTH",
+        "PERCENTAGE",
+        "PRODUCTIVITY",
+        "RESOURCE_FACTOR",
+        "TIME",
+        "UNIT_RATE",
+        "VOLUME"
+      ],
+      "type": "string"
+    },
+    "dimension_vector": {
+      "additionalProperties": false,
+      "properties": {
+        "bar_diameter": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "board_foot": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "crew_day": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "currency": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "item": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "length": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "mass": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "time": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        },
+        "unit_day": {
+          "maximum": 8,
+          "minimum": -8,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "length",
+        "mass",
+        "time",
+        "item",
+        "currency",
+        "board_foot",
+        "crew_day",
+        "unit_day",
+        "bar_diameter"
+      ],
+      "type": "object"
+    },
+    "precision_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "application": {
+          "enum": [
+            "NO_ROUNDING",
+            "INPUT_CAPTURE",
+            "INTERMEDIATE",
+            "STAGE_OUTPUT",
+            "FINAL_RESULT",
+            "PROCUREMENT",
+            "CHARGEABLE_RESOURCE"
+          ]
+        },
+        "policy_id": {
+          "pattern": "^POLICY\\.ROUNDING\\.[A-Z0-9_.-]+$",
+          "type": "string"
+        },
+        "policy_version": {
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[A-Za-z0-9.-]+)?$",
+          "type": "string"
+        },
+        "rounding_mode": {
+          "enum": [
+            "NONE",
+            "HALF_UP",
+            "HALF_EVEN",
+            "DOWN",
+            "UP",
+            "FLOOR",
+            "CEILING"
+          ]
+        },
+        "scale": {
+          "maximum": 18,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "policy_id",
+        "policy_version",
+        "scale",
+        "rounding_mode",
+        "application"
+      ],
+      "type": "object"
+    },
+    "provenance_refs": {
+      "items": {
+        "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "rounding_record": {
+      "additionalProperties": false,
+      "properties": {
+        "after": {
+          "pattern": "^(?:0|-?(?:[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9]))$",
+          "type": "string"
+        },
+        "before": {
+          "pattern": "^(?:0|-?(?:[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9]))$",
+          "type": "string"
+        },
+        "event_id": {
+          "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9._/:-]+$",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "HALF_UP",
+            "HALF_EVEN",
+            "DOWN",
+            "UP",
+            "FLOOR",
+            "CEILING"
+          ]
+        },
+        "scale": {
+          "maximum": 18,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "before",
+        "after",
+        "mode",
+        "scale",
+        "event_id"
+      ],
+      "type": "object"
+    },
+    "rounding_state": {
+      "enum": [
+        "EXACT",
+        "UNROUNDED",
+        "ROUNDED"
+      ]
+    },
+    "source_quantity_state": {
+      "enum": [
+        "OBSERVED_SOURCE",
+        "EXPLICIT_INPUT",
+        "DERIVED",
+        "POLICY_VALUE",
+        "RATE_VALUE",
+        "SYSTEM_CONSTANT"
+      ]
+    },
+    "unit": {
+      "enum": [
+        "%",
+        "1",
+        "L",
+        "L/m2",
+        "PHP",
+        "PHP/L",
+        "PHP/bar",
+        "PHP/board_foot",
+        "PHP/count",
+        "PHP/crew-day",
+        "PHP/h",
+        "PHP/kg",
+        "PHP/m",
+        "PHP/m2",
+        "PHP/m3",
+        "PHP/piece",
+        "PHP/sheet",
+        "PHP/unit-day",
+        "USD",
+        "bar",
+        "bar_diameter/hook",
+        "bar_diameter/stirrup",
+        "beam",
+        "board_foot",
+        "board_foot/m2",
+        "cm",
+        "cm2",
+        "count",
+        "count/h",
+        "crew-day",
+        "cut",
+        "g",
+        "h",
+        "hook",
+        "hook/stirrup",
+        "kg",
+        "kg/crew-day",
+        "kg/h",
+        "kg/kg_installed_rebar",
+        "kg/m",
+        "kg/m3",
+        "kg/unit-day",
+        "lap",
+        "lap/bar",
+        "m",
+        "m/bar",
+        "m/cut",
+        "m/h",
+        "m/lap",
+        "m2",
+        "m2/crew-day",
+        "m2/h",
+        "m3",
+        "m3/crew-day",
+        "m3/h",
+        "m3/unit-day",
+        "min",
+        "mm",
+        "mm/bar_diameter",
+        "mm/hook",
+        "mm/stirrup",
+        "mm2",
+        "piece",
+        "piece/bar",
+        "sheet",
+        "sheet/m2",
+        "stirrup",
+        "unit-day"
+      ],
+      "type": "string"
+    },
+    "value": {
+      "not": {
+        "const": "-0"
+      },
+      "pattern": "^(?:0|-?(?:[1-9][0-9]*|0\\.[0-9]*[1-9]|[1-9][0-9]*\\.[0-9]*[1-9]))$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "value",
+    "unit",
+    "dimension",
+    "dimension_vector",
+    "precision_policy",
+    "source_quantity_state",
+    "rounding_state",
+    "provenance_refs"
+  ],
+  "title": "UnitValue",
+  "type": "object"
+}

@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://boq-system.local/schemas/integration/canonical-fact/2.0",
+  "title": "Canonical Fact 2.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "fact_id",
+    "source_claim_contract_version",
+    "source_claim_id",
+    "canonical_field_id",
+    "source_value",
+    "source_unit",
+    "canonical_value",
+    "canonical_unit",
+    "dimension",
+    "normalization_rule_id",
+    "normalization_rule_version",
+    "provenance_ref",
+    "admission_state",
+    "solver_parameter_key"
+  ],
+  "properties": {
+    "contract_version": {
+      "const": "integration.canonical-fact/2.0"
+    },
+    "fact_id": {
+      "type": "string",
+      "pattern": "^fact:[A-Za-z0-9._:-]+$"
+    },
+    "source_claim_contract_version": {
+      "const": "parser.claim-envelope/1.0"
+    },
+    "source_claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_field_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_value": {},
+    "source_unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonical_value": {},
+    "canonical_unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dimension": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalization_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normalization_rule_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "provenance_ref": {
+      "type": "string",
+      "pattern": "^source:claim:[A-Za-z0-9._:-]+$"
+    },
+    "admission_state": {
+      "enum": [
+        "READY",
+        "REVIEW_REQUIRED",
+        "BLOCKED",
+        "INVALID",
+        "UNMAPPED"
+      ]
+    },
+    "solver_parameter_key": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

@@ -1,0 +1,509 @@
+{
+  "registry_version": "integration.provenance-registry/1.0",
+  "entries": {
+    "source:claim:claim-001-b1-depth": {
+      "claim_id": "claim-001-b1-depth",
+      "source_document_hash": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "sheet_id": "S7",
+      "page_number": 34,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 1613,
+          "x1": 483,
+          "y1": 1706,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-001-b1-depth.png",
+        "crop_hash": "b23a3f54ad23c05afc8e140af2e90923e716f63da2bed586b5774729a396ab19"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-001-b1-spacing": {
+      "claim_id": "claim-001-b1-spacing",
+      "source_document_hash": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "sheet_id": "S7",
+      "page_number": 34,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 204,
+          "x1": 483,
+          "y1": 710,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-001-b1-spacing.png",
+        "crop_hash": "02dc1d7374caf6fa3deb6b599528373ce4dd6efc17ff84a464774a632b1dd025"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-001-b1-stirrups": {
+      "claim_id": "claim-001-b1-stirrups",
+      "source_document_hash": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "sheet_id": "S7",
+      "page_number": 34,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 710,
+          "x1": 483,
+          "y1": 837,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-001-b1-stirrups.png",
+        "crop_hash": "9227edc1e96fb2a612f11a6543245e6dab14b3bfc8a425b2f116ed1e5bda9bec"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-001-b1-width": {
+      "claim_id": "claim-001-b1-width",
+      "source_document_hash": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "sheet_id": "S7",
+      "page_number": 34,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 1706,
+          "x1": 483,
+          "y1": 1799,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-001-b1-width.png",
+        "crop_hash": "c5fca0c2cb21c63c06b8a26697ecd2aaca1ac8ce9ee63c442617523822e72035"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-f3-bar-x": {
+      "claim_id": "claim-002-f3-bar-x",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-4",
+      "page_number": 27,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 697,
+          "y0": 942,
+          "x1": 826,
+          "y1": 993,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-f3-bar-x.png",
+        "crop_hash": "a448e92d5775449fec6dd2f3f41166898a052713be501203cae18d10dd8e885e"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-f3-bar-y": {
+      "claim_id": "claim-002-f3-bar-y",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-4",
+      "page_number": 27,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 826,
+          "y0": 942,
+          "x1": 960,
+          "y1": 993,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-f3-bar-y.png",
+        "crop_hash": "c6d1adf3e8a13f85e6e99b1d9891787885c3ee1e30af20b2ac87b6e25627b002"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-f3-depth": {
+      "claim_id": "claim-002-f3-depth",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-4",
+      "page_number": 27,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 513,
+          "y0": 942,
+          "x1": 605,
+          "y1": 993,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-f3-depth.png",
+        "crop_hash": "15f3de6048509014941e2781fa070fa9972f57d4c6828ce4713f4b6c48086f57"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-f3-length": {
+      "claim_id": "claim-002-f3-length",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-4",
+      "page_number": 27,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 329,
+          "y0": 942,
+          "x1": 421,
+          "y1": 993,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-f3-length.png",
+        "crop_hash": "24c6cffcaadedb564e85818d063c49461a50b52836e6f994e41da36aeaa1e4b3"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-f3-thickness": {
+      "claim_id": "claim-002-f3-thickness",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-4",
+      "page_number": 27,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 605,
+          "y0": 942,
+          "x1": 697,
+          "y1": 993,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-f3-thickness.png",
+        "crop_hash": "99bac1cf9f6bb3e8e654348f77cb0cf2a275a49444d7d923291d73639a2ec967"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-f3-width": {
+      "claim_id": "claim-002-f3-width",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-4",
+      "page_number": 27,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 421,
+          "y0": 942,
+          "x1": 513,
+          "y1": 993,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-f3-width.png",
+        "crop_hash": "afecdf9b2affdb390cb10470861468494dcc1b4d4010b889aee4ffc513cec8c2"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-002-grid-a1-marks": {
+      "claim_id": "claim-002-grid-a1-marks",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-3",
+      "page_number": 26,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 900,
+          "y0": 1200,
+          "x1": 1060,
+          "y1": 1280,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-002-grid-a1-marks.png",
+        "crop_hash": "b3df34f248f4af151303c6ae880bea1e48e714da6d2d831b6aa12078e714f73f"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-003-b1-depth": {
+      "claim_id": "claim-003-b1-depth",
+      "source_document_hash": "f0f7b0d9c83c7d98bec158936ac92b4ffcd902b2698f0a04ce27b4acacf8ec7a",
+      "sheet_id": "S7",
+      "page_number": 1,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 1613,
+          "x1": 483,
+          "y1": 1706,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-003-b1-depth.png",
+        "crop_hash": "b23a3f54ad23c05afc8e140af2e90923e716f63da2bed586b5774729a396ab19"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-003-b1-spacing": {
+      "claim_id": "claim-003-b1-spacing",
+      "source_document_hash": "f0f7b0d9c83c7d98bec158936ac92b4ffcd902b2698f0a04ce27b4acacf8ec7a",
+      "sheet_id": "S7",
+      "page_number": 1,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 204,
+          "x1": 483,
+          "y1": 710,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-003-b1-spacing.png",
+        "crop_hash": "02dc1d7374caf6fa3deb6b599528373ce4dd6efc17ff84a464774a632b1dd025"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-003-b1-stirrups": {
+      "claim_id": "claim-003-b1-stirrups",
+      "source_document_hash": "f0f7b0d9c83c7d98bec158936ac92b4ffcd902b2698f0a04ce27b4acacf8ec7a",
+      "sheet_id": "S7",
+      "page_number": 1,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 710,
+          "x1": 483,
+          "y1": 837,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-003-b1-stirrups.png",
+        "crop_hash": "9227edc1e96fb2a612f11a6543245e6dab14b3bfc8a425b2f116ed1e5bda9bec"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-003-b1-width": {
+      "claim_id": "claim-003-b1-width",
+      "source_document_hash": "f0f7b0d9c83c7d98bec158936ac92b4ffcd902b2698f0a04ce27b4acacf8ec7a",
+      "sheet_id": "S7",
+      "page_number": 1,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 366,
+          "y0": 1706,
+          "x1": 483,
+          "y1": 1799,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 1653,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-003-b1-width.png",
+        "crop_hash": "c5fca0c2cb21c63c06b8a26697ecd2aaca1ac8ce9ee63c442617523822e72035"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-004-foundation-f3-dependency-blocked": {
+      "claim_id": "claim-004-foundation-f3-dependency-blocked",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "S-3",
+      "page_number": 26,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 900,
+          "y0": 1200,
+          "x1": 1060,
+          "y1": 1280,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-004-foundation-f3-dependency-blocked.png",
+        "crop_hash": "cce2660091b9d73928540984d01dda2da917ee28014e7c1502fc743698d6d13b"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-004-subset-s4-missing": {
+      "claim_id": "claim-004-subset-s4-missing",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "A-1",
+      "page_number": 11,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 820,
+          "y0": 1598,
+          "x1": 1425,
+          "y1": 1700,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-004-subset-s4-missing.png",
+        "crop_hash": "814f8a75d0620a5c45b658101f93f7e1fd54d17d436d827b7505be6036f980a6"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    },
+    "source:claim:claim-004-subset-s5-missing": {
+      "claim_id": "claim-004-subset-s5-missing",
+      "source_document_hash": "dbe6b79ea2c56e48956d1ed24dcad1ecd754a0a6149152e9dd544f9487b5046d",
+      "sheet_id": "A-1",
+      "page_number": 11,
+      "source_locator": {
+        "bounding_box": {
+          "x0": 820,
+          "y0": 1690,
+          "x1": 1430,
+          "y1": 1745,
+          "coordinate_space_identifier": "IMAGE_PIXELS_TOP_LEFT",
+          "origin_definition": "top-left",
+          "page_width": 3309,
+          "page_height": 2339,
+          "units_or_normalization_rule": "integer pixels at declared render DPI",
+          "render_dpi": 200
+        },
+        "coordinate_space": "IMAGE_PIXELS_TOP_LEFT"
+      },
+      "evidence_ref": {
+        "crop_path": "evidence_crops/claim-004-subset-s5-missing.png",
+        "crop_hash": "82ae99b06d3d28fc2422c01cc566cd6a43a2ee1f475c3e73d342b7992c22157e"
+      },
+      "review_state": "MANUALLY_CONFIRMED",
+      "reviewer": "PRODUCT_OWNER",
+      "review_timestamp": "2026-08-15T03:53:40Z"
+    }
+  }
+}
