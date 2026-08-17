@@ -1,0 +1,432 @@
+{
+  "schema": "m2.rcbeam.transitive-provenance-graph/1.0",
+  "source_worker_package_sha256": "d8a88ebf06e9e124c3783ddbc15cdf1b0b84e9c1e47cbd2faa9a765fbe6e67a6",
+  "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+  "claims": {
+    "claim-m2p-p33-b1-mark": {
+      "claim_id": "claim-m2p-p33-b1-mark",
+      "fact_kind": "OBSERVED",
+      "field_path": "beam_instance.mark",
+      "value": "B1",
+      "unit": null,
+      "dimension": null,
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        220.161,
+        265.757,
+        231.005,
+        274.624
+      ],
+      "evidence_id": "ev-p33-b1-instance",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-left-support-id": {
+      "claim_id": "claim-m2p-p33-left-support-id",
+      "fact_kind": "OBSERVED",
+      "field_path": "beam_instance.left_support.identity",
+      "value": "C4",
+      "unit": null,
+      "dimension": null,
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        164.481,
+        251.957,
+        175.813,
+        260.824
+      ],
+      "evidence_id": "ev-p33-b1-instance",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-right-support-id": {
+      "claim_id": "claim-m2p-p33-right-support-id",
+      "fact_kind": "OBSERVED",
+      "field_path": "beam_instance.right_support.identity",
+      "value": "PC4",
+      "unit": null,
+      "dimension": null,
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        273.201,
+        249.197,
+        290.448,
+        258.064
+      ],
+      "evidence_id": "ev-p33-b1-instance",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-left-support-outline": {
+      "claim_id": "claim-m2p-p33-left-support-outline",
+      "fact_kind": "OBSERVED_VECTOR_GEOMETRY",
+      "field_path": "beam_instance.left_support.outline_bbox_pdf_pt",
+      "value": [
+        175.4,
+        257.999,
+        183.8,
+        263.519
+      ],
+      "unit": "pt",
+      "dimension": "DOCUMENT_GEOMETRY",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        175.4,
+        257.999,
+        183.8,
+        263.519
+      ],
+      "evidence_id": "ev-p33-b1-instance",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-right-support-outline": {
+      "claim_id": "claim-m2p-p33-right-support-outline",
+      "fact_kind": "OBSERVED_VECTOR_GEOMETRY",
+      "field_path": "beam_instance.right_support.outline_bbox_pdf_pt",
+      "value": [
+        264.44,
+        257.279,
+        272.84,
+        263.519
+      ],
+      "unit": "pt",
+      "dimension": "DOCUMENT_GEOMETRY",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        264.44,
+        257.279,
+        272.84,
+        263.519
+      ],
+      "evidence_id": "ev-p33-b1-instance",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-dimension-witness-3015": {
+      "claim_id": "claim-m2p-p33-dimension-witness-3015",
+      "fact_kind": "OBSERVED_DIMENSION",
+      "field_path": "dimension_witness.local_x",
+      "value": 3015,
+      "unit": "mm",
+      "dimension": "LENGTH",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        215.121,
+        183.822,
+        231.765,
+        193.135
+      ],
+      "vector_dimension_endpoints_pdf_pt": [
+        [
+          181.04,
+          193.679
+        ],
+        [
+          265.76,
+          193.679
+        ]
+      ],
+      "evidence_id": "ev-p33-3015-dimension-witness",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p32-c4pc4-b": {
+      "claim_id": "claim-m2p-p32-c4pc4-b",
+      "fact_kind": "OBSERVED_SCHEDULE_VALUE",
+      "field_path": "column_schedule.C4_PC4.b",
+      "value": 0.15,
+      "unit": "m",
+      "dimension": "LENGTH",
+      "source_page_id": "source-page-0032",
+      "source_page_sha256": "ec5bf824da36acc00ee84b4eeba04fa6c9b6386c3c4c2a27a94427518a5f5760",
+      "source_page_number": 32,
+      "sheet_id": "S5",
+      "bbox_pdf_pt": [
+        162.201,
+        413.369,
+        185.142,
+        425.158
+      ],
+      "evidence_id": "ev-p32-c4-pc4-schedule",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p32-c4pc4-d": {
+      "claim_id": "claim-m2p-p32-c4pc4-d",
+      "fact_kind": "OBSERVED_SCHEDULE_VALUE",
+      "field_path": "column_schedule.C4_PC4.d",
+      "value": 0.3,
+      "unit": "m",
+      "dimension": "LENGTH",
+      "source_page_id": "source-page-0032",
+      "source_page_sha256": "ec5bf824da36acc00ee84b4eeba04fa6c9b6386c3c4c2a27a94427518a5f5760",
+      "source_page_number": 32,
+      "sheet_id": "S5",
+      "bbox_pdf_pt": [
+        209.121,
+        413.369,
+        232.062,
+        425.158
+      ],
+      "evidence_id": "ev-p32-c4-pc4-schedule",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-slab-region": {
+      "claim_id": "claim-m2p-p33-slab-region",
+      "fact_kind": "OBSERVED_REGION_LOCATOR",
+      "field_path": "beam_instance.applicable_slab_region",
+      "value": "ELEV. + 2.80 panel immediately south of selected B1",
+      "unit": null,
+      "dimension": null,
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "source_page_number": 33,
+      "sheet_id": "S6",
+      "bbox_pdf_pt": [
+        202.521,
+        287.299,
+        249.055,
+        295.159
+      ],
+      "evidence_id": "ev-p33-b1-instance",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p03-slab-minimum": {
+      "claim_id": "claim-m2p-p03-slab-minimum",
+      "fact_kind": "OBSERVED_CONSTRAINT",
+      "field_path": "structural_note.slab.minimum_thickness",
+      "value": 0.1,
+      "operator": ">=",
+      "unit": "m",
+      "dimension": "LENGTH",
+      "source_page_id": "source-page-0003",
+      "source_page_sha256": "b4600bd594f36775630d8ce1aaa53749b10bef3ac55b4c1c12fb695ea2725b52",
+      "source_page_number": 3,
+      "sheet_id": "STRUCTURAL_NOTES",
+      "bbox_pdf_pt": [
+        144.02,
+        130.069,
+        344.407,
+        142.378
+      ],
+      "evidence_id": "ev-p03-slab-minimum-note",
+      "applicability": "general minimum constraint only; does not prove exact selected-region thickness",
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+      "coordinate_system": "PDF_TOP_LEFT_POINTS"
+    },
+    "claim-m2p-p33-beam-axis": {
+      "claim_id": "claim-m2p-p33-beam-axis",
+      "fact_kind": "DERIVED_GEOMETRY",
+      "field_path": "beam_instance.axis",
+      "value": {
+        "orientation": "HORIZONTAL",
+        "direction": "+X",
+        "y_pdf_pt": 260.759
+      },
+      "unit": "pt",
+      "dimension": "DOCUMENT_GEOMETRY",
+      "input_claim_ids": [
+        "claim-m2p-p33-b1-mark",
+        "claim-m2p-p33-left-support-outline",
+        "claim-m2p-p33-right-support-outline"
+      ],
+      "derivation_rule": "M2.DERIVE.BEAM_AXIS_FROM_PARALLEL_EDGES/1.0",
+      "derivation_parameters": {
+        "top_edge_y_pdf_pt": 257.999,
+        "bottom_edge_y_pdf_pt": 263.519,
+        "axis_y_formula": "(top+bottom)/2"
+      },
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "evidence_id": "ev-p33-b1-instance"
+    },
+    "claim-m2p-p33-local-x-scale": {
+      "claim_id": "claim-m2p-p33-local-x-scale",
+      "fact_kind": "DERIVED_CONVERSION",
+      "field_path": "beam_instance.local_x_mm_per_pdf_pt",
+      "value": 35.587818696884,
+      "unit": "mm/pt",
+      "dimension": "LENGTH_PER_DOCUMENT_POINT",
+      "input_claim_ids": [
+        "claim-m2p-p33-dimension-witness-3015"
+      ],
+      "derivation_rule": "M2.DERIVE.LOCAL_VECTOR_DISTANCE_SCALE/1.0",
+      "derivation_parameters": {
+        "source_dimension_mm": 3015.0,
+        "source_vector_span_pdf_pt": 84.72,
+        "formula": "source_dimension_mm / source_vector_span_pdf_pt",
+        "raster_pixel_scaling_used": false
+      },
+      "review_state": "REVIEW_REQUIRED",
+      "solver_readiness": "BLOCKED",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "evidence_id": "ev-p33-3015-dimension-witness"
+    },
+    "claim-m2p-clear-span": {
+      "claim_id": "claim-m2p-clear-span",
+      "fact_kind": "DERIVED_SOLVER_CRITICAL",
+      "field_path": "/parameters/clear_span_between_support_faces",
+      "value": 2.8698017,
+      "unit": "m",
+      "dimension": "LENGTH",
+      "field_state": "DERIVED",
+      "input_claim_ids": [
+        "claim-m2p-p33-left-support-outline",
+        "claim-m2p-p33-right-support-outline",
+        "claim-m2p-p33-beam-axis",
+        "claim-m2p-p33-local-x-scale"
+      ],
+      "derivation_rule": "M2.DERIVE.CLEAR_SPAN_SUPPORT_FACES/1.0",
+      "derivation_parameters": {
+        "left_near_face_x_pdf_pt": 183.8,
+        "right_near_face_x_pdf_pt": 264.44,
+        "support_face_gap_pdf_pt": 80.64,
+        "local_x_mm_per_pdf_pt": 35.587818696884,
+        "formula": "(right_near_face_x-left_near_face_x)*mm_per_pt/1000",
+        "result_unrounded_m": 2.8698016997167133,
+        "reported_rounding": "nearest 1e-9 m",
+        "raster_pixel_scaling_used": false,
+        "centerline_minus_half_support_shortcut_used": false
+      },
+      "review_state": "REVIEW_REQUIRED",
+      "reviewer": null,
+      "review_timestamp": null,
+      "solver_readiness": "BLOCKED",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "evidence_id": "ev-p33-b1-instance"
+    },
+    "claim-m2p-left-support-dim": {
+      "claim_id": "claim-m2p-left-support-dim",
+      "fact_kind": "DERIVED_SOLVER_CRITICAL",
+      "field_path": "/parameters/left_support.dimension_along_beam",
+      "value": 0.3,
+      "unit": "m",
+      "dimension": "LENGTH",
+      "field_state": "DERIVED_FROM_SOURCE_SCHEDULE_AND_ORIENTATION",
+      "input_claim_ids": [
+        "claim-m2p-p33-left-support-id",
+        "claim-m2p-p33-left-support-outline",
+        "claim-m2p-p33-beam-axis",
+        "claim-m2p-p32-c4pc4-b",
+        "claim-m2p-p32-c4pc4-d"
+      ],
+      "derivation_rule": "M2.DERIVE.SUPPORT_DIMENSION_ALONG_BEAM/1.0",
+      "derivation_parameters": {
+        "schedule_dimensions_m": {
+          "b": 0.15,
+          "d": 0.3
+        },
+        "plan_outline_extent_pdf_pt": {
+          "x": 8.4,
+          "y": 5.52
+        },
+        "axis": "X",
+        "orientation_rule": "the larger scheduled dimension d is assigned along the plan outline long axis; the plan outline long axis is parallel to the verified beam axis",
+        "independent_vector_scale_crosscheck_m": 0.2989376770538245,
+        "crosscheck_status": "CONSISTENT_WITH_0.30_M_WITHIN_DRAFTING_TOLERANCE",
+        "max_min_without_orientation_used": false
+      },
+      "review_state": "REVIEW_REQUIRED",
+      "reviewer": null,
+      "review_timestamp": null,
+      "solver_readiness": "BLOCKED",
+      "source_page_id": "source-page-0032",
+      "source_page_sha256": "ec5bf824da36acc00ee84b4eeba04fa6c9b6386c3c4c2a27a94427518a5f5760",
+      "evidence_id": "ev-p32-c4-pc4-schedule"
+    },
+    "claim-m2p-right-support-dim": {
+      "claim_id": "claim-m2p-right-support-dim",
+      "fact_kind": "DERIVED_SOLVER_CRITICAL",
+      "field_path": "/parameters/right_support.dimension_along_beam",
+      "value": 0.3,
+      "unit": "m",
+      "dimension": "LENGTH",
+      "field_state": "DERIVED_FROM_SOURCE_SCHEDULE_AND_ORIENTATION",
+      "input_claim_ids": [
+        "claim-m2p-p33-right-support-id",
+        "claim-m2p-p33-right-support-outline",
+        "claim-m2p-p33-beam-axis",
+        "claim-m2p-p32-c4pc4-b",
+        "claim-m2p-p32-c4pc4-d"
+      ],
+      "derivation_rule": "M2.DERIVE.SUPPORT_DIMENSION_ALONG_BEAM/1.0",
+      "derivation_parameters": {
+        "schedule_dimensions_m": {
+          "b": 0.15,
+          "d": 0.3
+        },
+        "plan_outline_extent_pdf_pt": {
+          "x": 8.4,
+          "y": 6.24
+        },
+        "axis": "X",
+        "orientation_rule": "the larger scheduled dimension d is assigned along the plan outline long axis; the plan outline long axis is parallel to the verified beam axis",
+        "independent_vector_scale_crosscheck_m": 0.29893767705382357,
+        "crosscheck_status": "CONSISTENT_WITH_0.30_M_WITHIN_DRAFTING_TOLERANCE",
+        "max_min_without_orientation_used": false
+      },
+      "review_state": "REVIEW_REQUIRED",
+      "reviewer": null,
+      "review_timestamp": null,
+      "solver_readiness": "BLOCKED",
+      "source_page_id": "source-page-0032",
+      "source_page_sha256": "ec5bf824da36acc00ee84b4eeba04fa6c9b6386c3c4c2a27a94427518a5f5760",
+      "evidence_id": "ev-p32-c4-pc4-schedule"
+    }
+  }
+}

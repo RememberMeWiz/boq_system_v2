@@ -1,0 +1,214 @@
+{
+  "schema": "m2.rcbeam.m2_2-test-snapshot/1.0",
+  "test_only": true,
+  "profile_id": "rc_beam.concrete_engineering_net_volume/1.0",
+  "solver_version": "solver-kernel/0.0.0-readiness",
+  "geometry": {
+    "width": {
+      "value": "0.2",
+      "unit": "m",
+      "dimension": "LENGTH",
+      "state": "READY",
+      "claim_id": "claim-001-b1-width",
+      "source_ref": "source:claim:claim-001-b1-width",
+      "source_field_path": "beam_schedule.B1.width",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "accepted_claim_semantic_sha256": "f7e48b41fb089c97f5cbf2645b5f8814d3be37e3367713fbbe9ac146b5a7e1f5",
+      "accepted_provenance_digest": "sha256:704fc94481973fc6f8aa3ca11cb1293751793fda89d6493482a3cbb32a7d0366",
+      "selected_instance_id": "B1-P33-S6-UPPER-LEFT-C4-PC4"
+    },
+    "depth": {
+      "value": "0.35",
+      "unit": "m",
+      "dimension": "LENGTH",
+      "state": "READY",
+      "claim_id": "claim-001-b1-depth",
+      "source_ref": "source:claim:claim-001-b1-depth",
+      "source_field_path": "beam_schedule.B1.depth",
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "accepted_claim_semantic_sha256": "cdaa4f8927cd75726ce345cd6c4347e355aa97b145d3e2fb56caea0b1aae920e",
+      "accepted_provenance_digest": "sha256:45abf4149504b927ccb0f48ac288231548601ad15eb65a71a57817f542db5f3d",
+      "selected_instance_id": "B1-P33-S6-UPPER-LEFT-C4-PC4"
+    },
+    "clear_span_between_support_faces": {
+      "value": "2.8698017",
+      "unit": "m",
+      "dimension": "LENGTH",
+      "state": "READY",
+      "claim_id": "claim-m2p-clear-span",
+      "selected_instance_id": "B1-P33-S6-UPPER-LEFT-C4-PC4",
+      "derivation_rule": "M2.DERIVE.CLEAR_SPAN_SUPPORT_FACES/1.0",
+      "input_claim_ids": [
+        "claim-m2p-p33-left-support-outline",
+        "claim-m2p-p33-right-support-outline",
+        "claim-m2p-p33-beam-axis",
+        "claim-m2p-p33-local-x-scale"
+      ],
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "evidence_ids": [
+        "ev-p33-3015-dimension-witness",
+        "ev-p33-b1-instance"
+      ],
+      "authoritative_record_digest": "sha256:7e64ff3cad8c62069d19bfd90709cd38a6b59c06541f621fb35a2256b2c86fed",
+      "claim_graph_digest": "sha256:33459466bc572fc772750ff459aa8c4793fd8f49bb5f0e7c360c4358ce101733"
+    },
+    "left_support.dimension_along_beam": {
+      "value": "0.300",
+      "unit": "m",
+      "dimension": "LENGTH",
+      "state": "READY",
+      "orientation_evidence": "VERIFIED",
+      "claim_id": "claim-m2p-left-support-dim",
+      "selected_instance_id": "B1-P33-S6-UPPER-LEFT-C4-PC4",
+      "derivation_rule": "M2.DERIVE.SUPPORT_DIMENSION_ALONG_BEAM/1.0",
+      "input_claim_ids": [
+        "claim-m2p-p33-left-support-id",
+        "claim-m2p-p33-left-support-outline",
+        "claim-m2p-p33-beam-axis",
+        "claim-m2p-p32-c4pc4-b",
+        "claim-m2p-p32-c4pc4-d"
+      ],
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "evidence_ids": [
+        "ev-p32-c4-pc4-schedule",
+        "ev-p33-b1-instance"
+      ],
+      "authoritative_record_digest": "sha256:4e7ef71a7b7c289bbae03759775d71bfa0b8307d5f33efa462416dd648317764",
+      "claim_graph_digest": "sha256:f1fd1eb89304036415739144a22cbe0f83e9b5484f02e733e18e10bdce2ab4d2"
+    },
+    "right_support.dimension_along_beam": {
+      "value": "0.300",
+      "unit": "m",
+      "dimension": "LENGTH",
+      "state": "READY",
+      "orientation_evidence": "VERIFIED",
+      "claim_id": "claim-m2p-right-support-dim",
+      "selected_instance_id": "B1-P33-S6-UPPER-LEFT-C4-PC4",
+      "derivation_rule": "M2.DERIVE.SUPPORT_DIMENSION_ALONG_BEAM/1.0",
+      "input_claim_ids": [
+        "claim-m2p-p33-right-support-id",
+        "claim-m2p-p33-right-support-outline",
+        "claim-m2p-p33-beam-axis",
+        "claim-m2p-p32-c4pc4-b",
+        "claim-m2p-p32-c4pc4-d"
+      ],
+      "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+      "evidence_ids": [
+        "ev-p32-c4-pc4-schedule",
+        "ev-p33-b1-instance"
+      ],
+      "authoritative_record_digest": "sha256:f11bff73d56c02cc787c00f2c2ea9126eda94208ed3dcca335047f029a5df353",
+      "claim_graph_digest": "sha256:9e0eaea5a7bbd17b1dd6aee86c1936310ad77556331be51a42f93bcda1d6e4ff"
+    },
+    "slab.thickness": {
+      "value": null,
+      "unit": "m",
+      "dimension": "LENGTH",
+      "state": "MISSING_BLOCKED"
+    }
+  },
+  "policies": {
+    "support_intersection_owner": {
+      "policy_id": "POLICY.RC_BEAM.SUPPORT_INTERSECTION_OWNER",
+      "policy_version": "1.0.0",
+      "value": "support",
+      "approval_state": "APPROVED",
+      "authority": "Product Owner",
+      "decision_id": "PO-M2-POL-001",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-001"
+      },
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "guard_ref": null
+    },
+    "support_deduction_scope": {
+      "policy_id": "POLICY.RC_BEAM.SUPPORT_DEDUCTION_SCOPE",
+      "policy_version": "1.0.0",
+      "value": "full_cross_section",
+      "approval_state": "APPROVED_WITH_GUARD",
+      "authority": "Product Owner",
+      "decision_id": "PO-M2-POL-002",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-002"
+      },
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "guard_ref": "GUARD-SUPPORT-WIDTH-CONSERVATION"
+    },
+    "slab.measured_separately_across_clear_span_beam_strip": {
+      "policy_id": "POLICY.RC_BEAM.SLAB_SEPARATE_CLEAR_SPAN_STRIP",
+      "policy_version": "1.0.0",
+      "value": true,
+      "approval_state": "APPROVED_WITH_GUARD",
+      "authority": "Product Owner",
+      "decision_id": "PO-M2-POL-003",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-003"
+      },
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "guard_ref": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY"
+    },
+    "slab_intersection_owner": {
+      "policy_id": "POLICY.RC_BEAM.SLAB_INTERSECTION_OWNER",
+      "policy_version": "1.0.0",
+      "value": "slab",
+      "approval_state": "APPROVED_WITH_GUARD",
+      "authority": "Product Owner",
+      "decision_id": "PO-M2-POL-004",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-004"
+      },
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "guard_ref": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY"
+    },
+    "slab_deduction_length_basis": {
+      "policy_id": "POLICY.RC_BEAM.SLAB_DEDUCTION_LENGTH_BASIS",
+      "policy_version": "1.0.0",
+      "value": "clear_span",
+      "approval_state": "APPROVED",
+      "authority": "Product Owner",
+      "decision_id": "PO-M2-POL-005",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-005"
+      },
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "guard_ref": null
+    }
+  },
+  "guards": {
+    "support_width_conservation": {
+      "state": "READY",
+      "mode": "NOTIONAL_FULL_BEAM_WIDTH_SUPPORT_ZONE",
+      "guard_id": "GUARD-SUPPORT-WIDTH-CONSERVATION",
+      "guard_version": "1.0"
+    },
+    "beam_slab_mix_compatibility": {
+      "state": "BLOCKED",
+      "mix_state": "UNKNOWN",
+      "guard_id": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY",
+      "guard_version": "1.0"
+    }
+  },
+  "downstream_commercial": {},
+  "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+  "frozen_billable_profile_mutated": false
+}

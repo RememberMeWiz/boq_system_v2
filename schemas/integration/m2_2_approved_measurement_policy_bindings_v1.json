@@ -1,0 +1,118 @@
+{
+  "schema": "m2.rcbeam.approved-policy-bundle/1.0",
+  "profile_id": "rc_beam.concrete_engineering_net_volume/1.0",
+  "policy_identity_freeze_state": "PINNED_FOR_M2_2_READINESS_REVIEW",
+  "bindings": [
+    {
+      "schema": "m2.rcbeam.approved-policy-binding/1.0",
+      "decision_id": "PO-M2-POL-001",
+      "canonical_name": "support_intersection_owner",
+      "policy_id": "POLICY.RC_BEAM.SUPPORT_INTERSECTION_OWNER",
+      "policy_version": "1.0.0",
+      "policy_role": "MEASUREMENT_OWNERSHIP",
+      "selected_project_value": "support",
+      "approval_state": "APPROVED",
+      "approving_authority": "Product Owner",
+      "decision_timestamp": "2026-08-16T10:10:00+08:00",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-001"
+      },
+      "guard_ref": null,
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "production_registration_authorized": false
+    },
+    {
+      "schema": "m2.rcbeam.approved-policy-binding/1.0",
+      "decision_id": "PO-M2-POL-002",
+      "canonical_name": "support_deduction_scope",
+      "policy_id": "POLICY.RC_BEAM.SUPPORT_DEDUCTION_SCOPE",
+      "policy_version": "1.0.0",
+      "policy_role": "MEASUREMENT_OWNERSHIP",
+      "selected_project_value": "full_cross_section",
+      "approval_state": "APPROVED_WITH_GUARD",
+      "approving_authority": "Product Owner",
+      "decision_timestamp": "2026-08-16T10:10:00+08:00",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-002"
+      },
+      "guard_ref": "GUARD-SUPPORT-WIDTH-CONSERVATION",
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "production_registration_authorized": false
+    },
+    {
+      "schema": "m2.rcbeam.approved-policy-binding/1.0",
+      "decision_id": "PO-M2-POL-003",
+      "canonical_name": "slab.measured_separately_across_clear_span_beam_strip",
+      "policy_id": "POLICY.RC_BEAM.SLAB_SEPARATE_CLEAR_SPAN_STRIP",
+      "policy_version": "1.0.0",
+      "policy_role": "MEASUREMENT_OWNERSHIP",
+      "selected_project_value": true,
+      "approval_state": "APPROVED_WITH_GUARD",
+      "approving_authority": "Product Owner",
+      "decision_timestamp": "2026-08-16T10:10:00+08:00",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-003"
+      },
+      "guard_ref": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY",
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "production_registration_authorized": false
+    },
+    {
+      "schema": "m2.rcbeam.approved-policy-binding/1.0",
+      "decision_id": "PO-M2-POL-004",
+      "canonical_name": "slab_intersection_owner",
+      "policy_id": "POLICY.RC_BEAM.SLAB_INTERSECTION_OWNER",
+      "policy_version": "1.0.0",
+      "policy_role": "MEASUREMENT_OWNERSHIP",
+      "selected_project_value": "slab",
+      "approval_state": "APPROVED_WITH_GUARD",
+      "approving_authority": "Product Owner",
+      "decision_timestamp": "2026-08-16T10:10:00+08:00",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-004"
+      },
+      "guard_ref": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY",
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "production_registration_authorized": false
+    },
+    {
+      "schema": "m2.rcbeam.approved-policy-binding/1.0",
+      "decision_id": "PO-M2-POL-005",
+      "canonical_name": "slab_deduction_length_basis",
+      "policy_id": "POLICY.RC_BEAM.SLAB_DEDUCTION_LENGTH_BASIS",
+      "policy_version": "1.0.0",
+      "policy_role": "MEASUREMENT_OWNERSHIP",
+      "selected_project_value": "clear_span",
+      "approval_state": "APPROVED",
+      "approving_authority": "Product Owner",
+      "decision_timestamp": "2026-08-16T10:10:00+08:00",
+      "approval_source": {
+        "package": "M2_RCBEAM_001_PO_FINAL_POLICY_DECISION_R1.zip",
+        "package_sha256": "2fa3296622f44241de01197d44cc99128e316cdba0cb736c9f1b225483e4c35e",
+        "document": "PO_FINAL_POLICY_DECISION_R1.md",
+        "document_sha256": "62680b250c33ead0ba77aa72d0e0eed5886eb590e382a63f343bc9d3ddfd1d8d",
+        "decision_id": "PO-M2-POL-005"
+      },
+      "guard_ref": null,
+      "effective_scope": "M2 selected B1 instance / rc_beam.concrete_engineering_net_volume/1.0",
+      "production_registration_authorized": false
+    }
+  ],
+  "binding_count": 5
+}

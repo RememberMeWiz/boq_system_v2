@@ -1,0 +1,55 @@
+{
+  "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+  "source_git_blob_sha": "0c02c66e0d3bd821e4758c3598422624063ce7ba",
+  "selected_instance_id": "B1-P33-S6-UPPER-LEFT-C4-PC4",
+  "copied_evidence": [
+    {
+      "evidence_id": "ev-p03-slab-minimum-note",
+      "source_page_id": "source-page-0003",
+      "source_page_sha256": "b4600bd594f36775630d8ce1aaa53749b10bef3ac55b4c1c12fb695ea2725b52",
+      "crop_sha256": "6a1e060c4a747272a6472f06ec4d2b93eb71feb295e15071e55de8ffcb76acbd",
+      "overlay_sha256": "afc87b5fa10a9a8d41fcf2b76b10f0893c893f73efba36a3b1aa4e7e5283c1d6",
+      "note": "General structural note states a minimum slab thickness of 0.10 m. This is a lower bound, not an exact thickness for the selected suspended slab region."
+    },
+    {
+      "evidence_id": "ev-p29-rejected-75mm-footing-context",
+      "source_page_id": "source-page-0029",
+      "source_page_sha256": "fa2ccb4dabd262b4094ae214ccec47b2273d9ca68660cb4700c22a21b3882439",
+      "crop_sha256": "2f87eb29b35b3b0cd132436313775717b7567255ae960223a292c165f1cd66ce",
+      "overlay_sha256": "bd6165f4282a434869118a7bdbff4d7fcdcb65185ca55156ad0cfb740e912b1d",
+      "note": "75 mm slab callouts occur on S2 COLUMN FOOTING DETAIL and are rejected as non-applicable foundation/slab-on-fill context for the selected second-floor suspended slab."
+    },
+    {
+      "evidence_id": "ev-p31-rejected-75mm-wall-footing-context",
+      "source_page_id": "source-page-0031",
+      "source_page_sha256": "372248feb72476c857451c9f6c08eef0e97ac8c1c3c371d4373bca5faffa0e71",
+      "crop_sha256": "edaf338cb83b6fd284556a331c1612c0cba5b20998b955dc8de5e51fa1dc8aa1",
+      "overlay_sha256": "656b630160256ab94c8e9dd3412a2fff2d41def89f192645e9c0610ab0f78609",
+      "note": "75 mm slab callouts occur on S4 WALL FOOTING DETAIL and are rejected as non-applicable footing/slab-on-fill context for the selected second-floor suspended slab."
+    },
+    {
+      "evidence_id": "ev-p32-c4-pc4-schedule",
+      "source_page_id": "source-page-0032",
+      "source_page_sha256": "ec5bf824da36acc00ee84b4eeba04fa6c9b6386c3c4c2a27a94427518a5f5760",
+      "crop_sha256": "29a37e636b3ab552cd1b518d979267566a09b5dd8ea40e269fc6bd0cdca86b53",
+      "overlay_sha256": "9e4d416fdee160c8758fc338674279175a7ff0894ffdf0f18bf21b1c794397eb",
+      "note": "C4/PC4 schedule row: b=0.15 m and d=0.30 m. Plan support outline orientation is used separately to determine that d is along the selected horizontal beam axis."
+    },
+    {
+      "evidence_id": "ev-p33-3015-dimension-witness",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "crop_sha256": "3aba851826dab96f7a938e2c76267d8d05876a0ba0e97ecfe568c9c66d592af8",
+      "overlay_sha256": "c41757365bc5ab15d42c30f50cf289994170b42cf8155d1da77aff9eb330a74c",
+      "note": "Explicit 3015 mm vector dimension witness used only to establish local vector distance conversion along the beam X axis."
+    },
+    {
+      "evidence_id": "ev-p33-b1-instance",
+      "source_page_id": "source-page-0033",
+      "source_page_sha256": "9345469a68aef0106221de906507f1b729f21bd62a3a5c2564ec57d9e175bea0",
+      "crop_sha256": "be901e1d6a970f6ecb2336f3f58e367cfc9d4536c64a5f7a073d516bc2b8bb4a",
+      "overlay_sha256": "8da659b686dbc2c4710a815732ae490fdf26e4412b27373fe3aa6d1788932b80",
+      "note": "Selected upper-left B1 physical instance, left C4, right PC4, verified near support faces, beam axis, and adjacent ELEV.+2.80 slab-region locator."
+    }
+  ]
+}

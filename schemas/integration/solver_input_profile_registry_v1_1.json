@@ -1,0 +1,119 @@
+{
+  "registry_version": "integration.solver-input-profile-registry/1.1",
+  "proposal_state": "M2_2_IMPLEMENTATION_NON_PRODUCTION_BLOCKED",
+  "supersedes_registry_version": "integration.solver-input-profile-registry/1.0",
+  "frozen_existing_profile": {
+    "entry": {
+      "formula_id": "FORMULA.RC_BEAM.CONCRETE_VOLUME",
+      "formula_version": "1.0.0",
+      "solver_version": "solver-kernel/0.0.0-readiness",
+      "allowed_output_stages": [
+        "BILLABLE"
+      ],
+      "required_policy_roles": [
+        "MEASUREMENT_OWNERSHIP"
+      ],
+      "authorized_projected_parameter_keys": [
+        "width",
+        "depth"
+      ],
+      "required_execution_dependencies": [
+        "/parameters/clear_span_between_support_faces",
+        "/parameters/left_support.dimension_along_beam",
+        "/parameters/right_support.dimension_along_beam",
+        "/policies/support_intersection_owner",
+        "/policies/support_deduction_scope",
+        "/parameters/slab.thickness",
+        "/policies/slab.measured_separately_across_clear_span_beam_strip",
+        "/policies/slab_intersection_owner",
+        "/policies/slab_deduction_length_basis",
+        "/policies/concrete_policy.waste_rate",
+        "/policies/concrete_policy.waste_basis",
+        "/policies/concrete_policy.procurement_increment",
+        "/policies/concrete_policy.procurement_rounding"
+      ]
+    },
+    "source_blob_sha": "21425d726795d338425f58fa3ec05e673b67f90c",
+    "mutation_authorized": false,
+    "profile_id": "rc_beam.concrete_volume/1.0"
+  },
+  "additive_profile": {
+    "profile_id": "rc_beam.concrete_engineering_net_volume/1.0",
+    "formula_id": "FORMULA.RC_BEAM.CONCRETE_VOLUME",
+    "formula_version": "1.0.0",
+    "solver_version": "solver-kernel/0.0.0-readiness",
+    "allowed_output_stages": [
+      "NET_MEASURED"
+    ],
+    "required_source_parameter_keys": [
+      "width",
+      "depth",
+      "clear_span_between_support_faces",
+      "left_support.dimension_along_beam",
+      "right_support.dimension_along_beam",
+      "slab.thickness"
+    ],
+    "required_policy_bindings": [
+      {
+        "policy_id": "POLICY.RC_BEAM.SUPPORT_INTERSECTION_OWNER",
+        "policy_version": "1.0.0",
+        "policy_role": "MEASUREMENT_OWNERSHIP",
+        "canonical_name": "support_intersection_owner",
+        "value": "support"
+      },
+      {
+        "policy_id": "POLICY.RC_BEAM.SUPPORT_DEDUCTION_SCOPE",
+        "policy_version": "1.0.0",
+        "policy_role": "MEASUREMENT_OWNERSHIP",
+        "canonical_name": "support_deduction_scope",
+        "value": "full_cross_section"
+      },
+      {
+        "policy_id": "POLICY.RC_BEAM.SLAB_SEPARATE_CLEAR_SPAN_STRIP",
+        "policy_version": "1.0.0",
+        "policy_role": "MEASUREMENT_OWNERSHIP",
+        "canonical_name": "slab.measured_separately_across_clear_span_beam_strip",
+        "value": true
+      },
+      {
+        "policy_id": "POLICY.RC_BEAM.SLAB_INTERSECTION_OWNER",
+        "policy_version": "1.0.0",
+        "policy_role": "MEASUREMENT_OWNERSHIP",
+        "canonical_name": "slab_intersection_owner",
+        "value": "slab"
+      },
+      {
+        "policy_id": "POLICY.RC_BEAM.SLAB_DEDUCTION_LENGTH_BASIS",
+        "policy_version": "1.0.0",
+        "policy_role": "MEASUREMENT_OWNERSHIP",
+        "canonical_name": "slab_deduction_length_basis",
+        "value": "clear_span"
+      }
+    ],
+    "required_guard_bindings": [
+      {
+        "guard_id": "GUARD-SUPPORT-WIDTH-CONSERVATION",
+        "guard_version": "1.0"
+      },
+      {
+        "guard_id": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY",
+        "guard_version": "1.0"
+      }
+    ],
+    "required_provenance_gate": "m2.rcbeam.provenance-admission-gate/1.0",
+    "excluded_downstream_policy_keys": [
+      "concrete_policy.waste_rate",
+      "concrete_policy.waste_basis",
+      "concrete_policy.procurement_increment",
+      "concrete_policy.procurement_rounding"
+    ],
+    "engineering_input_digest_excludes_downstream_commercial": true,
+    "implementation_state": "NON_PRODUCTION_BLOCKED",
+    "positive_path_state": "BLOCKED_PENDING_SLAB_THICKNESS_AND_BEAM_SLAB_MIX_APPLICABILITY",
+    "calculation_input_ready": false,
+    "may_calculate": false,
+    "solver_invocation_authorized": false,
+    "production_activation_authorized": false
+  },
+  "production_registration_authorized": false
+}

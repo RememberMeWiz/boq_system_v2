@@ -1,0 +1,50 @@
+{
+  "schema": "m2.rcbeam.solver-implementation-identity/1.0",
+  "solver_contract_version": "solver-contract/1.1.0",
+  "solver_implementation_version": "solver-kernel/0.0.0-readiness",
+  "formula_id": "FORMULA.RC_BEAM.CONCRETE_VOLUME",
+  "formula_version": "1.0.0",
+  "identity_source": "accepted M1/I1 Solver contract and M2-1 Solver profile semantics",
+  "scope": "M2-2 implementation-test target only",
+  "production_activation_authorized": false,
+  "note": "No stronger production Solver identity is authorized by the supplied M2-1/M2-2 governance chain; this readiness identity is exact and must not be silently substituted.",
+  "repository_base_commit": "c03cc3b49c9a8ada46221c55296f620b5d8fd844",
+  "accepted_deterministic_reference": {
+    "generator": {
+      "path": "tests/solver/golden/support/verify_rc_beam_001.py",
+      "git_blob_sha": "f9bffc9d809ae1565da2aeed4bc558694e5b2b47",
+      "role": "accepted deterministic RC-BEAM golden formula generator/reference",
+      "direct_runtime_invocation_in_m2_2": false
+    },
+    "independent_audit": {
+      "path": "tests/solver/golden/support/independent_audit_rc_beam_001.py",
+      "git_blob_sha": "31bba2c5feb5656fe96a1aa491503842f84d168b",
+      "role": "independent Decimal audit",
+      "direct_runtime_invocation_in_m2_2": false
+    },
+    "golden_input": {
+      "path": "tests/solver/golden/rc_beam_001_input.json",
+      "git_blob_sha": "70704662e4a752debdd5a4cc7a1d9dad70f8e0f8"
+    },
+    "golden_expected": {
+      "path": "tests/solver/golden/rc_beam_001_expected.json",
+      "git_blob_sha": "476f9a03c2d708b722367148575b0c48d5cec48e"
+    },
+    "golden_spec": {
+      "path": "docs/solver/golden/RC-BEAM-001.md",
+      "git_blob_sha": "fea069e642223e494a981f72c5215f5261108449"
+    }
+  },
+  "legacy_production_solver_exclusion": {
+    "path": "backend/engine/fajardo.py",
+    "git_blob_sha": "3405e8103ac0e890fd05c869345e3967fc55b3c8",
+    "reason": "Legacy Section III beam calculation is gross clear-span prism plus waste and does not implement accepted M2 support/slab NET_MEASURED ownership deductions.",
+    "invoked_by_m2_2": false
+  },
+  "m2_2_execution_binding": {
+    "current_positive_path_blocked": true,
+    "solver_called": false,
+    "calculation_input_emitted": false,
+    "compatibility_review_required_from_solver_tl": true
+  }
+}

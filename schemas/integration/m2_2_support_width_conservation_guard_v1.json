@@ -1,0 +1,56 @@
+{
+  "schema": "m2.rcbeam.guard.support-width-conservation/1.0",
+  "guard_id": "GUARD-SUPPORT-WIDTH-CONSERVATION",
+  "selected_interpretation": {
+    "id": "NOTIONAL_FULL_BEAM_WIDTH_SUPPORT_ZONE",
+    "version": "1.0",
+    "status": "PINNED_FOR_M2_2_READINESS",
+    "basis": "PO-approved preferred first-slice interpretation A"
+  },
+  "conservation": {
+    "notional_support_owned_volume_m3": "0.0420000",
+    "physical_support_overlap_volume_m3": "0.0315000",
+    "shoulder_junction_volume_m3": "0.0105000",
+    "identity": "physical_support_overlap + shoulder_junction == notional_support_owned",
+    "identity_holds": true,
+    "expected_width_mismatch_residual_m3": "0.0105000",
+    "residual_explicitly_owned_by": "support notional BOQ zone"
+  },
+  "executable_gate": {
+    "pass_when": [
+      "interpretation id/version exactly supported",
+      "beam/support dimensions are source-proven and reviewed",
+      "conservation identity holds exactly in canonical decimal arithmetic",
+      "shoulder/junction residual is explicitly assigned once"
+    ],
+    "block_when": [
+      "support transverse width missing",
+      "conservation identity fails",
+      "width mismatch residual omitted",
+      "residual assigned to more than one owner",
+      "unsupported guard interpretation/version"
+    ],
+    "failure_state": "BLOCKED_SUPPORT_WIDTH_CONSERVATION"
+  },
+  "selected_instance_result": "PASS_CONTRACTUALLY_FOR_READINESS",
+  "authoritative_transverse_support_binding": {
+    "claim_id": "claim-m2p-p32-c4pc4-b",
+    "field_path": "column_schedule.C4_PC4.b",
+    "value": "0.15",
+    "unit": "m",
+    "dimension": "LENGTH",
+    "source_document_sha256": "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599",
+    "source_page_sha256": "ec5bf824da36acc00ee84b4eeba04fa6c9b6386c3c4c2a27a94427518a5f5760",
+    "source_page_number": 32,
+    "sheet_id": "S5",
+    "evidence_id": "ev-p32-c4-pc4-schedule",
+    "claim_graph_digest": "sha256:b530345ae4b55d892b4bac171ea19ae95c2acd26b9162e947ccc662cdf3d7150"
+  },
+  "reference_case": {
+    "beam_width_m": "0.20",
+    "beam_depth_m": "0.35",
+    "left_support_dimension_along_beam_m": "0.300",
+    "right_support_dimension_along_beam_m": "0.300"
+  },
+  "runtime_computation_source": "admitted request width/depth/left/right support dimensions; transverse support width from authoritative_transverse_support_binding"
+}

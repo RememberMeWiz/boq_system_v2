@@ -1,0 +1,37 @@
+{
+  "schema": "m2.rcbeam.guard.beam-slab-mix-compatibility/1.0",
+  "guard_id": "GUARD-BEAM-SLAB-MIX-COMPATIBILITY",
+  "guard_version": "1.0",
+  "approved_policy_dependency": [
+    "slab.measured_separately_across_clear_span_beam_strip=true",
+    "slab_intersection_owner=slab"
+  ],
+  "admission_modes": [
+    {
+      "mode": "SAME_MIX_SLAB_OWNER",
+      "requires": [
+        "source/project-approved beam concrete mix identity",
+        "source/project-approved slab concrete mix identity",
+        "exact identity equality or an approved equivalence mapping"
+      ],
+      "result_if_satisfied": "READY"
+    },
+    {
+      "mode": "DIFFERENT_MIX_EXPLICIT_PARTITION",
+      "requires": [
+        "proven different mix identities",
+        "explicit contract-specific partition policy ID/version approved by authority"
+      ],
+      "result_if_satisfied": "READY"
+    }
+  ],
+  "current_evidence": {
+    "beam_mix_id": null,
+    "slab_mix_id": null,
+    "contract_specific_different_mix_partition": null,
+    "state": "UNKNOWN"
+  },
+  "current_result": "BLOCKED_BEAM_SLAB_MIX_APPLICABILITY",
+  "silent_same_mix_assumption_forbidden": true,
+  "failure_state": "BLOCKED_BEAM_SLAB_MIX_APPLICABILITY"
+}

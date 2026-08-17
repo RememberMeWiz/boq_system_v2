@@ -1,0 +1,25 @@
+{
+  "schema": "m2.rcbeam.provenance-admission-gate/1.0",
+  "note_closed": "M2-1-QA-N01",
+  "applies_to": [
+    "/parameters/width",
+    "/parameters/depth",
+    "/parameters/clear_span_between_support_faces",
+    "/parameters/left_support.dimension_along_beam",
+    "/parameters/right_support.dimension_along_beam"
+  ],
+  "ready_rule": [
+    "width/depth must exactly rebind the frozen accepted I1 Parser claims and provenance records",
+    "reviewed derived geometry record must be MANUALLY_CONFIRMED and solver_readiness READY",
+    "incoming canonical value, unit, dimension, selected instance, claim ID, derivation rule, input claim IDs, source document, evidence IDs, record digest and claim-graph digest must equal the authoritative record",
+    "every input_claim_id must resolve in m2_2_transitive_claim_graph_v1.json",
+    "derived input claims must recursively resolve until observed leaves",
+    "every observed leaf must carry source_document_sha256, source_page_sha256, source_page_number, sheet_id, bbox_pdf_pt and evidence_id",
+    "evidence_id must resolve in m2_2_evidence_reference_index_v1.json",
+    "evidence source_page_sha256 must match the leaf claim source_page_sha256",
+    "all leaves must bind to the selected source_document_sha256",
+    "derivation rule/version and derivation parameters must be present for derived nodes",
+    "any value/identity/edge mismatch blocks admission independently of other blockers"
+  ],
+  "failure_state": "BLOCKED_PROVENANCE_INCOMPLETE_OR_STALE"
+}

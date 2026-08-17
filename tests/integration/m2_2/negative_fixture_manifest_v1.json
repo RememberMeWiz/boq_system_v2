@@ -1,0 +1,188 @@
+{
+  "schema": "m2.rcbeam.m2_2-negative-fixture-manifest/1.0",
+  "case_count": 30,
+  "fixtures": [
+    {
+      "case_id": "NEG-01",
+      "file": "negative/NEG-01.json",
+      "sha256": "c36fd87c63f15773f000e90d310ff9a353189ee1d1d706e3f2f9e0fc86411399",
+      "expected": "BLOCKED"
+    },
+    {
+      "case_id": "NEG-02",
+      "file": "negative/NEG-02.json",
+      "sha256": "0c4e4c343d9a73ac4dbd04fdd0e5fb883e673277e537a7e937ac0922dfa40e42",
+      "expected": "UNRESOLVED"
+    },
+    {
+      "case_id": "NEG-03",
+      "file": "negative/NEG-03.json",
+      "sha256": "22bf9461282b18a984a6e8161889be25e538e7a08217dd8e094e804362273fff",
+      "expected": "REVIEW_REQUIRED/BLOCKED"
+    },
+    {
+      "case_id": "NEG-04",
+      "file": "negative/NEG-04.json",
+      "sha256": "c93bbbdac8b273bd545f80c7d5af18fa158d13ea8e4e1d1c7ec455ce7f9e25ef",
+      "expected": "INVALID/BLOCKED"
+    },
+    {
+      "case_id": "NEG-05",
+      "file": "negative/NEG-05.json",
+      "sha256": "f0fcc02aa1b6b9994a7305c2f5e37a9f201820a981da18fe3c3f85f43214d460",
+      "expected": "INVALID/BLOCKED"
+    },
+    {
+      "case_id": "NEG-06",
+      "file": "negative/NEG-06.json",
+      "sha256": "b241969db6680509347a69b939787ec76307eef2298ea0dc5617d8e799ba41c2",
+      "expected": "BLOCKED"
+    },
+    {
+      "case_id": "NEG-07",
+      "file": "negative/NEG-07.json",
+      "sha256": "b856441809a29c5bd6460b3bbf3f580f87b3d81c42c5418f071a1c1e40fd4d3b",
+      "expected": "REVIEW_REQUIRED/BLOCKED"
+    },
+    {
+      "case_id": "NEG-08",
+      "file": "negative/NEG-08.json",
+      "sha256": "16735821f8ae44e77319398204d013e61ddc67e13674a5f751af98dd2404a175",
+      "expected": "BLOCKED"
+    },
+    {
+      "case_id": "NEG-09",
+      "file": "negative/NEG-09.json",
+      "sha256": "c545c6bfbc27ad9868cf740b0c7ced1e317f7222e92ee49e9ac438ee0fda6a27",
+      "expected": "REVIEW_REQUIRED/BLOCKED"
+    },
+    {
+      "case_id": "NEG-10",
+      "file": "negative/NEG-10.json",
+      "sha256": "a3ca6942110adc51f114fa69e8adf3f3b035ad295c48060bc46c0d0e231695ed",
+      "expected": "BLOCKED"
+    },
+    {
+      "case_id": "NEG-11",
+      "file": "negative/NEG-11.json",
+      "sha256": "ac91b559b7a28ccdf9cdc0f39d643fa8ded5337e3b74d2c2ec040b297e884815",
+      "expected": "UNRESOLVED"
+    },
+    {
+      "case_id": "NEG-12",
+      "file": "negative/NEG-12.json",
+      "sha256": "ece7049e518bf171c1103b1bcc598bf58c974aab473fd445553460c3510ed80b",
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "NEG-13",
+      "file": "negative/NEG-13.json",
+      "sha256": "95f78b885089acf7da50decfa8e9907113555720b5b013384fe32f9fe3d9fcb3",
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "NEG-14",
+      "file": "negative/NEG-14.json",
+      "sha256": "39f51f6d35356edf127e4a051bd40b164b9edfa63d38c1a5ae0247c7fc1b1ace",
+      "expected": "BLOCKED_PENDING_PO_POLICY"
+    },
+    {
+      "case_id": "NEG-15",
+      "file": "negative/NEG-15.json",
+      "sha256": "3436b9697bc393e8ceb653b9ae6fb22c9986fd811078cdc2579bb4b25e41e33c",
+      "expected": "BLOCKED_PENDING_PO_POLICY"
+    },
+    {
+      "case_id": "NEG-16",
+      "file": "negative/NEG-16.json",
+      "sha256": "be0cf3e9b25565f12788db41e7df07bd04c86846946d430db0f89be5185f0e84",
+      "expected": "UNRESOLVED"
+    },
+    {
+      "case_id": "NEG-17",
+      "file": "negative/NEG-17.json",
+      "sha256": "4012d77eab63b40efe20cffe1f05ee3201621353c0fca1c8288a2788883c2bea",
+      "expected": "BLOCKED_PENDING_PO_POLICY"
+    },
+    {
+      "case_id": "NEG-18",
+      "file": "negative/NEG-18.json",
+      "sha256": "0a5338f65ecff2c0a2fac3ef6acbcce199796ce5a5bb1afa427c3a083875a830",
+      "expected": "BLOCKED_PENDING_PO_POLICY"
+    },
+    {
+      "case_id": "NEG-19",
+      "file": "negative/NEG-19.json",
+      "sha256": "bb5e699f78a3149f9d6c63bcfa8d05bb314b4b0c46945385aa8cde9e68b4b3d5",
+      "expected": "BLOCKED_PENDING_PO_POLICY"
+    },
+    {
+      "case_id": "NEG-20",
+      "file": "negative/NEG-20.json",
+      "sha256": "921d5b490f0e3c2888aa6a0b5af0d75cb6a438bd143a2a9bae91c3145e37a37b",
+      "expected": "NET_MEASURED_AND_DIGEST_UNCHANGED"
+    },
+    {
+      "case_id": "NEG-21",
+      "file": "negative/NEG-21.json",
+      "sha256": "0fc2dfb64128a99feee89ba7c2e08021dacf1f4b27103085e4a2009b3e9f73df",
+      "expected": "NET_MEASURED_AND_DIGEST_UNCHANGED"
+    },
+    {
+      "case_id": "NEG-22",
+      "file": "negative/NEG-22.json",
+      "sha256": "fe7c7c0dbc0d04adea129d8796c8d5239793ce73c820cf34a809331a472a8c54",
+      "expected": "NET_MEASURED_AND_DIGEST_UNCHANGED"
+    },
+    {
+      "case_id": "NEG-23",
+      "file": "negative/NEG-23.json",
+      "sha256": "cfd110d7542c2af430531d3b43122d05959c9b3cfe6813ec8e4fc1ac84fb8c02",
+      "expected": "NET_MEASURED_AND_DIGEST_UNCHANGED"
+    },
+    {
+      "case_id": "NEG-24",
+      "file": "negative/NEG-24.json",
+      "sha256": "3d4b5d34ad7ebb254309b9f77ee046f6c7bf673a2be4608fd86f6873e8642c68",
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "NEG-25",
+      "file": "negative/NEG-25.json",
+      "sha256": "e0af9c7f7f06118f83eabf259e62353b5cf6fe1603d86a206167174909c29580",
+      "expected": "UNSUPPORTED_CONTRACT_VERSION"
+    },
+    {
+      "case_id": "NEG-26",
+      "file": "negative/NEG-26.json",
+      "sha256": "59585a416029fd150c58270bdbf77421e3800ddb41d22b8e67e3213cfa394a85",
+      "expected": "BLOCKED_STALE_SOURCE"
+    },
+    {
+      "case_id": "NEG-27",
+      "file": "negative/NEG-27.json",
+      "sha256": "11184644d8a982e5e0ce735c4cb095879bbc510d70a48b0c405a4b785056ab17",
+      "expected": "INVALID/BLOCKED"
+    },
+    {
+      "case_id": "NEG-28",
+      "file": "negative/NEG-28.json",
+      "sha256": "e0b84e1b43c45957782eb777f7f8497134e5184498e0cd4d0e1e2bcd74b7ecbe",
+      "expected": "UNRESOLVED"
+    },
+    {
+      "case_id": "NEG-29",
+      "file": "negative/NEG-29.json",
+      "sha256": "b85e525c8b2e4e4bbeaf1e0b581cdaf8f1818e1801ebba83b86b8f974292c962",
+      "expected": "REJECT"
+    },
+    {
+      "case_id": "NEG-30",
+      "file": "negative/NEG-30.json",
+      "sha256": "19abcdbf985e8370a52f8bbfe881c852be83130c847e994590ec02045245d198",
+      "expected": "REJECT_CONTRACT_IMMUTABILITY"
+    }
+  ],
+  "positive_values_invented": false,
+  "note": "Adversarial numeric values exist only inside files marked test_mutation_only and carry no source-truth authority."
+}
