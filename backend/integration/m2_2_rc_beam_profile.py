@@ -40,6 +40,16 @@ SUPPORT_GUARD_VERSION = "1.0"
 SUPPORT_GUARD_MODE = "NOTIONAL_FULL_BEAM_WIDTH_SUPPORT_ZONE"
 MIX_GUARD_ID = "GUARD-BEAM-SLAB-MIX-COMPATIBILITY"
 MIX_GUARD_VERSION = "1.0"
+MIX_EVIDENCE_BINDING_SCHEMA = "m2.rcbeam.reviewed-mix-evidence-binding/1.0"
+MIX_EVIDENCE_BINDING_ID = "M2-3.MIX.B1.SAME_OR_EQUIVALENT/1.0"
+MIX_ACCEPTED_DISPOSITION = "CLOSED_SAME_OR_EQUIVALENT_MIX_PROVEN"
+MIX_RUNTIME_STATE = "SAME_OR_EQUIVALENT_MIX_PROVEN"
+MIX_PARSER_R3_PACKAGE_SHA256 = "c1ffefd4159d6eb7e2ea74dff00e8ca4e13b751e7132cc73d385380b89f73f81"
+MIX_EVIDENCE_SHA256 = "8accf6c6013a38d24e35f76bee51f6fe8f4b5ae8aab70b1ab138fee22437a23e"
+MIX_SOURCE_DOCUMENT_SHA256 = "2ef1eca18e00f48e82417ca306941c87fb2a8ae03c764561b52d26aa351e4599"
+MIX_SOURCE_DOCUMENT_GIT_BLOB_SHA1 = "0c02c66e0d3bd821e4758c3598422624063ce7ba"
+MIX_PARSER_QA_PACKAGE_SHA256 = "620a3d5b92bf5c71bdf446b58522c5ec7791d3a1015c73d87c4b26fa478707fd"
+MIX_PM_HANDOFF_PACKAGE_SHA256 = "d3c681a238e18c5c40dafe0b505e53908cac6628e79e75dc175e334e9d1f36ec"
 PROVENANCE_GATE_ID = "m2.rcbeam.provenance-admission-gate/1.0"
 
 # PM M2-IMPL-G01: this implementation round must never emit a successful
@@ -203,6 +213,7 @@ class M2RcBeamNetMeasuredRuntime:
         self.evidence_index = self._load("m2_2_evidence_reference_index_v1.json")
         self.support_guard = self._load("m2_2_support_width_conservation_guard_v1.json")
         self.mix_guard = self._load("m2_2_beam_slab_mix_compatibility_guard_v1.json")
+        self.reviewed_mix_evidence_binding = self._load("m2_3_reviewed_mix_evidence_binding_v1.json")
         self.claim_graph = self._load("m2_2_transitive_claim_graph_v1.json")
         self.provenance_gate = self._load("m2_2_provenance_admission_gate_v1.json")
         self.solver_identity = self._load("m2_2_solver_implementation_identity_v1.json")
@@ -267,6 +278,76 @@ class M2RcBeamNetMeasuredRuntime:
             raise IntegrationBoundaryError("M2_SUPPORT_GUARD_IDENTITY_DRIFT", repr(support_mode))
         if self.mix_guard.get("guard_id") != MIX_GUARD_ID or self.mix_guard.get("guard_version") != MIX_GUARD_VERSION:
             raise IntegrationBoundaryError("M2_MIX_GUARD_IDENTITY_DRIFT", repr(self.mix_guard.get("guard_id")))
+
+        mix_binding = self.reviewed_mix_evidence_binding
+        if mix_binding.get("schema") != MIX_EVIDENCE_BINDING_SCHEMA:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_SCHEMA_DRIFT", repr(mix_binding.get("schema")))
+        if mix_binding.get("binding_id") != MIX_EVIDENCE_BINDING_ID:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_ID_DRIFT", repr(mix_binding.get("binding_id")))
+        request_binding = mix_binding.get("request_binding")
+        if not isinstance(request_binding, dict):
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_MISSING", "request_binding")
+        expected_mix_identity = {
+            "selected_instance_id": SELECTED_INSTANCE_ID,
+            "solver_element_id": SELECTED_SOLVER_ELEMENT_ID,
+            "solver_element_type": SELECTED_SOLVER_ELEMENT_TYPE,
+            "guard_id": MIX_GUARD_ID,
+            "guard_version": MIX_GUARD_VERSION,
+            "accepted_disposition": MIX_ACCEPTED_DISPOSITION,
+            "mix_state": MIX_RUNTIME_STATE,
+            "review_state": "ACCEPTED",
+        }
+        for field, expected in expected_mix_identity.items():
+            if request_binding.get(field) != expected:
+                raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", f"{field}={request_binding.get(field)!r}")
+        evidence_identity = request_binding.get("evidence_identity")
+        if not isinstance(evidence_identity, dict):
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "evidence_identity")
+        expected_evidence_identity = {
+            "parser_r3_package_sha256": MIX_PARSER_R3_PACKAGE_SHA256,
+            "mix_evidence_sha256": MIX_EVIDENCE_SHA256,
+            "source_document_sha256": MIX_SOURCE_DOCUMENT_SHA256,
+            "source_document_git_blob_sha1": MIX_SOURCE_DOCUMENT_GIT_BLOB_SHA1,
+            "source_assignment": "Class A (1:2:4)",
+            "applies_to": ["suspended slabs", "beams"],
+            "source_complete_search_page_count": 55,
+            "narrower_applicable_override_found": False,
+        }
+        if evidence_identity != expected_evidence_identity:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "evidence identity mismatch")
+        authority = request_binding.get("reviewed_authority")
+        expected_authority = {
+            "parser_qa": {
+                "role": "Independent Parser QA Reviewer",
+                "verdict": "QA_PASS_WITH_NOTES",
+                "package_sha256": MIX_PARSER_QA_PACKAGE_SHA256,
+            },
+            "project_manager": {
+                "role": "Project Manager",
+                "verdict": "PM_ACCEPTED_WITH_NOTES",
+                "package_sha256": MIX_PM_HANDOFF_PACKAGE_SHA256,
+            },
+        }
+        if authority != expected_authority:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "reviewed authority mismatch")
+        if request_binding.get("conflict_state") != "NONE":
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "conflict state")
+        if request_binding.get("superseded") is not False or request_binding.get("superseded_by") is not None:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "supersession state")
+        if request_binding.get("replacement_evidence_ref") is not None:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "replacement evidence")
+        required_refs = {
+            f"parser-package:sha256:{MIX_PARSER_R3_PACKAGE_SHA256}",
+            f"mix-evidence:sha256:{MIX_EVIDENCE_SHA256}",
+            f"source-document:sha256:{MIX_SOURCE_DOCUMENT_SHA256}",
+            f"parser-qa:sha256:{MIX_PARSER_QA_PACKAGE_SHA256}",
+            f"pm-handoff:sha256:{MIX_PM_HANDOFF_PACKAGE_SHA256}",
+        }
+        if set(request_binding.get("provenance_refs", [])) != required_refs:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DRIFT", "provenance refs")
+        expected_digest = f"sha256:{_sha256(request_binding)}"
+        if mix_binding.get("request_binding_digest") != expected_digest:
+            raise IntegrationBoundaryError("M2_MIX_EVIDENCE_BINDING_DIGEST_DRIFT", str(mix_binding.get("request_binding_digest")))
 
         profile_guards = {
             x.get("guard_id"): x.get("guard_version")
@@ -738,12 +819,47 @@ class M2RcBeamNetMeasuredRuntime:
 
     def _mix_guard_validation(self, snapshot: dict[str, Any]) -> str | None:
         mix = snapshot.get("guards", {}).get("beam_slab_mix_compatibility", {})
-        if mix.get("state") == "BLOCKED" or mix.get("mix_state") in {None, "UNKNOWN"}:
+        if not isinstance(mix, dict):
             return "BLOCKED_BEAM_SLAB_MIX_APPLICABILITY"
-        # This implementation round has no approved source-backed mix record or
-        # different-mix partition. Any synthetic READY attempt is rejected until
-        # a new reviewed governance package widens the source contract.
-        return "BLOCKED_BEAM_SLAB_MIX_APPLICABILITY"
+        if mix.get("guard_id") != MIX_GUARD_ID or mix.get("guard_version") != MIX_GUARD_VERSION:
+            return "REJECT"
+
+        state = mix.get("state")
+        mix_state = mix.get("mix_state")
+        if state == "BLOCKED" or mix_state in {None, "UNKNOWN"}:
+            return "BLOCKED_BEAM_SLAB_MIX_APPLICABILITY"
+
+        # M2-3 reviewed-evidence admission. A semantic state is never authority:
+        # READY/SAME_MIX/SAME_OR_EQUIVALENT without the exact accepted evidence
+        # identity, review chain, provenance refs, and no-supersession state rejects.
+        if state != "READY" or mix_state != MIX_RUNTIME_STATE:
+            return "REJECT"
+        actual_binding = mix.get("reviewed_evidence_binding")
+        expected_binding = self.reviewed_mix_evidence_binding.get("request_binding")
+        if not isinstance(actual_binding, dict) or not isinstance(expected_binding, dict):
+            return "REJECT"
+        if _sha256(actual_binding) != _sha256(expected_binding):
+            return "REJECT"
+        if snapshot.get("source_document_sha256") != MIX_SOURCE_DOCUMENT_SHA256:
+            return "REJECT"
+        if actual_binding.get("selected_instance_id") != SELECTED_INSTANCE_ID:
+            return "REJECT"
+        if actual_binding.get("solver_element_id") != SELECTED_SOLVER_ELEMENT_ID:
+            return "REJECT"
+        if actual_binding.get("solver_element_type") != SELECTED_SOLVER_ELEMENT_TYPE:
+            return "REJECT"
+        if actual_binding.get("review_state") != "ACCEPTED":
+            return "REJECT"
+        if actual_binding.get("conflict_state") != "NONE":
+            return "REJECT"
+        if actual_binding.get("superseded") is not False:
+            return "REJECT"
+        if actual_binding.get("superseded_by") is not None:
+            return "REJECT"
+        if actual_binding.get("replacement_evidence_ref") is not None:
+            return "REJECT"
+        return None
+
 
     def engineering_input_digest(self, snapshot: dict[str, Any]) -> str:
         domain = {
@@ -1021,7 +1137,10 @@ class M2RcBeamNetMeasuredRuntime:
             "beam_slab_mix_guard": {
                 "guard_id": MIX_GUARD_ID,
                 "guard_version": MIX_GUARD_VERSION,
-                "status": "BLOCKED",
+                "status": "PASS" if mix_outcome is None else "BLOCKED",
+                "reviewed_evidence_binding_id": (
+                    MIX_EVIDENCE_BINDING_ID if mix_outcome is None else None
+                ),
             },
             "calculation_attempt": attempt,
             "calculation_input": None,
